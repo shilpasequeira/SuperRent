@@ -17,7 +17,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -30,11 +33,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.print.PageLayout;
-import javafx.print.PageOrientation;
-import javafx.print.Paper;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
+import javafx.geometry.Side;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.DatePicker;
@@ -47,7 +49,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.transform.Scale;
 import javafx.stage.DirectoryChooser;
 
 /**
@@ -86,6 +87,8 @@ public class ReportsViewController implements Initializable {
     private GridPane GridToDate;
     @FXML
     private Label CostLabel;
+    @FXML
+    private Label CostLabelTC;
 
     //extra columns for rwnt and reserve report
     private final TableColumn<Report, Date> RentalDate = new TableColumn<>("Rental Date");
@@ -122,10 +125,17 @@ public class ReportsViewController implements Initializable {
     private TableColumn<costReport, String> costTableBranch;
     @FXML
     private TableColumn<costReport, String> costTableCost;
+    @FXML
+    private BarChart BarChartID;
+    @FXML
+    private PieChart PieChartCount;
+
+    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+   // ObservableList<BarChart.Data> BarChartData = FXCollections.observableArrayList();
 
     // Create the DatePicker.
-    DatePicker datePickerFrom = new DatePicker();
-    DatePicker datePickerTo = new DatePicker();
+    DatePicker datePickerFrom = new DatePicker(LocalDate.now());
+    DatePicker datePickerTo = new DatePicker(LocalDate.now());
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -137,6 +147,9 @@ public class ReportsViewController implements Initializable {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        PieChartCount.setData(pieChartData);
+        PieChartCount.setLabelLineLength(10);
+        PieChartCount.setLegendSide(Side.LEFT);
         //date picker action initialization
         datePickerFrom.setOnAction(event -> {
             LocalDate date = datePickerFrom.getValue();
@@ -144,23 +157,24 @@ public class ReportsViewController implements Initializable {
         datePickerTo.setOnAction(event -> {
             LocalDate date = datePickerTo.getValue();
         });
+
         GridFromDate.getChildren().add(datePickerFrom);
         GridToDate.getChildren().add(datePickerTo);
-        
+
         //toggle for rent return 
         ToggleGroup RentReturn = new ToggleGroup();
         RentButton.setToggleGroup(RentReturn);
         ReturnButton.setToggleGroup(RentReturn);
         RentButton.setSelected(true);
         rentreserveSelection = "Rent";
-        
+
         //toggle for car truck
         ToggleGroup CarTruck = new ToggleGroup();
         CarButton.setToggleGroup(CarTruck);
         TruckButton.setToggleGroup(CarTruck);
         CarButton.setSelected(true);
-        carTruckSelection = "c";
-        
+        carTruckSelection = "car";
+
         //column name set
         VehicleID.setCellValueFactory(new PropertyValueFactory("VehicleID"));
         Category.setCellValueFactory(new PropertyValueFactory("Category"));
@@ -174,14 +188,21 @@ public class ReportsViewController implements Initializable {
         ReportTableCountBranch.setCellValueFactory(new PropertyValueFactory("Branch"));
         ReportTableCountCategory.setCellValueFactory(new PropertyValueFactory("Category"));
         ReportTableCountCount.setCellValueFactory(new PropertyValueFactory("Count"));
-        
+
         //set items for table
         costTable.setItems(costList);
-        ReportTableCount.setItems(countList);       
+        ReportTableCount.setItems(countList);
         RentTable.setItems(rentList);
-
+        BarChartID.setVisible(false);
+        CostLabel.setVisible(false);
+        ExportButton.setVisible(false);
+        costTable.setVisible(false);
+        ReportTableCount.setVisible(false);
+        RentTable.setVisible(false);
+        CostLabelTC.setVisible(false);
         //set option for branch selection
         CheckMenuItem menuItem = new CheckMenuItem("Select Branch");
+
         menuItem.setOnAction((ActionEvent actionEvent) -> {
             SelectBranch.getItems().stream().map((item) -> (CheckMenuItem) item).filter((checkMenuItem) -> (checkMenuItem.isSelected())).forEach((checkMenuItem) -> {
                 SelectBranch.setText(checkMenuItem.getText());
@@ -208,19 +229,26 @@ public class ReportsViewController implements Initializable {
     private void SelectBranchAction(ActionEvent event) {
         try {
             st = (Statement) con.createStatement();
-            
+
             //clear all lists
             menuItems.clear();
             countList.clear();
             SelectBranch.getItems().clear();
-            
+            CheckMenuItem items;
+            items = new CheckMenuItem("All Branches");
+
+            items.setOnAction((ActionEvent actionEvent) -> {
+                updateTables();
+            });
+            menuItems.add(items);
+
             //get branch names
-            String SQL = "SELECT * from mbranch";
+            String SQL = "SELECT * from mmbranch";
             ResultSet rs = con.createStatement().executeQuery(SQL);
             while (rs.next()) {
                 Report rep = new Report();
-                rep.setBranch(rs.getString("branch_city"));
-                CheckMenuItem items = new CheckMenuItem(rep.getBranch());
+                rep.setBranch(rs.getString("branch_name"));
+                items = new CheckMenuItem(rep.getBranch());
                 items.setOnAction((ActionEvent actionEvent) -> {
                     updateTables();
                 });
@@ -246,37 +274,35 @@ public class ReportsViewController implements Initializable {
             }
             // File file = new File("C:\\Users\\warrior\\Desktop\\rent.csv");
             writer = new BufferedWriter(new FileWriter(file));
-            String textgap= "Main Report for vehicle\n";
+            String textgap = "Main Report for vehicle\n";
             writer.write(textgap);
             for (Report objReport : rentList) {
                 String text = "";
-                  if (rentreserveSelection.equals("Rent")) { 
-                       
-                       text = objReport.getVehicleID()+","+ objReport.getCategory() + "," + objReport.getRentDate()+","+ objReport.getReturnDate()+","+ objReport.getEstimatedCost()+"\n";
-                  }
-                  else
-                  {      text = objReport.getVehicleID()+","+ objReport.getCategory() + objReport.getReturnDate()+","+ objReport.getEstimatedCost()+"\n";
-                 
-                  }
-            
+                if (rentreserveSelection.equals("Rent")) {
+
+                    text = objReport.getVehicleID() + "," + objReport.getCategory() + "," + objReport.getRentDate() + "," + objReport.getReturnDate() + "," + objReport.getEstimatedCost() + "\n";
+                } else {
+                    text = objReport.getVehicleID() + "," + objReport.getCategory() + objReport.getReturnDate() + "," + objReport.getEstimatedCost() + "\n";
+
+                }
 
                 writer.write(text);
             }
-            String textCount= "Count Report\n";
+            String textCount = "Count Report\n";
             writer.write(textCount);
-             for (CountReport objReport : countList) {
+            for (CountReport objReport : countList) {
                 String text = "";
-                text = objReport.getBranch()+","+ objReport.getCategory() + "," + objReport.getCount()+"\n";
+                text = objReport.getBranch() + "," + objReport.getCategory() + "," + objReport.getCount() + "\n";
                 writer.write(text);
             }
             String textCost = "Cost Report\n";
             writer.write(textCost);
-              for (costReport objReport : costList) {
+            for (costReport objReport : costList) {
                 String text = "";
-                text = objReport.getBranch()+","+ objReport.getTotalCost()+"\n";
+                text = objReport.getBranch() + "," + objReport.getTotalCost() + "\n";
                 writer.write(text);
             }
-            
+
         } catch (Exception ex) {
         } finally {
             writer.flush();
@@ -287,124 +313,178 @@ public class ReportsViewController implements Initializable {
 
     @FXML
     private void CarButtonAction(ActionEvent event) {
-        carTruckSelection = "c";
+        carTruckSelection = "car";
         updateTables();
     }
 
     @FXML
     private void TruckButtonAction(ActionEvent event) {
-        carTruckSelection = "t";
+        carTruckSelection = "truck";
         updateTables();
-    }   
+    }
 
     @FXML
     private void GoButtonAction(ActionEvent event) {
-        String dd = String.valueOf(datePickerFrom.getValue());
-        String dd2 = String.valueOf(datePickerTo.getValue());
-        updateTables();
+
+        if (citiesSelected.size() > 1) {
+            updateTables();
+        }
     }
-    
+
     //update all tables data as per selection
     void updateTables() {
-        ///clear cities selected list
-        citiesSelected.clear();
-        for(MenuItem item : SelectBranch.getItems()) {
+        BarChartID.setVisible(false);
+        boolean ifallbranchesselected = false;
+        XYChart.Series series1 = new XYChart.Series();
+        for (MenuItem item : SelectBranch.getItems()) {
             CheckMenuItem checkMenuItem = (CheckMenuItem) item;
             if (checkMenuItem.isSelected()) {
-                citiesSelected.add(checkMenuItem.getText());
-                String display = String.valueOf(citiesSelected.size());
-                SelectBranch.setText(display + " Selected");
+                if (checkMenuItem.getText().equals("All Branches")) {
+                    ifallbranchesselected = true;
+                    SelectBranch.setText("All Branches");
+                }
             }
         }
-        //renttable updation
-        if (rentreserveSelection.equals("Rent")) { 
-            
-            //add columns
-            if (!RentTable.getColumns().contains(RentalDate)) {
-                RentalDate.setVisible(true);
-                ReturnDate.setVisible(true);
-                EstimatedCost.setVisible(true);
-                RentTable.getColumns().addAll(RentalDate, ReturnDate, EstimatedCost);
+        citiesSelected.clear();
+        ///clear cities selected list
+        if (ifallbranchesselected == false) {
+
+            for (MenuItem item : SelectBranch.getItems()) {
+                CheckMenuItem checkMenuItem = (CheckMenuItem) item;
+                if (checkMenuItem.isSelected()) {
+                    citiesSelected.add(checkMenuItem.getText());
+                    String display = String.valueOf(citiesSelected.size());
+                    SelectBranch.setText(display + " Selected");
+                }
             }
-            
+        } else {
+            String SQL = "SELECT * from mmbranch";
             try {
-                
+                ResultSet rs = con.createStatement().executeQuery(SQL);
+                while (rs.next()) {
+                    Report rep = new Report();
+                    rep.setBranch(rs.getString("branch_name"));
+
+                    //add items for splitmenuitems
+                    citiesSelected.add(rep.getBranch());
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        //renttable updation
+        if (rentreserveSelection.equals("Rent")) {
+
+            try {
+
                 int cost = 0;
                 st = (Statement) con.createStatement();
                 //clear all lists
                 rentList.clear();
                 costList.clear();
                 countList.clear();
-                
+                pieChartData.clear();
+
                 //display branch column only if sities selected are more than one
-                if (citiesSelected.size() > 1) {
+                // if (citiesSelected.size() > 1)
+                {
                     if (!RentTable.getColumns().contains(branch)) {
                         branch.setVisible(true);
                         RentTable.getColumns().addAll(branch);
                     }
                 }
-                
+
                 for (Iterator it = citiesSelected.iterator(); it.hasNext();) {
-                    String city = it.next().toString();
-                    String branchQuery = "SELECT * FROM mbranch where branch_city = '" + city + "'";
+                    String branchName = it.next().toString();
+
+                    String branchQuery = "SELECT * FROM mmbranch where branch_name = '" + branchName + "'";
                     ResultSet branchSet = con.createStatement().executeQuery(branchQuery);
 
                     while (branchSet.next()) {
-                        
-                        String joinedTables = "SELECT * FROM mvehicle INNER JOIN mrentreserve ON mvehicle.vehicle_id=mrentreserve.vehicle_id AND mvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mvehicle.vehicle_type = '" + carTruckSelection + "' AND mrentreserve.rentreservebooking_date between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+
+                        String joinedTables = "SELECT * FROM mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreserve ON mmrent.reserve_id=mmreserve.reserve_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
                         ResultSet joinedSet = con.createStatement().executeQuery(joinedTables);
                         //for count
                         ResultSet countSet = con.createStatement().executeQuery(joinedTables);
 
                         while (countSet.next()) {
+
                             CountReport ObjCountReport = new CountReport();
-                            ObjCountReport.setBranch(city);
-                            ObjCountReport.setCategory(countSet.getString("vehicle_category"));
+                            ObjCountReport.setBranch(branchName);
+                            ObjCountReport.setCategory(countSet.getString("type"));
                             ObjCountReport.setCount("1");
                             boolean notAvailable = false;
                             int setCount;
                             Iterator<CountReport> it2 = countList.iterator();
-                            
+
                             //calculate vehicle count
                             while (it2.hasNext()) {
                                 CountReport ObjCountReport2 = it2.next();
-                                if (ObjCountReport2.getBranch().equals(city) && ObjCountReport2.getCategory().equals(countSet.getString("vehicle_category"))) {
+                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(countSet.getString("type"))) {
                                     setCount = Integer.valueOf(ObjCountReport2.getCount());
                                     setCount++;
                                     notAvailable = true;
                                     ObjCountReport.setCount(String.valueOf(setCount));
                                     countList.remove(ObjCountReport2);
+                                    pieChartData.remove(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+
                                     countList.add(ObjCountReport);
+                                    pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+
                                 }
                             }
                             if (!notAvailable) {
                                 countList.add(ObjCountReport);
+                                pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+
                             }
+
                         }
 
-                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(rentreserve_cost) AS pp FROM mvehicle INNER JOIN mrentreserve ON mvehicle.vehicle_id=mrentreserve.vehicle_id AND mvehicle.branch_id = '" + branchSet.getString("branch_id") + "'AND mvehicle.vehicle_type = '" + carTruckSelection + "'");
+                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreserve ON mmrent.reserve_id=mmreserve.reserve_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
 
                         //cost table
                         ResultSet costSet = costStatement.executeQuery();
                         if (costSet != null) {
+
                             costSet.next();
-                            String sum = costSet.getString(1);
+                            int sum = costSet.getInt(1);
                             costReport costReportObj = new costReport();
-                            costReportObj.setBranch(city);
-                            costReportObj.setTotalCost(sum);
+                            costReportObj.setBranch(branchName);
+                            costReportObj.setTotalCost(String.valueOf(sum));
                             costList.add(costReportObj);
+
+                            series1.getData().add(new XYChart.Data(branchName, sum));
+
                             cost = cost + costSet.getInt(1);
                             CostLabel.setText(String.valueOf(cost));
                         }
+
                         //maintable
                         while (joinedSet.next()) {
+
+                            RentTable.setVisible(true);
+                            CostLabel.setVisible(true);
+                            ExportButton.setVisible(true);
+                            CostLabelTC.setVisible(true);
+                            ReportTableCount.setVisible(true);
+                            //add columns
+                            if (!RentTable.getColumns().contains(RentalDate)) {
+                                RentalDate.setVisible(true);
+                                ReturnDate.setVisible(true);
+                                costTable.setVisible(true);
+                                EstimatedCost.setVisible(true);
+
+                                RentTable.getColumns().addAll(RentalDate, ReturnDate, EstimatedCost);
+                            }
                             Report rep1 = new Report();
                             rep1.setVehicleID(joinedSet.getString("vehicle_id"));
-                            rep1.setCategory(joinedSet.getString("vehicle_category"));
-                            rep1.setEstimatedCost(joinedSet.getString("rentreserve_cost"));
-                            rep1.setRentDate(joinedSet.getDate("rentreservebooking_date"));
-                            rep1.setReturnDate(joinedSet.getDate("rentreservereturn_date"));
-                            rep1.setBranch(city);
+                            rep1.setCategory(joinedSet.getString("type"));
+                            rep1.setEstimatedCost(joinedSet.getString("estimate"));
+                            rep1.setRentDate(joinedSet.getDate("start_date_time"));
+                            rep1.setReturnDate(joinedSet.getDate("end_date_time"));
+                            rep1.setBranch(branchName);
                             rentList.add(rep1);
                         }
 
@@ -414,16 +494,8 @@ public class ReportsViewController implements Initializable {
             } catch (SQLException ex) {
                 Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
-        else {
-            
-            //rent column set
-            if (!RentTable.getColumns().contains(RentalDate)) 
-            {
-                ReturnDate.setVisible(true);
-                EstimatedCost.setVisible(true);
-                RentTable.getColumns().addAll(RentalDate, EstimatedCost);
-            }
+        } else {
+
             try {
                 int cost = 0;
                 st = (Statement) con.createStatement();
@@ -436,31 +508,32 @@ public class ReportsViewController implements Initializable {
                         RentTable.getColumns().addAll(branch);
                     }
                 }
-                
+
                 for (Iterator it = citiesSelected.iterator(); it.hasNext();) {
-                    String city = it.next().toString();
-                    String branchSt = "SELECT * FROM mbranch where branch_city = '" + city + "'";
+                    String branchName = it.next().toString();
+
+                    String branchSt = "SELECT * FROM mmbranch where branch_name = '" + branchName + "'";
                     ResultSet branchSet = con.createStatement().executeQuery(branchSt);
 
                     while (branchSet.next()) {
-                       
-                        String joinedTable = "SELECT * FROM mvehicle INNER JOIN mrentreserve ON mvehicle.vehicle_id=mrentreserve.vehicle_id INNER JOIN mreturn ON mrentreserve.rentreserve_id=mreturn.rentreserve_id AND mvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mvehicle.vehicle_type = '" + carTruckSelection + "'";
+
+                        String joinedTable = "SELECT * FROM mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreturns ON mmreturns.rent_id=mmrent.rent_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
                         ResultSet joinedSetForTableUpdate = con.createStatement().executeQuery(joinedTable);
                         ResultSet joinedSetForCalculation = con.createStatement().executeQuery(joinedTable);
-                        
+
                         while (joinedSetForCalculation.next()) {
-                            
+
                             CountReport ObjCountReport = new CountReport();
-                            ObjCountReport.setBranch(city);
-                            ObjCountReport.setCategory(joinedSetForCalculation.getString("vehicle_category"));
+                            ObjCountReport.setBranch(branchName);
+                            ObjCountReport.setCategory(joinedSetForCalculation.getString("type"));
                             ObjCountReport.setCount("1");
                             boolean notAvailable = false;
                             int setCount;
-                            
+
                             Iterator<CountReport> ite = countList.iterator();
                             while (ite.hasNext()) {
                                 CountReport ObjCountReport2 = ite.next();
-                                if (ObjCountReport2.getBranch().equals(city) && ObjCountReport2.getCategory().equals(joinedSetForCalculation.getString("vehicle_category"))) {
+                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(joinedSetForCalculation.getString("type"))) {
                                     setCount = Integer.valueOf(ObjCountReport2.getCount());
                                     setCount++;
                                     notAvailable = true;
@@ -473,8 +546,8 @@ public class ReportsViewController implements Initializable {
                                 countList.add(ObjCountReport);
                             }
                         }
-                        
-                        PreparedStatement statement = con.prepareStatement("SELECT SUM(rentreserve_cost) AS pp FROM mvehicle INNER JOIN mrentreserve ON mvehicle.vehicle_id=mrentreserve.vehicle_id INNER JOIN mreturn ON mrentreserve.rentreserve_id=mreturn.rentreserve_id AND mvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mvehicle.vehicle_type = '" + carTruckSelection + "'");
+
+                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreturns ON mmreturns.rent_id=mmrent.rent_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
 
                         //cost table                  
                         ResultSet result = statement.executeQuery();
@@ -482,20 +555,33 @@ public class ReportsViewController implements Initializable {
                             result.next();
                             String sum = result.getString(1);
                             costReport costReportObj = new costReport();
-                            costReportObj.setBranch(city);
+                            costReportObj.setBranch(branchName);
                             costReportObj.setTotalCost(sum);
                             costList.add(costReportObj);
+
                             cost = cost + result.getInt(1);
                             CostLabel.setText(String.valueOf(cost));
                         }
                         //maintable
                         while (joinedSetForTableUpdate.next()) {
+                            costTable.setVisible(true);
+                            ReportTableCount.setVisible(true);
+                            RentTable.setVisible(true);
+                            CostLabel.setVisible(true);
+                            ExportButton.setVisible(true);
+                            CostLabelTC.setVisible(true);
+                            //rent column set
+                            if (!RentTable.getColumns().contains(RentalDate)) {
+                                ReturnDate.setVisible(true);
+                                EstimatedCost.setVisible(true);
+                                RentTable.getColumns().addAll(RentalDate, EstimatedCost);
+                            }
                             Report objReport = new Report();
                             objReport.setVehicleID(joinedSetForTableUpdate.getString("vehicle_id"));
-                            objReport.setCategory(joinedSetForTableUpdate.getString("vehicle_category"));
-                            objReport.setEstimatedCost(joinedSetForTableUpdate.getString("rentreserve_cost"));
-                            objReport.setReturnDate(joinedSetForTableUpdate.getDate("rentreservereturn_date"));
-                            objReport.setBranch(city);
+                            objReport.setCategory(joinedSetForTableUpdate.getString("type"));
+                            objReport.setEstimatedCost(joinedSetForTableUpdate.getString("amount"));
+                            objReport.setReturnDate(joinedSetForTableUpdate.getDate("end_date_time"));
+                            objReport.setBranch(branchName);
                             rentList.add(objReport);
                         }
 
@@ -506,7 +592,9 @@ public class ReportsViewController implements Initializable {
                 Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        BarChartID.setVisible(true);
+        BarChartID.getData().retainAll();
+        BarChartID.getData().add(series1);
     }
 
 }

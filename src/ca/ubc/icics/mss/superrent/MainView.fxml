@@ -6,7 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.MainViewController">
-
+  <children>
+    <Button layoutX="87.0" layoutY="77.0" mnemonicParsing="false" text="Report Generation">
+      <font>
+        <Font name="Tahoma Bold" size="12.0" />
+      </font>
+    </Button>
+  </children>
 </AnchorPane>
