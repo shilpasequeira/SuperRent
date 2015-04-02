@@ -20,7 +20,7 @@ public class SQLConnection {
         FileInputStream fis = null;
         Connection con = null;
         try {
-            fis = new FileInputStream(System.getProperty("user.dir") + "/config.properties");
+            fis = new FileInputStream(System.getProperty("user.dir") + "/src/ca/ubc/icics/mss/superrent/database/config.properties");
             props.load(fis);
  
             // load the Driver Class
