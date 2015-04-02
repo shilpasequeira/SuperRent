@@ -7,8 +7,42 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.rentreserve.RentReserveFormController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.rentreserve.RentReserveFormController">
     <stylesheets>
-        <URL value="@rentreserveform.css"/>
+        <URL value="@rentreserveform.css" />
     </stylesheets>
+   <children>
+      <Label fx:id="phoneLabel" contentDisplay="RIGHT" layoutX="28.0" layoutY="73.0" prefHeight="35.0" prefWidth="110.0" text="Phone Number" textAlignment="RIGHT" />
+      <TextField fx:id="firstNameField" layoutX="170.0" layoutY="28.0" prefHeight="35.0" prefWidth="247.0" />
+      <TextField fx:id="phoneField" layoutX="170.0" layoutY="73.0" prefHeight="35.0" prefWidth="247.0" />
+      <Label fx:id="firstNameLabel" contentDisplay="RIGHT" layoutX="28.0" layoutY="28.0" prefHeight="35.0" prefWidth="110.0" text="First Name" textAlignment="RIGHT" />
+      <TextField fx:id="addressField" layoutX="170.0" layoutY="130.0" prefHeight="35.0" prefWidth="247.0" />
+      <Label fx:id="addressLabel" contentDisplay="RIGHT" layoutX="28.0" layoutY="130.0" prefHeight="35.0" prefWidth="110.0" text="Address" textAlignment="RIGHT" />
+      <TextField fx:id="cityField" layoutX="170.0" layoutY="178.0" prefHeight="35.0" prefWidth="96.0" />
+      <Label fx:id="cityLabel" contentDisplay="RIGHT" layoutX="28.0" layoutY="178.0" prefHeight="35.0" prefWidth="110.0" text="City" textAlignment="RIGHT" />
+      <Label fx:id="pincodeLabel" contentDisplay="RIGHT" layoutX="276.0" layoutY="178.0" prefHeight="35.0" prefWidth="110.0" text="Pincode" textAlignment="RIGHT" />
+      <TextField fx:id="pincodeField" layoutX="335.0" layoutY="178.0" prefHeight="35.0" prefWidth="96.0" />
+      <CheckBox fx:id="applyMembershipCheckBox" layoutX="28.0" layoutY="238.0" mnemonicParsing="false" text="Apply for Club Membership?" />
+      <CheckBox fx:id="isRoadStarCheckBox" layoutX="266.0" layoutY="238.0" mnemonicParsing="false" text="Roadstar" />
+      <TextField fx:id="driversLicenseField" layoutX="167.0" layoutY="421.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
+      <Label fx:id="driversLicenseLabel" contentDisplay="RIGHT" layoutX="25.0" layoutY="421.0" prefHeight="35.0" prefWidth="110.0" text="Drivers License" textAlignment="RIGHT" visible="false" />
+      <Label fx:id="creditCardLabel" contentDisplay="RIGHT" layoutX="25.0" layoutY="468.0" prefHeight="35.0" prefWidth="110.0" text="Credit Card No." textAlignment="RIGHT" visible="false" />
+      <TextField fx:id="creditCardField" layoutX="167.0" layoutY="468.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
+      <TextField fx:id="creditExpiryField" layoutX="537.0" layoutY="468.0" prefHeight="35.0" prefWidth="70.0" visible="false" />
+      <Label fx:id="creditExpiryLabel" contentDisplay="RIGHT" layoutX="419.0" layoutY="468.0" prefHeight="35.0" prefWidth="110.0" text="Expiry Month/Year" textAlignment="RIGHT" visible="false" />
+      <DatePicker fx:id="startDateField" layoutX="171.0" layoutY="281.0" />
+      <Label fx:id="startDateLabel" contentDisplay="RIGHT" layoutX="28.0" layoutY="277.0" prefHeight="35.0" prefWidth="110.0" text="Start Date" textAlignment="RIGHT" />
+      <Label fx:id="endDateLabel" contentDisplay="RIGHT" layoutX="397.0" layoutY="277.0" prefHeight="35.0" prefWidth="110.0" text="End Date" textAlignment="RIGHT" />
+      <DatePicker fx:id="endDateField" layoutX="540.0" layoutY="281.0" />
+      <Label fx:id="startTimeLabel" contentDisplay="RIGHT" layoutX="28.0" layoutY="324.0" prefHeight="35.0" prefWidth="110.0" text="Start Time" textAlignment="RIGHT" />
+      <ChoiceBox fx:id="startTimeField" layoutX="171.0" layoutY="329.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="endTimeField" layoutX="537.0" layoutY="329.0" prefWidth="150.0" />
+      <Label fx:id="endTimeLabel" contentDisplay="RIGHT" layoutX="394.0" layoutY="324.0" prefHeight="35.0" prefWidth="110.0" text="End Time" textAlignment="RIGHT" />
+      <ChoiceBox fx:id="additionalEquipmentField" layoutX="168.0" layoutY="380.0" prefWidth="150.0" />
+      <Label fx:id="additionalEquipmentLabel" contentDisplay="RIGHT" layoutX="25.0" layoutY="375.0" prefHeight="35.0" prefWidth="135.0" text="Additional Equipment" textAlignment="RIGHT" />
+      <Button fx:id="estimateButton" layoutX="537.0" layoutY="547.0" mnemonicParsing="false" text="Estimate" />
+      <Label fx:id="estimateLabel" contentDisplay="RIGHT" layoutX="350.0" layoutY="538.0" prefHeight="35.0" prefWidth="135.0" textAlignment="RIGHT" />
+      <Label fx:id="lastNameLabel" contentDisplay="RIGHT" layoutX="431.0" layoutY="28.0" prefHeight="35.0" prefWidth="110.0" text="Last Name" textAlignment="RIGHT" />
+      <TextField fx:id="lastNameField" layoutX="512.0" layoutY="28.0" prefHeight="35.0" prefWidth="247.0" />
+   </children>
 </AnchorPane>

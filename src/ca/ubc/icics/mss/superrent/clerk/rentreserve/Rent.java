@@ -5,10 +5,21 @@
  */
 package ca.ubc.icics.mss.superrent.clerk.rentreserve;
 
+import ca.ubc.icics.mss.superrent.clerk.customer.Customer;
+import java.util.Date;
+
+
 /**
  *
  * @author warrior
  */
 public class Rent {
+    private Date startDateTime;
+    private Date endDateTime;
+    private int creditCardNumber;
+    private String creditCardExpiry;
+    private String driversLicenseNumber;
+    private String additionalEquipment;
+    private Customer customer;
     
 }
