@@ -49,12 +49,12 @@ public class CustomerRepository {
      * @param phone
      * @return Customer object is customer exists else null
      */
-    public static Customer searchForCustomerByPhone (int phone) {
+    public static Customer searchForCustomerByPhone (String phone) {
         //using try-with-resources to avoid closing resources (boiler plate code)
         try (Connection con = SQLConnection.getConnection();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT customer_id FROM customer WHERE "
-                        + "phone=" + phone)) {
+                        + "phone_no=" + phone)) {
             
             while(rs.next()) {
                 Customer customer = new Customer(rs.getInt("customer_id"));
