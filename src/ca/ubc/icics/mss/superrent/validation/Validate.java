@@ -7,7 +7,7 @@ package ca.ubc.icics.mss.superrent.validation;
 
 import java.util.Collections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,9 +24,16 @@ public class Validate {
      * @return true or false
      */
     public static boolean isEmptyTextField (TextField tf) {
-        boolean valid = false;
-        if (tf.getText() != null && tf.getText().trim().length() > 0) {
-            valid = true;
+        boolean valid = true;
+        ObservableList<String> styleClass = tf.getStyleClass();
+        if (tf.getText() == null || tf.getText().trim().length() == 0) {
+            if (! styleClass.contains("error")) {
+                styleClass.add("error");
+            }
+        } else {
+            // remove all occurrences:
+            styleClass.removeAll(Collections.singleton("error"));
+            valid = false;
         }
         return valid;
     }
@@ -39,16 +46,19 @@ public class Validate {
      * @return true or false
      */
     public static boolean isEmptyTextField (TextField tf, Label error) {
-        boolean valid = false;
+        boolean valid = true;
         ObservableList<String> styleClass = tf.getStyleClass();
-        if (tf.getText() == null || tf.getText().trim().length()==0) {
+        if (tf.getText() == null || tf.getText().trim().length() == 0) {
             if (! styleClass.contains("error")) {
                 styleClass.add("error");
             }
+            error.setVisible(true);
+            error.setText("This field is required");
         } else {
             // remove all occurrences:
             styleClass.removeAll(Collections.singleton("error"));
-            valid = true;
+            valid = false;
+            error.setVisible(false);
         }
         return valid;
     }
@@ -59,9 +69,16 @@ public class Validate {
      * @return true or false
      */
     public static boolean isEmptyDateField (DatePicker dateField) {
-        boolean valid = false;
-        if (dateField.getValue() != null) {
-            valid = true;
+        boolean valid = true;
+        ObservableList<String> styleClass = dateField.getStyleClass();
+        if (dateField.getValue() == null) {
+            if (! styleClass.contains("error")) {
+                styleClass.add("error");
+            }
+        } else {
+            // remove all occurrences:
+            styleClass.removeAll(Collections.singleton("error"));
+            valid = false;              
         }
         return valid;
     }
@@ -73,51 +90,63 @@ public class Validate {
      * @return true or false
      */
     public static boolean isEmptyDateField(DatePicker dateField, Label error) {
-        boolean valid = false;
+        boolean valid = true;
         ObservableList<String> styleClass = dateField.getStyleClass();
         if (dateField.getValue() == null) {
             if (! styleClass.contains("error")) {
                 styleClass.add("error");
             }
+            error.setVisible(true);
+            error.setText("This field is required");
         } else {
             // remove all occurrences:
             styleClass.removeAll(Collections.singleton("error"));
-            valid = true;                   
-        }
-        
-        return valid;
-    }
-    
-    /**
-     * Validates if a choice box is empty or not
-     * @param choiceBox that has to be checked
-     * @return true or false
-     */
-    public static boolean isEmptyChoiceBox (ChoiceBox choiceBox) {
-        boolean valid = false;
-        if (choiceBox.getValue() != null) {
-            valid = true;
+            valid = false; 
+            error.setVisible(false);               
         }
         return valid;
     }
     
     /**
      * Validates if a choice box is empty or not
-     * @param choiceBox  that has to be checked
-     * @param error the error label that will show the error message
+     * @param comboBox that has to be checked
      * @return true or false
      */
-    public static boolean isEmptyChoiceBox(ChoiceBox choiceBox, Label error) {
-        boolean valid = false;
-        ObservableList<String> styleClass = choiceBox.getStyleClass();
-        if (choiceBox.getValue() == null) {
+    public static boolean isEmptyComboBox (ComboBox comboBox) {
+        boolean valid = true;
+        ObservableList<String> styleClass = comboBox.getStyleClass();
+        if (comboBox.getValue() == null) {
             if (! styleClass.contains("error")) {
                 styleClass.add("error");
             }
         } else {
             // remove all occurrences:
             styleClass.removeAll(Collections.singleton("error"));
-            valid = true;
+            valid = false;
+        }
+        return valid;
+    }
+    
+    /**
+     * Validates if a choice box is empty or not
+     * @param comboBox  that has to be checked
+     * @param error the error label that will show the error message
+     * @return true or false
+     */
+    public static boolean isEmptyComboBox(ComboBox comboBox, Label error) {
+        boolean valid = true;
+        ObservableList<String> styleClass = comboBox.getStyleClass();
+        if (comboBox.getValue() == null) {
+            if (! styleClass.contains("error")) {
+                styleClass.add("error");
+            }
+            error.setVisible(true);
+            error.setText("This field is required");
+        } else {
+            // remove all occurrences:
+            styleClass.removeAll(Collections.singleton("error"));
+            valid = false;
+            error.setVisible(false);
         }
         return valid;
     }
@@ -130,11 +159,19 @@ public class Validate {
      */
     public static boolean isValidPhoneNumber (TextField phone) {
         boolean valid = false;
+        ObservableList<String> styleClass = phone.getStyleClass();
+        
         // Check if the phone number is valid.
         if (phone.getText() != null && 
                 phone.getText().trim().length() > 0 && 
-                phone.getText().matches("^[0-9]{3}\\s[0-9]{3}\\s[0-9]{4}$")) {
+                phone.getText().matches("^[0-9]{10}$")) {
+            // remove all occurrences:
+            styleClass.removeAll(Collections.singleton("error"));
             valid = true;
+        } else {
+            if (! styleClass.contains("error")) {
+                styleClass.add("error");
+            }
         }
         return valid;
     }
@@ -153,21 +190,18 @@ public class Validate {
         // Check if the phone number is valid.
         if (phone.getText() != null && 
                 phone.getText().trim().length() > 0 && 
-                phone.getText().matches("^[0-9]{3}\\s[0-9]{3}\\s[0-9]{4}$")) {
+                phone.getText().matches("^[0-9]{10}$")) {
+            // remove all occurrences:
+            styleClass.removeAll(Collections.singleton("error"));
+            error.setVisible(false);
             valid = true;
-        }
-        
-        if (phone.getText() != null && phone.getText().trim().length() > 0) {
+        } else {
             if (! styleClass.contains("error")) {
                 styleClass.add("error");
             }
-        } else {
-            // remove all occurrences:
-            styleClass.removeAll(Collections.singleton("error"));
-            valid = true;
+            error.setVisible(true);
+            error.setText("Invalid phone number");
         }
         return valid;
-        
     }
-    
 }
