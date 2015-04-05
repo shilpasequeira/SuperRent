@@ -5,6 +5,13 @@
  */
 package ca.ubc.icics.mss.superrent.clerk.vehiclelist;
 
+import ca.ubc.icics.mss.superrent.database.SQLConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author shilpa
@@ -17,6 +24,25 @@ public class AdditionalEquipment {
     private int hourlyRate;
     private int stock;
     private int branchID;
+    
+    public AdditionalEquipment(int id) {
+        try (Connection con = SQLConnection.getConnection();
+                ResultSet rs = con.createStatement().executeQuery(
+                        "SELECT * FROM additonal_equipment WHERE equipment_id=" + id)) {
+            
+            while(rs.next()){
+                this.id = rs.getInt("equipment_id");
+                this.name = rs.getString("equipment_name");
+                this.type = rs.getString("equipment_type");
+                this.dailyRate = rs.getInt("equipment_daily_rate");
+                this.hourlyRate = rs.getInt("equipment_hourly_rate");
+                this.stock = rs.getInt("equipment_stock");
+                this.branchID = rs.getInt("branch_id");
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(AdditionalEquipment.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
     
     /**
      * 
