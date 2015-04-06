@@ -35,7 +35,7 @@ import javafx.scene.layout.Pane;
  *
  * @author warrior
  */
-public class ManageUserViewController implements Initializable {
+public class ManageUserController implements Initializable {
 
     @FXML
     private TextField UserNameAdd;

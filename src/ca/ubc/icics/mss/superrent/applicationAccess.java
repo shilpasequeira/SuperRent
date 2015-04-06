@@ -47,7 +47,7 @@ public class applicationAccess {
         if(role.equals("ADMIN"))
         {
         this.primaryStage = new Stage();
-        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("ManageUserView.fxml"));
+        FXMLLoader myLoader = new FXMLLoader(getClass().getResource("AdminDashboard.fxml"));
         AnchorPane myPane = (AnchorPane) myLoader.load();        
         Scene myScene = new Scene(myPane);
         primaryStage.setScene(myScene);

@@ -8,7 +8,7 @@
 
 .pane
 {
-   -fx-background-image: url("rrr.jpg");   
+   -fx-background-image: url("headerPane.jpg");   
 }
 .button{
     -fx-text-fill: white;

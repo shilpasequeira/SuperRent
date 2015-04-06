@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.ManageUserViewController">
+<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.ManageUserController">
   <children>
     <Label fx:id="SelectUserLabel" layoutX="72.0" layoutY="182.0" text="Select User" />
     <MenuButton fx:id="UserItem" layoutX="146.0" layoutY="180.0" mnemonicParsing="false" text="User Name" />
@@ -23,7 +23,7 @@
         <MenuButton fx:id="RoleItemAdd" layoutX="126.0" layoutY="190.0" mnemonicParsing="false" text="Role">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#managerroleAction" text="Manager" fx:id="ManagerItem" />
-            <MenuItem mnemonicParsing="false" text="Clerk" fx:id="ClerkItem" onAction="#clerkroleAction"/>
+            <MenuItem mnemonicParsing="false" onAction="#clerkroleAction" text="Clerk" fx:id="ClerkItem" />
           </items>
         </MenuButton>
         <TextField fx:id="UserNameAdd" layoutX="126.0" layoutY="33.0" onAction="#userVerificationAction" prefWidth="200.0" />
@@ -32,7 +32,7 @@
         <TextField fx:id="PasswordAdd" layoutX="126.0" layoutY="150.0" prefWidth="200.0" />
         <Button fx:id="SubmitButtonAdd" layoutX="165.0" layoutY="245.0" mnemonicParsing="false" onAction="#submitButton" prefWidth="86.0" text="Submit" />
         <Button fx:id="Remove" layoutX="251.0" layoutY="245.0" mnemonicParsing="false" prefWidth="86.0" text="Button" />
-        <Label fx:id="usernamealreadyexit" layoutX="337.0" layoutY="36.0"  textFill="#ff3333" />
+        <Label fx:id="usernamealreadyexit" layoutX="337.0" layoutY="36.0" textFill="#ff3333" />
       </children>
     </Pane>
     <RadioButton fx:id="AddUserID" layoutX="71.0" layoutY="124.0" mnemonicParsing="false" onAction="#addUserAction" text="Add User" />
@@ -41,6 +41,6 @@
     <Label fx:id="userAdded" layoutX="144.0" layoutY="266.0" text="User Added Successfully" textFill="#319900" />
   </children>
   <stylesheets>
-    <URL value="@manageview.css" />
+    <URL value="@mainview.css" />
   </stylesheets>
 </AnchorPane>
