@@ -17,10 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -49,6 +46,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 
 /**
@@ -89,15 +87,17 @@ public class ReportsViewController implements Initializable {
     private Label CostLabel;
     @FXML
     private Label CostLabelTC;
-
+    @FXML
+    private Pane errorPaneID;
     //extra columns for rwnt and reserve report
     private final TableColumn<Report, Date> RentalDate = new TableColumn<>("Rental Date");
     private final TableColumn<Report, String> ReturnDate = new TableColumn<>("Return Date");
-    private final TableColumn<Report, String> EstimatedCost = new TableColumn<>("Estimated Cost");
+    private final TableColumn<Report, String> EstimatedCost = new TableColumn<>("Amount Estimated");
     private final TableColumn<Report, String> Branch = new TableColumn<>("Branch");
-    private final TableColumn<Report, String> AmountPaid = new TableColumn<>("Amount Paid");
+    private final TableColumn<Report, String> AmountPaid = new TableColumn<>("Customer Paid");
     private final TableColumn<Report, String> branch = new TableColumn<>("Branch");
-    private final TableColumn<Report, String> amountPaid = new TableColumn<>("Amount Paid");
+    private final TableColumn<Report, String> amountPaid = new TableColumn<>("Customer Paid");
+    private final TableColumn<Report, String> vehicleName = new TableColumn<>("Name");
 
     //lists to collect data
     private final ObservableList<CheckMenuItem> menuItems = FXCollections.observableArrayList();
@@ -146,7 +146,9 @@ public class ReportsViewController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        errorPaneID.setVisible(false);
+        PieChartCount.setTitle("Branch Count");
+        PieChartCount.setVisible(false);
         PieChartCount.setData(pieChartData);
         PieChartCount.setLabelLineLength(10);
         PieChartCount.setLegendSide(Side.LEFT);
@@ -188,7 +190,7 @@ public class ReportsViewController implements Initializable {
         ReportTableCountBranch.setCellValueFactory(new PropertyValueFactory("Branch"));
         ReportTableCountCategory.setCellValueFactory(new PropertyValueFactory("Category"));
         ReportTableCountCount.setCellValueFactory(new PropertyValueFactory("Count"));
-
+        vehicleName.setCellValueFactory(new PropertyValueFactory("Name"));
         //set items for table
         costTable.setItems(costList);
         ReportTableCount.setItems(countList);
@@ -200,6 +202,7 @@ public class ReportsViewController implements Initializable {
         ReportTableCount.setVisible(false);
         RentTable.setVisible(false);
         CostLabelTC.setVisible(false);
+        BarChartID.setTitle("Branch Amount");
         //set option for branch selection
         CheckMenuItem menuItem = new CheckMenuItem("Select Branch");
 
@@ -214,19 +217,19 @@ public class ReportsViewController implements Initializable {
     }
 
     @FXML
-    private void RentButtonAction(ActionEvent event) {
+    public void RentButtonAction(ActionEvent event) {
         rentreserveSelection = "Rent";
         updateTables();
     }
 
     @FXML
-    private void ReturnButtonAction(ActionEvent event) {
+    public void ReturnButtonAction(ActionEvent event) {
         rentreserveSelection = "Return";
         updateTables();
     }
 
     @FXML
-    private void SelectBranchAction(ActionEvent event) {
+    public void SelectBranchAction(ActionEvent event) {
         try {
             st = (Statement) con.createStatement();
 
@@ -263,46 +266,65 @@ public class ReportsViewController implements Initializable {
     }
 
     @FXML
-    private void ExportButtonAction(ActionEvent event) throws IOException {
-
+    public void ExportButtonAction(ActionEvent event) throws IOException {
+        String textgapdot = "  . \n";
+        String columns;
         Writer writer = null;
         try {
             DirectoryChooser dc = new DirectoryChooser();
             File file = dc.showDialog(null);
             if (file != null) {
+
                 file = new File(file.getAbsolutePath() + "/rent.csv");
             }
             // File file = new File("C:\\Users\\warrior\\Desktop\\rent.csv");
             writer = new BufferedWriter(new FileWriter(file));
+            writer.write(textgapdot);
             String textgap = "Main Report for vehicle\n";
             writer.write(textgap);
+            if (rentreserveSelection.equals("Rent")) {
+                columns = "ID" + "," + "Category" + "," + " Rent Date" + "," + "Name" + "," + "Estimated Price" + "," + "Branch" + "," + "\n";
+                writer.write(columns);
+            } else {
+                columns = "ID" + "," + "Category" + "," + " Return Date" + "," + "Name" + "," + "Estimated Price" + "," + "Branch" + "," + "\n";
+                writer.write(columns);
+            }
             for (Report objReport : rentList) {
                 String text = "";
                 if (rentreserveSelection.equals("Rent")) {
 
-                    text = objReport.getVehicleID() + "," + objReport.getCategory() + "," + objReport.getRentDate() + "," + objReport.getReturnDate() + "," + objReport.getEstimatedCost() + "\n";
+                    text = objReport.getVehicleID() + "," + objReport.getCategory() + "," + objReport.getRentDate() + "," + objReport.getName() + "," + objReport.getEstimatedCost() + "," + objReport.getBranch() + "\n";
                 } else {
-                    text = objReport.getVehicleID() + "," + objReport.getCategory() + objReport.getReturnDate() + "," + objReport.getEstimatedCost() + "\n";
+                    text = objReport.getVehicleID() + "," + objReport.getCategory() + "," + objReport.getReturnDate() + "," + objReport.getName() + "," + objReport.getAmountPaid() + "," + objReport.getBranch() + "\n";
 
                 }
 
                 writer.write(text);
             }
+            writer.write(textgapdot);
             String textCount = "Count Report\n";
             writer.write(textCount);
+            columns = "Branch" + "," + "Category" + "," + "Count" + "," + "\n";
+            writer.write(columns);
+
             for (CountReport objReport : countList) {
-                String text = "";
+                String text;
                 text = objReport.getBranch() + "," + objReport.getCategory() + "," + objReport.getCount() + "\n";
                 writer.write(text);
             }
+            writer.write(textgapdot);
             String textCost = "Cost Report\n";
             writer.write(textCost);
+            columns = "Branch" + "," + "Cost" + "," + "\n";
+            writer.write(columns);
+
             for (costReport objReport : costList) {
-                String text = "";
+                String text;
                 text = objReport.getBranch() + "," + objReport.getTotalCost() + "\n";
                 writer.write(text);
             }
-
+            columns = "Total Cost =" + "," + CostLabel.getText() + "," + "\n";
+            writer.write(columns);
         } catch (Exception ex) {
         } finally {
             writer.flush();
@@ -312,19 +334,19 @@ public class ReportsViewController implements Initializable {
     }
 
     @FXML
-    private void CarButtonAction(ActionEvent event) {
+    public void CarButtonAction(ActionEvent event) {
         carTruckSelection = "car";
         updateTables();
     }
 
     @FXML
-    private void TruckButtonAction(ActionEvent event) {
+    public void TruckButtonAction(ActionEvent event) {
         carTruckSelection = "truck";
         updateTables();
     }
 
     @FXML
-    private void GoButtonAction(ActionEvent event) {
+    public void GoButtonAction(ActionEvent event) {
 
         if (citiesSelected.size() > 1) {
             updateTables();
@@ -332,10 +354,12 @@ public class ReportsViewController implements Initializable {
     }
 
     //update all tables data as per selection
-    void updateTables() {
-        BarChartID.setVisible(false);
+    public void updateTables() {
+        errorPaneID.setVisible(false);
+        PieChartCount.setVisible(true);
         boolean ifallbranchesselected = false;
         XYChart.Series series1 = new XYChart.Series();
+        XYChart.Series series2 = new XYChart.Series();
         for (MenuItem item : SelectBranch.getItems()) {
             CheckMenuItem checkMenuItem = (CheckMenuItem) item;
             if (checkMenuItem.isSelected()) {
@@ -391,7 +415,7 @@ public class ReportsViewController implements Initializable {
                 {
                     if (!RentTable.getColumns().contains(branch)) {
                         branch.setVisible(true);
-                        RentTable.getColumns().addAll(branch);
+                        RentTable.getColumns().addAll(branch, vehicleName);
                     }
                 }
 
@@ -469,16 +493,17 @@ public class ReportsViewController implements Initializable {
                             ExportButton.setVisible(true);
                             CostLabelTC.setVisible(true);
                             ReportTableCount.setVisible(true);
+                            RentalDate.setVisible(true);
+                            ReturnDate.setVisible(false);
+                            costTable.setVisible(true);
+                            EstimatedCost.setVisible(true);
                             //add columns
                             if (!RentTable.getColumns().contains(RentalDate)) {
-                                RentalDate.setVisible(true);
-                                ReturnDate.setVisible(true);
-                                costTable.setVisible(true);
-                                EstimatedCost.setVisible(true);
 
                                 RentTable.getColumns().addAll(RentalDate, ReturnDate, EstimatedCost);
                             }
                             Report rep1 = new Report();
+                            rep1.setName(joinedSet.getString("vehicle_name"));
                             rep1.setVehicleID(joinedSet.getString("vehicle_id"));
                             rep1.setCategory(joinedSet.getString("type"));
                             rep1.setEstimatedCost(joinedSet.getString("estimate"));
@@ -494,6 +519,11 @@ public class ReportsViewController implements Initializable {
             } catch (SQLException ex) {
                 Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (rentList.size() >= 1) {
+                BarChartID.setVisible(true);
+                BarChartID.getData().retainAll();
+                BarChartID.getData().add(series1);
+            }
         } else {
 
             try {
@@ -505,7 +535,7 @@ public class ReportsViewController implements Initializable {
                 if (citiesSelected.size() > 1) {
                     if (!RentTable.getColumns().contains(branch)) {
                         branch.setVisible(true);
-                        RentTable.getColumns().addAll(branch);
+                        RentTable.getColumns().addAll(branch, vehicleName);
                     }
                 }
 
@@ -552,13 +582,14 @@ public class ReportsViewController implements Initializable {
                         //cost table                  
                         ResultSet result = statement.executeQuery();
                         if (result != null) {
+
                             result.next();
-                            String sum = result.getString(1);
+                            int sum = result.getInt(1);
                             costReport costReportObj = new costReport();
                             costReportObj.setBranch(branchName);
-                            costReportObj.setTotalCost(sum);
+                            costReportObj.setTotalCost(String.valueOf(sum));
                             costList.add(costReportObj);
-
+                            series2.getData().add(new XYChart.Data(branchName, sum));
                             cost = cost + result.getInt(1);
                             CostLabel.setText(String.valueOf(cost));
                         }
@@ -570,13 +601,16 @@ public class ReportsViewController implements Initializable {
                             CostLabel.setVisible(true);
                             ExportButton.setVisible(true);
                             CostLabelTC.setVisible(true);
+                            ReturnDate.setVisible(true);
+                            RentalDate.setVisible(false);
+                            EstimatedCost.setVisible(true);
                             //rent column set
                             if (!RentTable.getColumns().contains(RentalDate)) {
-                                ReturnDate.setVisible(true);
-                                EstimatedCost.setVisible(true);
+
                                 RentTable.getColumns().addAll(RentalDate, EstimatedCost);
                             }
                             Report objReport = new Report();
+                            objReport.setName(joinedSetForTableUpdate.getString("vehicle_name"));
                             objReport.setVehicleID(joinedSetForTableUpdate.getString("vehicle_id"));
                             objReport.setCategory(joinedSetForTableUpdate.getString("type"));
                             objReport.setEstimatedCost(joinedSetForTableUpdate.getString("amount"));
@@ -591,10 +625,23 @@ public class ReportsViewController implements Initializable {
             } catch (SQLException ex) {
                 Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (rentList.size() >= 1) {
+                BarChartID.setVisible(true);
+                BarChartID.getData().retainAll();
+                BarChartID.getData().add(series2);
+            }
         }
-        BarChartID.setVisible(true);
-        BarChartID.getData().retainAll();
-        BarChartID.getData().add(series1);
+        if (rentList.size() <= 0) {
+            PieChartCount.setVisible(false);
+            RentTable.setVisible(false);
+            ExportButton.setVisible(false);
+            ReportTableCount.setVisible(false);
+            costTable.setVisible(false);
+            BarChartID.setVisible(false);
+            CostLabel.setVisible(false);
+            CostLabelTC.setVisible(false);
+            errorPaneID.setVisible(true);
+        }
     }
 
 }

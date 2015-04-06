@@ -22,6 +22,7 @@ public class Report {
     public String Category;
     public String BranchID;
     public String TotalCost;
+    public String Name;
     
       public String getTotalCost() {
         return TotalCost;
@@ -30,6 +31,15 @@ public class Report {
     public void setTotalCost(String ID) {
         this.TotalCost = ID;
     }
+    
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String ID) {
+        this.Name = ID;
+    }
+    
     
      public String getBranchID() {
         return BranchID;
