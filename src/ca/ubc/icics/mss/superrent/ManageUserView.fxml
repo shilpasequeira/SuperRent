@@ -11,9 +11,8 @@
 
 <AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.ManageUserController">
   <children>
-    <Label fx:id="SelectUserLabel" layoutX="72.0" layoutY="182.0" text="Select User" />
-    <MenuButton fx:id="UserItem" layoutX="146.0" layoutY="180.0" mnemonicParsing="false" text="User Name" />
-    <Pane fx:id="PaneUserForm" layoutX="14.0" layoutY="206.0" prefHeight="335.0" prefWidth="535.0">
+    <Label fx:id="SelectUserLabel" layoutX="72.0" layoutY="182.0" text="Enter User Name" />
+    <Pane fx:id="PaneUserForm" layoutX="23.0" layoutY="227.0" prefHeight="335.0001220703125" prefWidth="535.0000999999975" visible="true">
       <children>
         <Label fx:id="UserNameAddLabel" layoutX="49.0" layoutY="36.0" text="User Name" />
         <Label fx:id="FirstNameAddLabel" layoutX="48.0" layoutY="74.0" text="First Name" />
@@ -31,14 +30,18 @@
         <TextField fx:id="LastNameAdd" layoutX="126.0" layoutY="113.0" prefWidth="200.0" />
         <TextField fx:id="PasswordAdd" layoutX="126.0" layoutY="150.0" prefWidth="200.0" />
         <Button fx:id="SubmitButtonAdd" layoutX="165.0" layoutY="245.0" mnemonicParsing="false" onAction="#submitButton" prefWidth="86.0" text="Submit" />
-        <Button fx:id="Remove" layoutX="251.0" layoutY="245.0" mnemonicParsing="false" prefWidth="86.0" text="Button" />
         <Label fx:id="usernamealreadyexit" layoutX="337.0" layoutY="36.0" textFill="#ff3333" />
+        <Button fx:id="ModifyButtonAdd" layoutX="165.0" layoutY="256.0" mnemonicParsing="false"  prefWidth="86.0" text="Modify" onAction="#modifyButtonAction" />
       </children>
     </Pane>
     <RadioButton fx:id="AddUserID" layoutX="71.0" layoutY="124.0" mnemonicParsing="false" onAction="#addUserAction" text="Add User" />
     <RadioButton fx:id="RemoveUserID" layoutX="164.0" layoutY="124.0" mnemonicParsing="false" onAction="#removeUserAction" text="Remove User" />
     <RadioButton fx:id="EditUser" layoutX="281.0" layoutY="124.0" mnemonicParsing="false" onAction="#editUserAction" text="Edit User" />
     <Label fx:id="userAdded" layoutX="144.0" layoutY="266.0" text="User Added Successfully" textFill="#319900" />
+    <TextField fx:id="SearchUserTextBox" layoutX="173.0" layoutY="182.0" prefWidth="200.0" />
+    <Label fx:id="UserNameLabel" layoutX="173.0" layoutY="226.0" prefWidth="168.0" text="" />
+    <Button fx:id="Remove" layoutX="414.0" layoutY="182.0" mnemonicParsing="false" onAction="#removeButtonAction" prefWidth="86.0" text="Remove" />
+    <Button fx:id="EditButton" layoutX="414.0" layoutY="182.0" mnemonicParsing="false" onAction="#editButtonAction" prefWidth="86.0" text="Edit" />
   </children>
   <stylesheets>
     <URL value="@mainview.css" />

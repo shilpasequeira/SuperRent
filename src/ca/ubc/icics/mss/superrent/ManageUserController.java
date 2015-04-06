@@ -56,6 +56,11 @@ public class ManageUserController implements Initializable {
     private Button Remove;
 
     @FXML
+    private Button ModifyButtonAdd;
+    @FXML
+    private Button EditButton;
+
+    @FXML
     private MenuButton RoleItemAdd;
 
     @FXML
@@ -86,7 +91,9 @@ public class ManageUserController implements Initializable {
     private Label userAdded;
 
     @FXML
-    private MenuButton UserItem;
+    private TextField SearchUserTextBox;
+    @FXML
+    private Label UserNameLabel;
 
     boolean userNameAvailable = false;
     Connection con = null;
@@ -127,10 +134,8 @@ public class ManageUserController implements Initializable {
                         UserNameAdd.setStyle("-fx-text-inner-color: green;");
                         FirstNameAdd.setDisable(false);
                         usernamealreadyexit.setVisible(false);
-                    }
-                    else
-                    {
-                         usernamealreadyexit.setVisible(true);
+                    } else {
+                        usernamealreadyexit.setVisible(true);
                         usernamealreadyexit.setText("enter valid email id");
                         FirstNameAdd.setDisable(true);
                     }
@@ -183,12 +188,16 @@ public class ManageUserController implements Initializable {
         PasswordAdd.setDisable(true);
         PasswordAdd.setText("");
         SubmitButtonAdd.setDisable(true);
-
+        SearchUserTextBox.setVisible(false);
+        UserNameLabel.setVisible(false);
         RoleItemAdd.setDisable(true);
-        UserItem.setVisible(false);
+        EditButton.setVisible(false);
         SelectUserLabel.setVisible(false);
         usernamealreadyexit.setVisible(false);
         userAdded.setVisible(false);
+        Remove.setVisible(false);
+        ModifyButtonAdd.setVisible(false);
+        ModifyButtonAdd.setDisable(true);
     }
 
     @FXML
@@ -228,19 +237,117 @@ public class ManageUserController implements Initializable {
         setVisibility();
         Remove.setVisible(false);
         PaneUserForm.setVisible(true);
+        ModifyButtonAdd.setVisible(false);
     }
 
     @FXML
     public void removeUserAction(ActionEvent event) {
         setVisibility();
-        UserItem.setVisible(true);
+
         SelectUserLabel.setVisible(true);
+        SearchUserTextBox.setVisible(true);
+        UserNameLabel.setVisible(false);
+
+        Remove.setVisible(true);
+
+    }
+
+    @FXML
+    public void removeButtonAction(ActionEvent event) {
+
+        UserNameLabel.setVisible(false);
+        boolean userFound = false;
+        String SQL = "SELECT * from user where username = '" + SearchUserTextBox.getText() + "'";
+        try {
+            ResultSet rs = con.createStatement().executeQuery(SQL);
+            while (rs.next()) {
+                userFound = true;
+                String SQ = "delete from user where username = '" + SearchUserTextBox.getText() + "'";
+                con.createStatement().executeUpdate(SQ);
+                UserNameLabel.setVisible(true);
+                UserNameLabel.setText("User Deleted");
+                SearchUserTextBox.clear();
+            }
+            if (!userFound) {
+                UserNameLabel.setVisible(true);
+                UserNameLabel.setText("User Not Found");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     public void editUserAction(ActionEvent event) {
         setVisibility();
-        UserItem.setVisible(true);
+        SubmitButtonAdd.setVisible(false);
         SelectUserLabel.setVisible(true);
+        SearchUserTextBox.setVisible(true);
+        EditButton.setVisible(true);
+        ModifyButtonAdd.setVisible(true);
+        ModifyButtonAdd.setDisable(false);
+        SubmitButtonAdd.setDisable(true);
     }
+
+    @FXML
+    public void modifyButtonAction(ActionEvent event) {
+
+        UserNameLabel.setVisible(false);
+   
+        try {
+            String SQLFN = "update user set first_name = '" + FirstNameAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
+            String SQLLN = "update user set last_name = '" + LastNameAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
+            String SQLPW = "update user set password = '" + PasswordAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
+            String SQLR = "update user set role = '" + RoleItemAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
+            
+            con.createStatement().executeUpdate(SQLFN);
+            con.createStatement().executeUpdate(SQLLN);
+            con.createStatement().executeUpdate(SQLPW);
+            con.createStatement().executeUpdate(SQLR);
+            setVisibility();
+            userAdded.setVisible(true);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    @FXML
+    public void editButtonAction(ActionEvent event) {
+
+        UserNameLabel.setVisible(false);
+        boolean userFound = false;
+        String SQL = "SELECT * from user where username = '" + SearchUserTextBox.getText() + "'";
+        try {
+            ResultSet rs = con.createStatement().executeQuery(SQL);
+            while (rs.next()) {
+                userFound = true;
+                UserNameLabel.setVisible(true);
+                UserNameLabel.setText("User Found");
+                PaneUserForm.setVisible(true);
+
+                UserNameAdd.setText(SearchUserTextBox.getText());
+                UserNameAdd.setDisable(true);
+                FirstNameAdd.setDisable(false);
+                FirstNameAdd.setText(rs.getString("first_name"));
+                LastNameAdd.setDisable(false);
+                LastNameAdd.setText(rs.getString("last_name"));
+                PasswordAdd.setDisable(false);
+                PasswordAdd.setText(rs.getString("password"));
+                RoleItemAdd.setText(rs.getString("role"));
+
+                SearchUserTextBox.clear();
+            }
+            if (!userFound) {
+                UserNameLabel.setVisible(true);
+                UserNameLabel.setText("User Not Found");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

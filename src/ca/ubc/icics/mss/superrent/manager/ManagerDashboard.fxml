@@ -12,9 +12,9 @@
     <Pane fx:id="pane" layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
       <children>
         <Button fx:id="ReportGenerationButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" prefWidth="107.0" text="Reports" onAction="#ReportButtonAction" />
-        <Button id="ManageInventoryButton" layoutX="141.0" layoutY="12.0" mnemonicParsing="false" text="Manage Inventory" />
-        <Button id="RateCardButton" layoutX="277.0" layoutY="12.0" mnemonicParsing="false" prefWidth="108.0" text="Rate Card " />
-        <Button id="LogOutButton" layoutX="414.0" layoutY="12.0" mnemonicParsing="false" prefWidth="107.0" text="Logout" />
+        <Button fx:id="ManageInventoryButton" layoutX="141.0" layoutY="12.0" mnemonicParsing="false" text="Manage Inventory" />
+        <Button fx:id="RateCardButton" layoutX="277.0" layoutY="12.0" mnemonicParsing="false" prefWidth="108.0" text="Rate Card " />
+        <Button fx:id="LogOutButton" layoutX="414.0" layoutY="12.0" mnemonicParsing="false" prefWidth="107.0" text="Logout" />
       </children>
     </Pane>
      <Pane fx:id="content" />
