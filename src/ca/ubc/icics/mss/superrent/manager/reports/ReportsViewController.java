@@ -246,11 +246,11 @@ public class ReportsViewController implements Initializable {
             menuItems.add(items);
 
             //get branch names
-            String SQL = "SELECT * from mmbranch";
+            String SQL = "SELECT * from branch";
             ResultSet rs = con.createStatement().executeQuery(SQL);
             while (rs.next()) {
                 Report rep = new Report();
-                rep.setBranch(rs.getString("branch_name"));
+                rep.setBranch(rs.getString("location"));
                 items = new CheckMenuItem(rep.getBranch());
                 items.setOnAction((ActionEvent actionEvent) -> {
                     updateTables();
@@ -382,12 +382,12 @@ public class ReportsViewController implements Initializable {
                 }
             }
         } else {
-            String SQL = "SELECT * from mmbranch";
+            String SQL = "SELECT * from branch";
             try {
                 ResultSet rs = con.createStatement().executeQuery(SQL);
                 while (rs.next()) {
                     Report rep = new Report();
-                    rep.setBranch(rs.getString("branch_name"));
+                    rep.setBranch(rs.getString("location"));
 
                     //add items for splitmenuitems
                     citiesSelected.add(rep.getBranch());
@@ -422,12 +422,12 @@ public class ReportsViewController implements Initializable {
                 for (Iterator it = citiesSelected.iterator(); it.hasNext();) {
                     String branchName = it.next().toString();
 
-                    String branchQuery = "SELECT * FROM mmbranch where branch_name = '" + branchName + "'";
+                    String branchQuery = "SELECT * FROM branch where location = '" + branchName + "'";
                     ResultSet branchSet = con.createStatement().executeQuery(branchQuery);
 
                     while (branchSet.next()) {
 
-                        String joinedTables = "SELECT * FROM mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreserve ON mmrent.reserve_id=mmreserve.reserve_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+                        String joinedTables = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
                         ResultSet joinedSet = con.createStatement().executeQuery(joinedTables);
                         //for count
                         ResultSet countSet = con.createStatement().executeQuery(joinedTables);
@@ -466,7 +466,7 @@ public class ReportsViewController implements Initializable {
 
                         }
 
-                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreserve ON mmrent.reserve_id=mmreserve.reserve_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
+                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
 
                         //cost table
                         ResultSet costSet = costStatement.executeQuery();
@@ -542,12 +542,12 @@ public class ReportsViewController implements Initializable {
                 for (Iterator it = citiesSelected.iterator(); it.hasNext();) {
                     String branchName = it.next().toString();
 
-                    String branchSt = "SELECT * FROM mmbranch where branch_name = '" + branchName + "'";
+                    String branchSt = "SELECT * FROM branch where location = '" + branchName + "'";
                     ResultSet branchSet = con.createStatement().executeQuery(branchSt);
 
                     while (branchSet.next()) {
 
-                        String joinedTable = "SELECT * FROM mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreturns ON mmreturns.rent_id=mmrent.rent_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
                         ResultSet joinedSetForTableUpdate = con.createStatement().executeQuery(joinedTable);
                         ResultSet joinedSetForCalculation = con.createStatement().executeQuery(joinedTable);
 
@@ -577,7 +577,7 @@ public class ReportsViewController implements Initializable {
                             }
                         }
 
-                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM mmvehicle INNER JOIN mmrent ON mmvehicle.vehicle_id=mmrent.vehicle_id INNER JOIN mmreturns ON mmreturns.rent_id=mmrent.rent_id AND mmvehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND mmvehicle.category = '" + carTruckSelection + "'AND mmrent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
+                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
 
                         //cost table                  
                         ResultSet result = statement.executeQuery();
