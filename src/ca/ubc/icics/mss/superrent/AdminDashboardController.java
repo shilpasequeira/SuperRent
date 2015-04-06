@@ -5,9 +5,16 @@
  */
 package ca.ubc.icics.mss.superrent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.Pane;
 
 /**
  * FXML Controller class
@@ -16,6 +23,10 @@ import javafx.fxml.Initializable;
  */
 public class AdminDashboardController implements Initializable {
 
+    @FXML 
+    private Pane content;
+  
+    
     /**
      * Initializes the controller class.
      */
@@ -23,5 +34,38 @@ public class AdminDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    @FXML
+    private void manageUserButtonAction(ActionEvent event) {
+        try { 
+            
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("ManageUserView.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(AdminDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    private void accessClerkButtonAction(ActionEvent event) {
+        try {    
+           
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("clerk/ClerkDashboard.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(AdminDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    private void accessManagerButtonAction(ActionEvent event) {
+        try {     
+        
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("manager/ManagerDashboard.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(AdminDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
