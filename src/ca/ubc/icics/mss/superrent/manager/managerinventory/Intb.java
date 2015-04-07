@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ca.ubc.icics.mss.superrent.InventoryManage;
+package ca.ubc.icics.mss.superrent.manager.managerinventory;
 
 import java.util.Date;
 import javafx.scene.image.Image;
