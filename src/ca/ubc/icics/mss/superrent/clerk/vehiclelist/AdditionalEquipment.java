@@ -25,10 +25,13 @@ public class AdditionalEquipment {
     private int stock;
     private int branchID;
     
+    public AdditionalEquipment() {
+    }
+    
     public AdditionalEquipment(int id) {
         try (Connection con = SQLConnection.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
-                        "SELECT * FROM additonal_equipment WHERE equipment_id=" + id)) {
+                        "SELECT * FROM additional_equipment WHERE equipment_id=" + id)) {
             
             while(rs.next()){
                 this.id = rs.getInt("equipment_id");
@@ -99,4 +102,55 @@ public class AdditionalEquipment {
     public int getBranchID() {
         return branchID;
     }
+    
+    /**
+     * 
+     */
+    public void setID(int id) {
+        this.id = id;
+    }
+    
+    /**
+     *  
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * 
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    /**
+     *  
+     */
+    public void setDailyRate(int rate) {
+        this.dailyRate = rate;
+    }
+    
+    /**
+     * 
+     */
+    public void setHourlyRate(int rate) {
+        this.hourlyRate = rate;
+    }
+    
+    /**
+     * 
+     */
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+    
+    /**
+     * 
+     */
+    public void setBranchID(int id) {
+        this.branchID = id;
+    }
+    
+    
 }
