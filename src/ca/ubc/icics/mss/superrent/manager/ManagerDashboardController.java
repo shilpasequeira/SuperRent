@@ -37,8 +37,28 @@ public class ManagerDashboardController implements Initializable {
     
     @FXML
     private void ReportButtonAction(ActionEvent event) {
-        try {
-            // TODO
+        try {           
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("reports/ReportsView.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ManagerDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+     @FXML
+    private void manageInventoryButtonAction(ActionEvent event) {
+        try {   
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("managerinventory/InventoryManage.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ManagerDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    private void ratecardButtonAction(ActionEvent event) {
+        try {  
+            content.getChildren().clear();
             content.getChildren().add(FXMLLoader.load(getClass().getResource("reports/ReportsView.fxml")));
         } catch (IOException ex) {
             Logger.getLogger(ManagerDashboardController.class.getName()).log(Level.SEVERE, null, ex);
