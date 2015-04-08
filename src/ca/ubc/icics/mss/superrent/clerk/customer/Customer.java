@@ -269,7 +269,7 @@ public class Customer {
         try (PreparedStatement pstatement = 
                 SQLConnection.getConnection().prepareStatement(""
                 + "UPDATE customer SET phone_no=?, first_name=?, "
-                + "last_name=?, address=?, city=?, pincode=?, is_roadStar=? WHERE id=?")) {
+                + "last_name=?, address=?, city=?, pincode=?, is_roadStar=? WHERE customer_id=?")) {
             pstatement.setString(1, phone);
             pstatement.setString(2, firstName);
             pstatement.setString(3, lastName);
