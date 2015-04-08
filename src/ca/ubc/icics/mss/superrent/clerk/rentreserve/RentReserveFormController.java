@@ -11,27 +11,18 @@ import ca.ubc.icics.mss.superrent.clerk.vehiclelist.AdditionalEquipment;
 import ca.ubc.icics.mss.superrent.clerk.vehiclelist.AdditionalEquipmentRepository;
 import ca.ubc.icics.mss.superrent.clerk.vehiclelist.Vehicle;
 import ca.ubc.icics.mss.superrent.validation.Validate;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -43,7 +34,10 @@ public class RentReserveFormController implements Initializable  {
     private static Reserve reserveModel;
     private static Vehicle vehicleModel;
     private Customer customerModel;
+    private static Timestamp startDateTime;
+    private static Timestamp endDateTime;
     
+    final int H=3600000, D=86400000, W=604800000;
     private static final String RENT = "RENT";
     private static final String RESERVE = "RESERVE";
     private static String mode = RENT;
@@ -80,18 +74,9 @@ public class RentReserveFormController implements Initializable  {
     @FXML private Label creditExpiryErrorLabel;
     @FXML private CheckBox applyMembershipCheckBox;
     @FXML private CheckBox isRoadStarCheckBox;
-    @FXML private Label startDateLabel;
-    @FXML private DatePicker startDateField;
-    @FXML private Label startDateErrorLabel;
-    @FXML private Label startTimeLabel;
-    @FXML private ComboBox startTimeField;
-    @FXML private Label startTimeErrorLabel;
-    @FXML private Label endDateLabel;
-    @FXML private DatePicker endDateField;
-    @FXML private Label endDateErrorLabel;
-    @FXML private Label endTimeLabel;
-    @FXML private ComboBox endTimeField;
-    @FXML private Label endTimeErrorLabel;
+    @FXML private Label startDateTimeLabel;
+    @FXML private Label endDateTimeLabel;
+    @FXML private Label rentalPeriodLabel;
     @FXML private Label odometerReadingLabel;
     @FXML private TextField odometerReadingField;
     @FXML private Label odometerReadingErrorLabel;
@@ -110,8 +95,11 @@ public class RentReserveFormController implements Initializable  {
     public void initialize(URL url, ResourceBundle rb) {
         
         initialiseAdditionalEquipment();
-        initialiseDatePickers();
-        initialiseTimePickers();
+        
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        startDateTimeLabel.setText(dateTimeFormat.format(startDateTime));
+        endDateTimeLabel.setText(dateTimeFormat.format(endDateTime));
+        rentalPeriodLabel.setText(getRentalTimePeriod());
         
         // Setup the UI elements based on the mode.
         if (mode.equals(RENT)) {
@@ -147,10 +135,14 @@ public class RentReserveFormController implements Initializable  {
     /**
      * 
      * @param vehicleID
+     * @param start
+     * @param end
      */
-    public static void setModeRent(int vehicleID) {
+    public static void setModeRent(int vehicleID, Timestamp start, Timestamp end) {
         mode = RENT;
         vehicleModel = new Vehicle(vehicleID);
+        startDateTime = start;
+        endDateTime = end;
     }
     
     /**
@@ -161,60 +153,21 @@ public class RentReserveFormController implements Initializable  {
         mode = RENT;
         reserveModel = new Reserve(resID);
         vehicleModel = reserveModel.getVehicle();
+        startDateTime = reserveModel.getStartDateTime();
+        endDateTime = reserveModel.getEndDateTime();
     }
     
     /**
      * 
      * @param vehicleID
+     * @param start
+     * @param end
      */
-    public static void setModeReserve(int vehicleID) {
+    public static void setModeReserve(int vehicleID, Timestamp start, Timestamp end) {
         mode = RESERVE;
         vehicleModel = new Vehicle(vehicleID);
-    }
-    
-    /**
-     * 
-     */
-    @FXML private void startDateChanged() {
-        if (startDateField.getValue() != null) {
-            endDateField.setValue(startDateField.getValue());
-        }
-    }
-    
-    /**
-     * 
-     */
-    @FXML private void endDateChanged() {
-        if (startDateField.getValue() != null && endDateField.getValue() != null && 
-                !startDateField.getValue().equals(endDateField.getValue())) {
-            endTimeField.getItems().removeAll((Object[]) TIMINGS);
-            endTimeField.getItems().addAll((Object[]) TIMINGS);
-        }
-    }
-    
-    /**
-     * If the start and end dates are the same, do not show timings less than
-     * the start time selected in the end time combo box.
-     */
-    @FXML private void startTimeChanged() {
-        if (startDateField.getValue() != null && endDateField.getValue() != null
-                && startDateField.getValue().equals(endDateField.getValue())) {
-            endTimeField.getItems().removeAll((Object[]) TIMINGS);
-            
-            int selectedIndex = 0;
-            for (int i = 0; i < TIMINGS.length; i++) {
-                if (TIMINGS[i].equals(startTimeField.getValue())) {
-                    selectedIndex = i;
-                }
-            }
-
-            for (int i = selectedIndex + 1; i < TIMINGS.length; i++) {
-                endTimeField.getItems().add(TIMINGS[i]);
-            }
-        } else if (startDateField.getValue() != null && endDateField.getValue() != null
-                && !startDateField.getValue().equals(endDateField.getValue())) {
-            endTimeField.getItems().addAll((Object[]) TIMINGS);
-        }
+        startDateTime = start;
+        endDateTime = end;
     }
     
     /**
@@ -319,8 +272,7 @@ public class RentReserveFormController implements Initializable  {
 
                 if (mode.equals(RENT)) {
                     rentModel = new Rent(customerModel.getID(), vehicleModel.getID(),
-                    0, getTimestamp(startDateField, startTimeField), 
-                    getTimestamp(endDateField, endTimeField), 
+                    0, startDateTime, endDateTime, 
                     Long.parseLong(odometerReadingField.getText().trim()), 
                     driversLicenseField.getText(), creditCardField.getText().trim(), 
                     Integer.parseInt(creditExpiryMonth.getValue().toString()), 
@@ -330,14 +282,12 @@ public class RentReserveFormController implements Initializable  {
                     currentEstimate = rentModel.getEstimate();
                 } else {
                     reserveModel = new Reserve(customerModel.getID(), vehicleModel.getID(),
-                    getTimestamp(startDateField, startTimeField), 
-                    getTimestamp(endDateField, endTimeField),
-                    additionalEquipmentIDs);
+                    startDateTime, endDateTime, additionalEquipmentIDs);
 
                     currentEstimate = reserveModel.getEstimate();
                 }
 
-                this.estimateLabel.setText("CAD " + currentEstimate);
+                estimateLabel.setText("CAD " + currentEstimate);
             }
         }
     }
@@ -360,18 +310,6 @@ public class RentReserveFormController implements Initializable  {
         cityErrorLabel.setText("");
         pincodeField.setText("");
         pincodeErrorLabel.setText("");
-        startDateField.setValue(null);
-        startDateField.getEditor().clear();
-        startDateErrorLabel.setText("");
-        endDateField.setValue(null);
-        endDateField.getEditor().clear();
-        endDateErrorLabel.setText("");
-        startTimeField.getSelectionModel().clearSelection();
-        startTimeField.valueProperty().set(null);
-        startTimeErrorLabel.setText("");
-        endTimeField.getSelectionModel().clearSelection();
-        endTimeField.valueProperty().set(null);
-        endTimeErrorLabel.setText("");
         equipmentCheckBox1.setSelected(false);
         equipmentCheckBox2.setSelected(false);
         isRoadStarCheckBox.setSelected(false);
@@ -413,7 +351,6 @@ public class RentReserveFormController implements Initializable  {
                 reserveModel.confirmReservation();
                 estimateLabel.setText("Reservation Confirmed");
             }
-
             
             estimateButton.setDisable(true);
             confirmButton.setDisable(true);
@@ -425,14 +362,6 @@ public class RentReserveFormController implements Initializable  {
             addressField.setDisable(true);
             cityField.setDisable(true);
             pincodeField.setDisable(true);
-            startDateField.setDisable(true);
-            startDateField.setDisable(true);
-            endDateField.setDisable(true);
-            endDateField.setDisable(true);
-            startTimeField.setDisable(true);
-            startTimeField.setDisable(true);
-            endTimeField.setDisable(true);
-            endTimeField.setDisable(true);
             equipmentCheckBox1.setDisable(true);
             equipmentCheckBox2.setDisable(true);
             isRoadStarCheckBox.setDisable(true);
@@ -472,10 +401,6 @@ public class RentReserveFormController implements Initializable  {
                     !Validate.isEmptyTextField(addressField, addressErrorLabel) &&
                     !Validate.isEmptyTextField(cityField, cityErrorLabel) &&
                     !Validate.isEmptyTextField(pincodeField, pincodeErrorLabel) &&
-                    !Validate.isEmptyDateField(startDateField, startDateErrorLabel) &&
-                    !Validate.isEmptyDateField(endDateField, endDateErrorLabel) &&
-                    !Validate.isEmptyComboBox(startTimeField, startTimeErrorLabel) &&
-                    !Validate.isEmptyComboBox(endTimeField, endTimeErrorLabel) &&
                     !Validate.isEmptyTextField(odometerReadingField, odometerReadingErrorLabel) &&
                     !Validate.isEmptyTextField(driversLicenseField, driversLicenseErrorLabel) &&
                     !Validate.isEmptyTextField(creditCardField, creditCardErrorLabel) &&
@@ -486,11 +411,7 @@ public class RentReserveFormController implements Initializable  {
                     !Validate.isEmptyTextField(lastNameField, lastNameErrorLabel) &&
                     !Validate.isEmptyTextField(addressField, addressErrorLabel) &&
                     !Validate.isEmptyTextField(cityField, cityErrorLabel) &&
-                    !Validate.isEmptyTextField(pincodeField, pincodeErrorLabel) &&
-                    !Validate.isEmptyDateField(startDateField, startDateErrorLabel) &&
-                    !Validate.isEmptyDateField(endDateField, endDateErrorLabel) &&
-                    !Validate.isEmptyComboBox(startTimeField, startTimeErrorLabel) &&
-                    !Validate.isEmptyComboBox(endTimeField, endTimeErrorLabel);
+                    !Validate.isEmptyTextField(pincodeField, pincodeErrorLabel);
         }
         
         if (valid) {
@@ -514,10 +435,6 @@ public class RentReserveFormController implements Initializable  {
         addressField.setText(reservation.getCustomer().getAddress());
         cityField.setText(reservation.getCustomer().getCity());
         pincodeField.setText(reservation.getCustomer().getPincode());
-        startDateField.setValue(reservation.getStartDate());
-        endDateField.setValue(reservation.getEndDate());
-        startTimeField.getSelectionModel().select(reservation.getStartTime());
-        endTimeField.getSelectionModel().select(reservation.getEndTime());
 
         ArrayList<AdditionalEquipment> equipment = reservation.getAdditionalEquipment();
         int count = 0;
@@ -545,122 +462,6 @@ public class RentReserveFormController implements Initializable  {
         }
 
         estimateLabel.setText("" + reservation.getEstimate());
-    }
-    
-    /**
-     * Initializes all fields with the reservation info.
-     * @param rental model of the rent
-     */
-    /*private void initialiseFieldsWithRental(Rent rental) {
-
-        phoneField.setText(rental.getCustomer().getPhone());
-        firstNameField.setText(rental.getCustomer().getFirstName());
-        lastNameField.setText(rental.getCustomer().getLastName());
-        addressField.setText(rental.getCustomer().getAddress());
-        cityField.setText(rental.getCustomer().getCity());
-        pincodeField.setText(rental.getCustomer().getPincode());
-        startDateField.setValue(rental.getStartDate());
-        endDateField.setValue(rental.getEndDate());
-        startTimeField.getSelectionModel().select(rental.getStartTime());
-        endTimeField.getSelectionModel().select(rental.getEndTime());
-
-        ArrayList<AdditionalEquipment> equipment = rental.getAdditionalEquipment();
-        while (equipment.iterator().hasNext()) {
-            int count = 0;
-            while(equipment.iterator().hasNext()) {
-                AdditionalEquipment additionalEquipment = equipment.iterator().next();
-                if (count == 0) {
-                    this.equipmentCheckBox1.setUserData(additionalEquipment.getID());
-                    this.equipmentCheckBox1.setText(additionalEquipment.getName());
-                    equipmentCheckBox1.selectedProperty().set(true);
-                } else if (count == 1) {
-                    this.equipmentCheckBox2.setUserData(additionalEquipment.getID());
-                    this.equipmentCheckBox2.setText(additionalEquipment.getName());
-                    equipmentCheckBox2.selectedProperty().set(true);
-                }
-                count++;
-            }
-        }
-
-        if (rental.getCustomer().getIsRoadStar()) {
-            isRoadStarCheckBox.selectedProperty().set(true);
-        }
-        if (rental.getCustomer().getIsClubMember()) {
-            applyMembershipCheckBox.selectedProperty().set(true);
-            clubMemberPts.setText("Points : " + 
-                    rental.getCustomer().getPoints());
-        }
-        
-        odometerReadingField.setText("" + rental.getOdometerReading());
-        driversLicenseField.setText(rental.getDriversLicense());
-        creditCardField.setText(rental.getCardNumber());
-        
-        String expiryMonth = "" + rental.getCardExpiryMonth();
-        if (rental.getCardExpiryMonth() < 10) {
-            expiryMonth += "0" + expiryMonth;
-        }
-        creditExpiryMonth.selectionModelProperty().set(expiryMonth);
-        creditExpiryYear.selectionModelProperty().set("" + rental.getCardExpiryYear());
-        
-        estimateLabel.setText("" + rental.getEstimate());
-    }*/
-    
-    /**
-     * 
-     */
-    private void initialiseDatePickers() {
-        // Initialise the date pickers
-        final Callback<DatePicker, DateCell> startDayCellFactory = 
-                new Callback<DatePicker, DateCell>() {
-                    public DateCell call(final DatePicker datePicker) {
-                        return new DateCell() {
-                            @Override public void updateItem(LocalDate item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (item.compareTo(LocalDate.now()) < 0) {
-                                    setDisable(true);
-                                }
-                            }
-                        };
-                    }
-                };
-        startDateField.setDayCellFactory(startDayCellFactory);
-        
-        final Callback<DatePicker, DateCell> endDayCellFactory = 
-                new Callback<DatePicker, DateCell>() {
-                    public DateCell call(final DatePicker datePicker) {
-                        return new DateCell() {
-                            @Override public void updateItem(LocalDate item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (item.compareTo(LocalDate.now()) < 0 ||
-                                    (startDateField.getValue() != null && item.compareTo(startDateField.getValue()) < 0)) {
-                                    setDisable(true);
-                                }
-                            }
-                        };
-                    }
-                };
-        endDateField.setDayCellFactory(endDayCellFactory);
-    }
-    
-    /**
-     * 
-     */
-    private void initialiseTimePickers() {
-        // Initialise time combo box.
-        try {
-            Properties props = new Properties();
-            FileInputStream fis = new FileInputStream(System.getProperty("user.dir")
-                    + "/src/ca/ubc/icics/mss/superrent/database/config.properties");
-            props.load(fis);
-            TIMINGS = props.getProperty("TIMINGS").split(",");
-            startTimeField.getItems().addAll((Object[]) TIMINGS);
-            endTimeField.getItems().addAll((Object[]) TIMINGS);
-        } catch (IOException e) {
-            startTimeField.setVisible(false);
-            endTimeField.setVisible(false);
-            Logger.getLogger(RentReserveFormController.class.getName()).
-                    log(Level.SEVERE, null, e);
-        }
     }
     
     private void initialiseAdditionalEquipment() {
@@ -692,23 +493,31 @@ public class RentReserveFormController implements Initializable  {
     }
     
     /**
-     * Converts the value of the date picker and time selector to a timestamp
-     * 
-     * @param date Date picker object
-     * @param time ComboBox object that holds times in string format.
-     * @return Timestamp
+     * Calculates the rental time period and returns the string representation.
+     * @return 
      */
-    private Timestamp getTimestamp(DatePicker date, ComboBox time) {
-        String timeSplit[] = time.getValue().toString().split(":");
-        int hour = 0;
-        int min = 0;
+    public String getRentalTimePeriod() {
+        String timePeriod = "";
         
-        try {
-            hour = Integer.parseInt(timeSplit[0].trim());
-            min = Integer.parseInt(timeSplit[1].trim());
-        } catch (NumberFormatException ne) {
+        long difference = endDateTime.getTime() - startDateTime.getTime();
+        
+        int weeks = (int) difference / W;
+        difference %= W; 
+        if (weeks > 0) {
+            timePeriod += weeks + " Week" + (weeks > 1 ? "s " : " " );
         }
-        LocalDateTime localdatetime = date.getValue().atTime(hour, min);
-        return Timestamp.valueOf(localdatetime);
+        
+        int days = (int) difference / D;
+        difference %= D;
+        if (days > 0) {
+            timePeriod += days + " Day" + (days > 1 ? "s " : " " );
+        }
+        
+        int hours = (int) difference / H;
+        difference %= H;
+        if (hours > 0) {
+            timePeriod += hours + " Hour" + (hours > 1 ? "s " : " " );
+        }
+        return timePeriod;
     }
 }
