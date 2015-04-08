@@ -427,7 +427,7 @@ public class ReportsViewController implements Initializable {
 
                     while (branchSet.next()) {
 
-                        String joinedTables = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+                        String joinedTables = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
                         ResultSet joinedSet = con.createStatement().executeQuery(joinedTables);
                         //for count
                         ResultSet countSet = con.createStatement().executeQuery(joinedTables);
@@ -436,7 +436,7 @@ public class ReportsViewController implements Initializable {
 
                             CountReport ObjCountReport = new CountReport();
                             ObjCountReport.setBranch(branchName);
-                            ObjCountReport.setCategory(countSet.getString("type"));
+                            ObjCountReport.setCategory(countSet.getString("vehicle_type"));
                             ObjCountReport.setCount("1");
                             boolean notAvailable = false;
                             int setCount;
@@ -445,7 +445,7 @@ public class ReportsViewController implements Initializable {
                             //calculate vehicle count
                             while (it2.hasNext()) {
                                 CountReport ObjCountReport2 = it2.next();
-                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(countSet.getString("type"))) {
+                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(countSet.getString("vehicle_type"))) {
                                     setCount = Integer.valueOf(ObjCountReport2.getCount());
                                     setCount++;
                                     notAvailable = true;
@@ -466,7 +466,7 @@ public class ReportsViewController implements Initializable {
 
                         }
 
-                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
+                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
 
                         //cost table
                         ResultSet costSet = costStatement.executeQuery();
@@ -505,7 +505,7 @@ public class ReportsViewController implements Initializable {
                             Report rep1 = new Report();
                             rep1.setName(joinedSet.getString("vehicle_name"));
                             rep1.setVehicleID(joinedSet.getString("vehicle_id"));
-                            rep1.setCategory(joinedSet.getString("type"));
+                            rep1.setCategory(joinedSet.getString("vehicle_type"));
                             rep1.setEstimatedCost(joinedSet.getString("estimate"));
                             rep1.setRentDate(joinedSet.getDate("start_date_time"));
                             rep1.setReturnDate(joinedSet.getDate("end_date_time"));
@@ -547,7 +547,7 @@ public class ReportsViewController implements Initializable {
 
                     while (branchSet.next()) {
 
-                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
                         ResultSet joinedSetForTableUpdate = con.createStatement().executeQuery(joinedTable);
                         ResultSet joinedSetForCalculation = con.createStatement().executeQuery(joinedTable);
 
@@ -555,7 +555,7 @@ public class ReportsViewController implements Initializable {
 
                             CountReport ObjCountReport = new CountReport();
                             ObjCountReport.setBranch(branchName);
-                            ObjCountReport.setCategory(joinedSetForCalculation.getString("type"));
+                            ObjCountReport.setCategory(joinedSetForCalculation.getString("vehicle_type"));
                             ObjCountReport.setCount("1");
                             boolean notAvailable = false;
                             int setCount;
@@ -563,7 +563,7 @@ public class ReportsViewController implements Initializable {
                             Iterator<CountReport> ite = countList.iterator();
                             while (ite.hasNext()) {
                                 CountReport ObjCountReport2 = ite.next();
-                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(joinedSetForCalculation.getString("type"))) {
+                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(joinedSetForCalculation.getString("vehicle_type"))) {
                                     setCount = Integer.valueOf(ObjCountReport2.getCount());
                                     setCount++;
                                     notAvailable = true;
@@ -577,7 +577,7 @@ public class ReportsViewController implements Initializable {
                             }
                         }
 
-                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_category = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
+                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
 
                         //cost table                  
                         ResultSet result = statement.executeQuery();
@@ -612,7 +612,7 @@ public class ReportsViewController implements Initializable {
                             Report objReport = new Report();
                             objReport.setName(joinedSetForTableUpdate.getString("vehicle_name"));
                             objReport.setVehicleID(joinedSetForTableUpdate.getString("vehicle_id"));
-                            objReport.setCategory(joinedSetForTableUpdate.getString("type"));
+                            objReport.setCategory(joinedSetForTableUpdate.getString("vehicle_type"));
                             objReport.setEstimatedCost(joinedSetForTableUpdate.getString("amount"));
                             objReport.setReturnDate(joinedSetForTableUpdate.getDate("end_date_time"));
                             objReport.setBranch(branchName);
