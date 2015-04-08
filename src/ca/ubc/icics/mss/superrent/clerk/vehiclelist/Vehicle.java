@@ -12,17 +12,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
  * @author warrior
  */
 public class Vehicle {
+    
+    
     private int id;
     private String name;
     private String plateNumber;
     private String category;
-    private String type;
+    private String vehicleType;
     private boolean isAvailable;
     private String thumbnail;
     private int manufacturedYear;
@@ -39,6 +45,179 @@ public class Vehicle {
      * 
      * @param vehicleID 
      */
+    	    private ObjectProperty albumArt= new SimpleObjectProperty();
+            private StringProperty pnum= new SimpleStringProperty();
+	    private StringProperty vid= new SimpleStringProperty();
+	    private StringProperty vname= new SimpleStringProperty();
+            private StringProperty type= new SimpleStringProperty();
+            private StringProperty bname= new SimpleStringProperty();
+            private StringProperty sprice= new SimpleStringProperty();
+            private StringProperty sdate= new SimpleStringProperty();
+            private StringProperty edate= new SimpleStringProperty();
+            private StringProperty odays= new SimpleStringProperty();
+            private StringProperty otime= new SimpleStringProperty();
+            
+            
+            
+            public Vehicle(Thumbnail album,String pnum,String vid,String vname,String type,String bname) {
+                setAlbum(album);
+                setPnum(pnum);
+                setVname(vname);
+	        setVid(vid);
+                setType(type);
+                setBname(bname);
+                              
+
+	    }
+            
+             
+                 
+	 
+	    public Vehicle(Thumbnail album,String p_num,String vid,String vname,String type,String bname,String sprice) {
+                setAlbum(album);
+                setPnum(p_num);
+                setVname(vname);
+	        setVid(vid);
+                setType(type);
+                setBname(bname);
+                setSprice(sprice);
+                
+
+	    }
+            
+             public Vehicle(Thumbnail album,String p_num,String vid,String vname,String type,String bname,String sdate,String edate,String odays,String otime) {
+                setAlbum(album);
+                setPnum(p_num);
+                setVname(vname);
+	        setVid(vid);
+                setType(type);
+                setBname(bname);
+                setSdate(sdate);
+                setEdate(edate);
+                setOdays(odays);
+                setOtime(otime);
+                
+
+	    }
+	 
+	    //For Artist
+            
+              public void setPnum(String pn){
+	        pnum.set(pn);
+	    }
+	    public String getPnum(){
+	        return pnum.get();
+	    }
+	    public StringProperty PnumProperty(){
+	        return pnum;
+	    }
+            
+             
+                       
+	    public void setVid(String v_id){
+	        vid.set(v_id);
+	    }
+	    public String getVid(){
+	        return vid.get();
+	    }
+	    public StringProperty VidProperty(){
+	        return vid;
+	    }
+            
+            
+             public void setVname(String v_name){
+	        vname.set(v_name);
+	    }
+	    public String getVname(){
+	        return vname.get();
+	    }
+	    public StringProperty VnameProperty(){
+	        return vname;
+	    }
+	 
+	  public void setType(String ty){
+	        type.set(ty);
+	    }
+	    public String getType(){
+	        return type.get();
+	    }
+	    public StringProperty TypeProperty(){
+	        return type;
+	    }
+            
+             public void setBname(String b_name){
+	        bname.set(b_name);
+	    }
+	    public String getBname(){
+	        return bname.get();
+	    }
+	    public StringProperty BnameProperty(){
+	        return bname;
+	    }
+	 
+	  public void setSprice(String sp){
+	        sprice.set(sp);
+	    }
+	    public String getSprice(){
+	        return sprice.get();
+	    }
+	    public StringProperty SpriceProperty(){
+	        return sprice;
+	    }
+            
+           public void setSdate(String sd){
+	        sdate.set(sd);
+	    }
+	    public String getSdate(){
+	        return sdate.get();
+	    }
+	    public StringProperty SdateProperty(){
+	        return sdate;
+	    }
+              
+            public void setEdate(String ed){
+	        edate.set(ed);
+	    }
+	    public String getEdate(){
+	        return edate.get();
+	    }
+	    public StringProperty EdateProperty(){
+	        return edate;
+	    }
+            
+            public void setOdays(String od){
+	        odays.set(od);
+	    }
+	    public String getOdays(){
+	        return odays.get();
+	    }
+	    public StringProperty OdaysProperty(){
+	        return odays;
+	    }
+             
+            public void setOtime(String ot){
+	        otime.set(ot);
+	    }
+	    public String getOtime(){
+	        return otime.get();
+	    }
+	    public StringProperty OtimeProperty(){
+	        return otime;
+	    }
+            
+	    //For Album
+	    public void setAlbum(Thumbnail alb){
+	        albumArt.set(alb);
+	    }
+	    public Object getAlbum(){
+	        return albumArt.get();
+	    }
+	    public ObjectProperty albumProperty(){
+	        return albumArt;
+	    }
+	 
+
+    
     public Vehicle (int vehicleID) {
         //using try-with-resources to avoid closing resources (boiler plate code)
         try (Connection con = SQLConnection.getConnection();
@@ -49,7 +228,7 @@ public class Vehicle {
                 this.id = vehicleID;
                 this.name = rs.getString("vehicle_name");
                 this.category = rs.getString("vehicle_category");
-                this.type = rs.getString("vehicle_type");
+                this.vehicleType = rs.getString("vehicle_type");
                 this.plateNumber = rs.getString("plate_number");
                 this.odometerReading = rs.getInt("odometer_reading");
                 this.manufacturedYear = rs.getInt("vehicle_manufactured_year");
@@ -102,8 +281,8 @@ public class Vehicle {
      * 
      * @return 
      */
-    public String getType() {
-        return type;
+    public String getVehicleType() {
+        return vehicleType;
     }
     
     /**
