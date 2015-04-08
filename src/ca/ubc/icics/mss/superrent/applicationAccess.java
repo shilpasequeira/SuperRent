@@ -5,6 +5,8 @@
  */
 package ca.ubc.icics.mss.superrent;
 
+import ca.ubc.icics.mss.superrent.clerk.rentreserve.RentReserveFormController;
+import ca.ubc.icics.mss.superrent.clerk.returns.ReturnFormController;
 import ca.ubc.icics.mss.superrent.login.LoginViewController;
 import ca.ubc.icics.mss.superrent.manager.ManagerDashboardController;
 import java.io.IOException;
