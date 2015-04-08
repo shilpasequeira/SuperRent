@@ -11,14 +11,23 @@ package ca.ubc.icics.mss.superrent.clerk.vehiclelist;
  */
 public class Thumbnail {
    private String filename;
-    public Thumbnail(String filename) {
+   private String VehicleId;
+    public Thumbnail(String filename, String vid) {
                 
                 this.filename = filename;
+                this.VehicleId = vid;
 	       	    }
     public String getFilename() {
 	        return filename;
 	    }
 	    public void setFilename(String filename) {
 	        this.filename = filename;
+	    }
+            
+            public String getVehicleId() {
+	        return VehicleId;
+	    }
+	    public void setVehicleId(String vid ){
+	        this.VehicleId = vid;
 	    }
 }

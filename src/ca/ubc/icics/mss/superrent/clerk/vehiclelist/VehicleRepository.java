@@ -17,6 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -93,10 +97,19 @@ public class VehicleRepository {
 	                    imageview.setFitHeight(75);
 	                    imageview.setFitWidth(75);
 	                    imageview.setImage(new Image(VehicleRepository.class.getResource("img").toString()+"/"+item.getFilename()));
-	                    
+                            Button button = new Button("", imageview);
+                            button.setId(item.getVehicleId());
+                            button.setContentDisplay(ContentDisplay.TOP);
+                            button.setOnAction(new EventHandler<ActionEvent>() {
+                           @Override
+                            public void handle(ActionEvent event) {
+                                 Button x = (Button) event.getSource();
+                                 System.out.println(x.getId());
+            }
+        }); 
 	                    
 	                    //SETTING ALL THE GRAPHICS COMPONENT FOR CELL
-	                    setGraphic(imageview);
+	                    setGraphic(button);
 	                }
 	            }
 	        };
@@ -131,7 +144,7 @@ public class VehicleRepository {
         ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
         
         while(rs.next()){ 
-            Thumbnail al = new Thumbnail (rs.getString(4)+".jpg"); 
+            Thumbnail al = new Thumbnail (rs.getString(4)+".jpg",rs.getString(2)); 
             Vehicle m = new Vehicle(al,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)); 
             vehicles.add(m); 
         }        
@@ -195,10 +208,19 @@ public class VehicleRepository {
 	                    imageview.setFitHeight(75);
 	                    imageview.setFitWidth(75);
 	                    imageview.setImage(new Image(VehicleRepository.class.getResource("img").toString()+"/"+item.getFilename()));
-	                    
+	                    Button button = new Button("", imageview);
+                            button.setId(item.getVehicleId());
+                            button.setContentDisplay(ContentDisplay.TOP);
+                            button.setOnAction(new EventHandler<ActionEvent>() {
+                           @Override
+                            public void handle(ActionEvent event) {
+                                 Button x = (Button) event.getSource();
+                                 System.out.println(x.getId());
+            }
+        }); 
 	                    
 	                    //SETTING ALL THE GRAPHICS COMPONENT FOR CELL
-	                    setGraphic(imageview);
+	                    setGraphic(button);
 	                }
 	            }
 	        };
@@ -254,7 +276,7 @@ public class VehicleRepository {
         ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
         
         while(rs.next()){ 
-            Thumbnail al = new Thumbnail (rs.getString(4)+".jpg"); 
+            Thumbnail al = new Thumbnail (rs.getString(4)+".jpg",rs.getString(2)); 
             Vehicle m = new Vehicle(al,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)); 
             vehicles.add(m); 
         }        
@@ -334,10 +356,19 @@ public class VehicleRepository {
 	                    imageview.setFitHeight(75);
 	                    imageview.setFitWidth(75);
 	                    imageview.setImage(new Image(VehicleRepository.class.getResource("img").toString()+"/"+item.getFilename()));
-	                    
+	                    Button button = new Button("", imageview);
+                            button.setId(item.getVehicleId());
+                            button.setContentDisplay(ContentDisplay.TOP);
+                            button.setOnAction(new EventHandler<ActionEvent>() {
+                           @Override
+                            public void handle(ActionEvent event) {
+                                 Button x = (Button) event.getSource();
+                                 System.out.println(x.getId());
+            }
+        }); 
 	                    
 	                    //SETTING ALL THE GRAPHICS COMPONENT FOR CELL
-	                    setGraphic(imageview);
+	                    setGraphic(button);
 	                }
 	            }
 	        };
@@ -374,7 +405,7 @@ public class VehicleRepository {
         ObservableList<Vehicle> vehicles = FXCollections.observableArrayList();
         
         while(rs.next()){ 
-            Thumbnail al = new Thumbnail (rs.getString(4)+".jpg"); 
+            Thumbnail al = new Thumbnail (rs.getString(4)+".jpg",rs.getString(2)); 
             Vehicle m = new Vehicle(al,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9)); 
             vehicles.add(m); 
         }        
