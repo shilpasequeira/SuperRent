@@ -263,4 +263,50 @@ public class Customer {
             Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+    
+    public void updateCustomer(String firstName, String lastName, String address, String phone, 
+            String city, String pincode, boolean isRoadStar, boolean isClubMember) {
+        try (PreparedStatement pstatement = 
+                SQLConnection.getConnection().prepareStatement(""
+                + "UPDATE customer SET phone_no=?, first_name=?, "
+                + "last_name=?, address=?, city=?, pincode=?, is_roadStar=? WHERE customer_id=?")) {
+            pstatement.setString(1, phone);
+            pstatement.setString(2, firstName);
+            pstatement.setString(3, lastName);
+            pstatement.setString(4, address);
+            pstatement.setString(5, city);
+            pstatement.setString(6, pincode);
+            pstatement.setBoolean(7, isRoadStar);
+            pstatement.setInt(8, id);
+
+            pstatement.executeUpdate();
+            
+            // If the customer wants to be a club member, then add him.
+            if (isClubMember && !getIsClubMember()) {
+                try (PreparedStatement clubMemberStatement = 
+                        SQLConnection.getConnection().prepareStatement(""
+                        + "INSERT INTO club_member (customer_id, points, "
+                                + "joining_date, expiry_date) "
+                        + "values (?, ?, ?, ?)",
+                        PreparedStatement.RETURN_GENERATED_KEYS)) {
+                    clubMemberStatement.setInt(1, id);
+                    clubMemberStatement.setInt(2, 500);
+                    
+                    this.points = 500;
+                    
+                    // Add the joining date and the current date time and
+                    // the expiry and one year from then.
+                    LocalDateTime now = LocalDateTime.now();
+                    clubMemberStatement.setTimestamp(3, Timestamp.valueOf(now));
+                    clubMemberStatement.setTimestamp(4, Timestamp.valueOf(now.plusYears(1)));
+                    clubMemberStatement.executeUpdate();
+                    
+                    this.clubMemberJoiningDate = Timestamp.valueOf(now);
+                    this.clubMemberExpiryDate = Timestamp.valueOf(now.plusYears(1));
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
 }

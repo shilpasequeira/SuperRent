@@ -25,19 +25,13 @@
       <TextField fx:id="pincodeField" disable="true" layoutX="394.0" layoutY="180.0" prefHeight="35.0" prefWidth="96.0" />
       <CheckBox fx:id="applyMembershipCheckBox" layoutX="252.0" layoutY="235.0" mnemonicParsing="false" text="Club Member" />
       <CheckBox fx:id="isRoadStarCheckBox" layoutX="137.0" layoutY="235.0" mnemonicParsing="false" text="Roadstar" />
-      <TextField fx:id="driversLicenseField" layoutX="205.0" layoutY="418.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
-      <Label fx:id="driversLicenseLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="418.0" prefHeight="35.0" prefWidth="110.0" text="Drivers License *" textAlignment="RIGHT" visible="false" />
-      <Label fx:id="creditCardLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="465.0" prefHeight="35.0" prefWidth="110.0" text="Credit Card # *" textAlignment="RIGHT" visible="false" />
-      <TextField fx:id="creditCardField" layoutX="205.0" layoutY="468.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
-      <Label fx:id="creditExpiryLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="489.0" layoutY="465.0" prefHeight="35.0" prefWidth="78.0" text="Expiry Date *" textAlignment="RIGHT" visible="false" />
-      <DatePicker fx:id="startDateField" layoutX="209.0" layoutY="278.0" onAction="#startDateChanged" />
-      <Label fx:id="startDateLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="66.0" layoutY="274.0" prefHeight="35.0" prefWidth="110.0" text="Start Date *" textAlignment="RIGHT" />
-      <Label fx:id="endDateLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="430.0" layoutY="274.0" prefHeight="35.0" prefWidth="70.0" text="End Date *" textAlignment="RIGHT" />
-      <DatePicker fx:id="endDateField" layoutX="523.0" layoutY="278.0" onAction="#endDateChanged" />
-      <Label fx:id="startTimeLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="66.0" layoutY="321.0" prefHeight="35.0" prefWidth="110.0" text="Start Time *" textAlignment="RIGHT" />
-      <Label fx:id="endTimeLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="430.0" layoutY="321.0" prefHeight="35.0" prefWidth="70.0" text="End Time *" textAlignment="RIGHT" />
-      <Button fx:id="estimateButton" layoutX="554.0" layoutY="513.0" mnemonicParsing="false" onAction="#estimateButtonPressed" text="Estimate" />
-      <Label fx:id="estimateLabel" contentDisplay="RIGHT" layoutX="325.0" layoutY="506.0" prefHeight="35.0" prefWidth="210.0" textAlignment="RIGHT">
+      <TextField fx:id="driversLicenseField" layoutX="208.0" layoutY="379.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
+      <Label fx:id="driversLicenseLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="66.0" layoutY="379.0" prefHeight="35.0" prefWidth="110.0" text="Drivers License *" textAlignment="RIGHT" visible="false" />
+      <Label fx:id="creditCardLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="66.0" layoutY="426.0" prefHeight="35.0" prefWidth="110.0" text="Credit Card # *" textAlignment="RIGHT" visible="false" />
+      <TextField fx:id="creditCardField" layoutX="208.0" layoutY="429.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
+      <Label fx:id="creditExpiryLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="492.0" layoutY="426.0" prefHeight="35.0" prefWidth="78.0" text="Expiry Date *" textAlignment="RIGHT" visible="false" />
+      <Button fx:id="estimateButton" layoutX="553.0" layoutY="502.0" mnemonicParsing="false" onAction="#estimateButtonPressed" text="Estimate" />
+      <Label fx:id="estimateLabel" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="301.0" layoutY="498.0" prefHeight="35.0" prefWidth="210.0" textAlignment="RIGHT">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
@@ -47,27 +41,39 @@
       <Label fx:id="phoneErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="256.0" layoutY="65.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
       <Label fx:id="lastNameErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="604.0" layoutY="114.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
       <Label fx:id="firstNameErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="257.0" layoutY="114.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="startDateErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="304.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="endDateErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="543.0" layoutY="304.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="startTimeErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="208.0" layoutY="351.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="endTimeErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="523.0" layoutY="351.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="creditExpiryErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="575.0" layoutY="500.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="driversLicenseErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="206.0" layoutY="453.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="creditCardErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="206.0" layoutY="503.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
+      <Label fx:id="creditExpiryErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="578.0" layoutY="461.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" visible="false" />
+      <Label fx:id="driversLicenseErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="209.0" layoutY="414.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" visible="false" />
+      <Label fx:id="creditCardErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="209.0" layoutY="464.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" visible="false" />
       <Label fx:id="addressErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="207.0" layoutY="164.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
       <Label fx:id="cityErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="208.0" layoutY="215.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
       <Label fx:id="pincodeErrorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="394.0" layoutY="215.0" prefHeight="16.0" prefWidth="150.0" textFill="RED" />
-      <Label fx:id="odometerReadingLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="381.0" layoutY="373.0" prefHeight="35.0" prefWidth="121.0" text="Odometer Reading *" textAlignment="RIGHT" visible="false" />
-      <TextField fx:id="odometerReadingField" layoutX="523.0" layoutY="373.0" prefHeight="35.0" prefWidth="150.0" visible="false" />
-      <Label fx:id="odometerReadingErrorLabel" layoutX="523.0" layoutY="408.0" prefHeight="16.0" prefWidth="247.0" textFill="RED" />
-      <ComboBox fx:id="startTimeField" layoutX="209.0" layoutY="326.0" onAction="#startTimeChanged" prefWidth="150.0" />
-      <ComboBox fx:id="endTimeField" layoutX="523.0" layoutY="326.0" prefWidth="150.0" />
-      <ComboBox fx:id="creditExpiryMonth" layoutX="575.0" layoutY="470.0" prefHeight="26.0" prefWidth="78.0" visible="false" />
-      <ComboBox fx:id="creditExpiryYear" layoutX="657.0" layoutY="470.0" prefHeight="26.0" prefWidth="78.0" visible="false" />
-      <CheckBox fx:id="equipmentCheckBox1" layoutX="106.0" layoutY="382.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="121.0" visible="false" />
-      <CheckBox fx:id="equipmentCheckBox2" layoutX="250.0" layoutY="381.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="121.0" visible="false" />
+      <Label fx:id="odometerReadingLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="384.0" layoutY="334.0" prefHeight="35.0" prefWidth="121.0" text="Odometer Reading *" textAlignment="RIGHT" visible="false" />
+      <TextField fx:id="odometerReadingField" layoutX="526.0" layoutY="334.0" prefHeight="35.0" prefWidth="150.0" visible="false" />
+      <Label fx:id="odometerReadingErrorLabel" layoutX="526.0" layoutY="369.0" prefHeight="16.0" prefWidth="247.0" textFill="RED" visible="false" />
+      <ComboBox fx:id="creditExpiryMonth" layoutX="578.0" layoutY="431.0" prefHeight="26.0" prefWidth="78.0" visible="false" />
+      <ComboBox fx:id="creditExpiryYear" layoutX="660.0" layoutY="431.0" prefHeight="26.0" prefWidth="78.0" visible="false" />
+      <CheckBox fx:id="equipmentCheckBox1" layoutX="109.0" layoutY="345.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="121.0" visible="false" />
+      <CheckBox fx:id="equipmentCheckBox2" layoutX="253.0" layoutY="345.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="121.0" visible="false" />
       <Label fx:id="clubMemberPts" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="547.0" layoutY="19.0" prefHeight="35.0" prefWidth="247.0" textAlignment="RIGHT" />
-      <Button fx:id="confirmButton" layoutX="631.0" layoutY="513.0" mnemonicParsing="false" onAction="#confirmButtonPressed" text="Confirm" />
-      <Button fx:id="cancelButton" layoutX="701.0" layoutY="513.0" mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
+      <Button fx:id="confirmButton" layoutX="630.0" layoutY="502.0" mnemonicParsing="false" onAction="#confirmButtonPressed" text="Confirm" />
+      <Button fx:id="cancelButton" layoutX="700.0" layoutY="502.0" mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="570.0" layoutY="265.0" prefHeight="35.0" prefWidth="121.0" text="Rental Time Period" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="347.0" layoutY="265.0" prefHeight="35.0" prefWidth="121.0" text="End Date &amp; Time" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="rentalPeriodLabel" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="572.0" layoutY="290.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="endDateTimeLabel" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="347.0" layoutY="290.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="startDateTimeLabel" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="123.0" layoutY="290.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="123.0" layoutY="265.0" prefHeight="35.0" prefWidth="121.0" text="Start Date &amp; Time" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

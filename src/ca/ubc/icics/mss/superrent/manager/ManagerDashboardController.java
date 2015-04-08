@@ -59,7 +59,7 @@ public class ManagerDashboardController implements Initializable {
     private void ratecardButtonAction(ActionEvent event) {
         try {  
             content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("reports/ReportsView.fxml")));
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("ratecard/ratecard.fxml")));
         } catch (IOException ex) {
             Logger.getLogger(ManagerDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
