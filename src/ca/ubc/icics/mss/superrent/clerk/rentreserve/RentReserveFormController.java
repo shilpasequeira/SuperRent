@@ -319,7 +319,7 @@ public class RentReserveFormController implements Initializable  {
 
                 if (mode.equals(RENT)) {
                     rentModel = new Rent(customerModel.getID(), vehicleModel.getID(),
-                    getTimestamp(startDateField, startTimeField), 
+                    0, getTimestamp(startDateField, startTimeField), 
                     getTimestamp(endDateField, endTimeField), 
                     Long.parseLong(odometerReadingField.getText().trim()), 
                     driversLicenseField.getText(), creditCardField.getText().trim(), 

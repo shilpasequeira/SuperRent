@@ -53,13 +53,14 @@ public class Return {
             
             // Add the return info to the return model
             while(rs.next()){
-                this.id = rs.getInt("reserve_id");
+                this.id = rs.getInt("return_id");
                 this.rentID = rs.getInt("rent_id");
                 this.odometerReading = rs.getInt("odometer_reading");
                 this.tankFull = rs.getBoolean("tank_full");
                 this.grandTotal = rs.getInt("amount");
                 this.pointsUsed = rs.getInt("points_used");
                 this.isPaid = rs.getBoolean("is_paid");
+                this.paymentMethod = rs.getString("payment_method");
             }
         } catch (SQLException e) {
             Logger.getLogger(Return.class.getName()).log(Level.SEVERE, null, e);
@@ -115,7 +116,7 @@ public class Return {
 
                 pstatement.executeUpdate();
 
-                // If reserve was successful
+                // If return was successful
                 try (ResultSet result = pstatement.getGeneratedKeys()) {
                     while (result.next()) {
                         this.id = result.getInt(1);
@@ -144,6 +145,10 @@ public class Return {
     }
 
     public int getGrandTotal() {
+        return grandTotal;
+    }
+
+    public int calculateGrandTotal() {
         grandTotal = calculateGrossTotal() + calculateInsuranceCost() + calculateEquipmentTotal();
         int newTotal = 0;
         if (isPayWithPoints) {
@@ -184,6 +189,45 @@ public class Return {
         this.isPayWithPoints = isPayWithPoints;
     }
     
+    public void setID(int returnId) {
+        this.id = returnId;
+    }
+    
+    public int getID() {
+        return id;
+    }
+    
+    public void setRentID(int rentId) {
+        this.rentID = rentId;
+    }
+    
+    public void setOdometerReading(int odomread) {
+        odometerReading = odomread;
+    }
+    
+    public void setTankFull(boolean tankfull) {
+        this.tankFull = tankfull;
+    }
+    
+    public void setGrandTotal(int amount) {
+        this.grandTotal = amount;
+    }
+    
+    public void setPointUsed(int pointused) {
+        this.pointsUsed = pointused;
+    }
+    
+    public int getPointUsed() {
+        return pointsUsed;
+    }
+    
+    public void setIsPaid(boolean ispaid) {
+        isPaid = ispaid;
+    }
+    public boolean getIsPaid() {
+        return isPaid;
+    }
+    
     /**
      * Calculates only the cost of the vehicle over the time period
      * @return
@@ -194,7 +238,7 @@ public class Return {
         int weeklyRate = vehicleModel.getWeeklyRate();
         
         long difference = Timestamp.valueOf(LocalDateTime.now()).getTime() - 
-                rentModel.getStartDateTimestamp().getTime();
+                rentModel.getStartDateTime().getTime();
         
         int weeks = (int) difference / W;
         difference %= W; 
@@ -223,7 +267,7 @@ public class Return {
         }
         
         long difference = Timestamp.valueOf(LocalDateTime.now()).getTime() - 
-                rentModel.getStartDateTimestamp().getTime();
+                rentModel.getStartDateTime().getTime();
         
         int weeks = (int) difference / W;
         difference %= W; 
@@ -248,7 +292,7 @@ public class Return {
         int weeklyPremium = vehicleModel.getWeeklyPremium();
         
         long difference = Timestamp.valueOf(LocalDateTime.now()).getTime() - 
-                rentModel.getStartDateTimestamp().getTime();
+                rentModel.getStartDateTime().getTime();
         
         int weeks = (int) difference / W;
         difference %= W; 
@@ -276,7 +320,7 @@ public class Return {
         String timePeriod = "";
         
         long difference = Timestamp.valueOf(LocalDateTime.now()).getTime() - 
-                rentModel.getStartDateTimestamp().getTime();
+                rentModel.getStartDateTime().getTime();
         
         int weeks = (int) difference / W;
         difference %= W; 

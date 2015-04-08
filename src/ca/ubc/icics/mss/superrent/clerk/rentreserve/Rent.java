@@ -66,6 +66,7 @@ public class Rent {
                 this.id = rs.getInt("rent_id");
                 this.customerID = rs.getInt("customer_id");
                 this.vehicleID = rs.getInt("vehicle_id");
+                this.reserveID = rs.getInt("reserve_id");
                 this.startDateTime = rs.getTimestamp("start_date_time");
                 this.endDateTime = rs.getTimestamp("end_date_time");
                 this.estimate = rs.getInt("estimate");
@@ -90,6 +91,7 @@ public class Rent {
      * 
      * @param customerID
      * @param vehicleID
+     * @param reserveID
      * @param startDateTime
      * @param endDateTime
      * @param odometerReading
@@ -99,12 +101,13 @@ public class Rent {
      * @param creditCardExpiryYear
      * @param additionalEquipmentIDs 
      */
-    public Rent (int customerID, int vehicleID, Timestamp startDateTime, 
+    public Rent (int customerID, int vehicleID, int reserveID, Timestamp startDateTime, 
             Timestamp endDateTime, long odometerReading, 
             String driversLicense, String creditCardNumber, 
             int creditCardExpiryMonth, int creditCardExpiryYear, 
             ArrayList<Integer> additionalEquipmentIDs) {
         this.customerID = customerID;
+        this.reserveID = reserveID;
         this.vehicleID = vehicleID;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -240,6 +243,66 @@ public class Rent {
         return estimatedCost;
     }
     
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+    
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setVehicleID(int vehicleID) {
+        this.vehicleID = vehicleID;
+    }
+    
+    public int getVehicleID() {
+        return vehicleID;
+    }
+
+    public void setReserveID(int reserveID) {
+        this.reserveID = reserveID;
+    }
+    
+    public int getReserveID() {
+        return reserveID;
+    }
+
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public void setStartDateTime(Timestamp startdate) {
+        this.startDateTime = startdate;
+    }
+
+    public void setEndDateTime(Timestamp enddate) {
+        this.endDateTime = enddate;
+    }
+
+    public void setEstimate(int estimate) {
+        this.estimate = estimate;
+    }
+
+    public void setCardExpiryMonth(int expirymonth) {
+        this.creditCardExpiryMonth = expirymonth;
+    }
+
+    public void setCardExpiryYear(int expiryyear) {
+        this.creditCardExpiryYear = expiryyear;
+    }
+
+    public void setCardNumber(String cardnum) {
+        this.creditCardNumber = cardnum;
+    }
+
+    public void setDriversLicense(String dl) {
+        this.driversLicense = dl;
+    }
+
+    public void setOdometerReading(long odomread) {
+        this.odometerReading = odomread;
+    }
+    
     /**
      * 
      * @return 
@@ -252,7 +315,7 @@ public class Rent {
      * 
      * @return 
      */
-    public Timestamp getStartDateTimestamp() {
+    public Timestamp getStartDateTime() {
         return startDateTime;
     }
     
@@ -260,7 +323,7 @@ public class Rent {
      * 
      * @return 
      */
-    public Timestamp getEndDateTimestamp() {
+    public Timestamp getEndDateTime() {
         return endDateTime;
     }
     

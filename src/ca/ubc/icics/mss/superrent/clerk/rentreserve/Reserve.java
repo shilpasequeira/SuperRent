@@ -207,6 +207,50 @@ public class Reserve {
         return estimatedCost;
     }
     
+    public void setReserveID (int reserveId) {
+        this.id = reserveId;
+    }
+    
+    public int getReserveID () {
+        return id;
+    }
+    
+    public void setCustomerID (int customerId) {
+        this.customerID = customerId;
+    }
+    
+    public int getCustomerID () {
+        return customerID;
+    }
+    
+    public void setVehicleID (int vehicleId) {
+        this.vehicleID = vehicleId;
+    }
+    
+    public int getVehicleID () {
+        return vehicleID;
+    }
+    
+    public void setStartDateTime(Timestamp startdate) {
+        this.startDateTime = startdate;
+    }
+    
+    public Timestamp getStartDateTime() {
+        return startDateTime;
+    }
+    
+    public void setEndDateTime(Timestamp enddate) {
+        this.endDateTime = enddate;
+    }
+    
+    public Timestamp getEndDateTime() {
+        return endDateTime;
+    }
+    
+    public void setEstimate(int estimate) {
+        this.estimate = estimate;
+    }
+    
     /**
      * 
      * @return 

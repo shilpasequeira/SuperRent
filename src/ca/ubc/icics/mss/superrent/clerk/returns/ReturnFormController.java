@@ -69,7 +69,7 @@ public class ReturnFormController implements Initializable {
         
         // Initialise all fields with rental info.
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-        startDateTime.setText(format.format(rentModel.getStartDateTimestamp()));
+        startDateTime.setText(format.format(rentModel.getStartDateTime()));
         endDateTime.setText(format.format(new Date()));
         rentalTimePeriod.setText(returnModel.getRentalTimePeriod());
         
@@ -106,7 +106,7 @@ public class ReturnFormController implements Initializable {
     
     @FXML private void payWithPointsChecked() {
         returnModel.setIsPayWithPoints(payWithPointsCheckbox.isSelected());
-        int grandTotalCost = returnModel.getGrandTotal();
+        int grandTotalCost = returnModel.calculateGrandTotal();
         
         grandTotal.setText(grandTotalCost + " CAD");
         pointsUsed.setText(" - " + returnModel.getPointsUsed() + " points");
@@ -118,7 +118,7 @@ public class ReturnFormController implements Initializable {
     
     @FXML private void paymentSuccessFullButtonPressed() {
         boolean valid = false;
-        int grandTotalCost = returnModel.getGrandTotal();
+        int grandTotalCost = returnModel.calculateGrandTotal();
         
         if (grandTotalCost > 0) {
             valid = !Validate.isEmptyTextField(odometerReadingField, odometerReadingErrorLabel) &&
