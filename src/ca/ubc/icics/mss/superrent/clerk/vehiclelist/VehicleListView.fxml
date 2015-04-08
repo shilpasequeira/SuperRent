@@ -33,11 +33,11 @@
         </tabs>
       </TabPane>
       <DatePicker fx:id="startDateField" layoutX="10.0" layoutY="180.0" onAction="#startDateChanged" prefHeight="25.0" prefWidth="119.0" />
-      <DatePicker fx:id="endDateField" layoutX="38.0" layoutY="275.0" onAction="#endDateChanged" prefHeight="25.0" prefWidth="119.0" />
+      <DatePicker fx:id="endDateField" layoutX="10.0" layoutY="287.0" onAction="#endDateChanged" prefHeight="25.0" prefWidth="119.0" />
       <ComboBox fx:id="branch" layoutX="10.0" layoutY="72.0" prefHeight="25.0" prefWidth="119.0" promptText="All Locations" />
       <ComboBox fx:id="category" layoutX="10.0" layoutY="121.0" prefHeight="25.0" prefWidth="119.0" promptText="All Category" />
       <Button fx:id="Search" layoutX="45.0" layoutY="367.0" mnemonicParsing="false" onAction="#SearchButtonAction" text="Search" />
-      <ComboBox fx:id="start_time" layoutX="10.0" layoutY="232.0" onAction="#startTimeChanged" prefHeight="25.0" prefWidth="119.0" />
+      <ComboBox fx:id="start_time" layoutX="10.0" layoutY="223.0" onAction="#startTimeChanged" prefHeight="25.0" prefWidth="119.0" />
       <ComboBox fx:id="end_time" layoutX="11.0" layoutY="329.0" prefHeight="25.0" prefWidth="119.0" />
   </children>
     <stylesheets>

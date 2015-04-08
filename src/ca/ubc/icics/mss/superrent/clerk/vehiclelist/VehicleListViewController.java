@@ -5,7 +5,6 @@
  */
 package ca.ubc.icics.mss.superrent.clerk.vehiclelist;
 
-import ca.ubc.icics.mss.superrent.clerk.rentreserve.RentReserveFormController;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -87,20 +86,16 @@ public class VehicleListViewController implements Initializable {
     @FXML
     private ComboBox category;
     
-    @FXML
-    private static ComboBox start_time;
+    @FXML private ComboBox start_time;
     
-    @FXML
-    private static ComboBox end_time;
+    @FXML private ComboBox end_time;
     
-    @FXML private static DatePicker startDateField;
-    @FXML private static DatePicker endDateField;
-    
+    @FXML private DatePicker startDateField;
+    @FXML private DatePicker endDateField;
     
     private TableView table;
     private TableView tableTruck;
     private String currentButton;
-    
     
     private static final String RENT = "RENT";
     private static final String RESERVE = "RESERVE";
@@ -109,47 +104,39 @@ public class VehicleListViewController implements Initializable {
     private String[] TIMINGS;
     
     
-        public Statement statement = null;
+    public Statement statement = null;
     public PreparedStatement prstatement = null;
     public ResultSet rs = null;
     public String que = null;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    initialiseTimePickers();
-    initialiseDatePickers();
-    VehicleRepository Access = new VehicleRepository();
-    ArrayList<String>  list =   Access.getNames("Branch");
-    ObservableList<String> options  = FXCollections.observableArrayList(list);
-    branch.setItems(options);
-    ArrayList<String> listc = Access.getNames("Category");
-    ObservableList<String> optionsc  = FXCollections.observableArrayList(listc);
-    category.setItems(optionsc);
+        initialiseTimePickers();
+        initialiseDatePickers();
+        VehicleRepository Access = new VehicleRepository();
+        ArrayList<String>  list =   Access.getNames("Branch");
+        ObservableList<String> options  = FXCollections.observableArrayList(list);
+        branch.setItems(options);
+        ArrayList<String> listc = Access.getNames("Category");
+        ObservableList<String> optionsc  = FXCollections.observableArrayList(listc);
+        category.setItems(optionsc);
     
       
-    table = getTableAvailabiltyView("All Locations","All Category","CAR");
-    table.setPrefWidth(670);
-    tabCar.setContent(table);
-     tableTruck = getTableAvailabiltyView("All Locations","All Category","TRUCK");
-    tableTruck.setPrefWidth(670);
-    tabTruck.setContent(tableTruck);
-    currentButton = "Available";
-  
-    
-    
- }  
-    
-//select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = 'CAR';
-
+        table = getTableAvailabiltyView("All Locations","All Category","CAR");
+        table.setPrefWidth(670);
+        tabCar.setContent(table);
+        tableTruck = getTableAvailabiltyView("All Locations","All Category","TRUCK");
+        tableTruck.setPrefWidth(670);
+        tabTruck.setContent(tableTruck);
+        currentButton = "Available";
+    }
     
     public static void setModeRent() {
         mode = RENT;
     }
-    
-
-    
     
     public static void setModeReserve() {
         mode = RESERVE;
@@ -219,11 +206,13 @@ public class VehicleListViewController implements Initializable {
             props.load(fis);
             TIMINGS = props.getProperty("TIMINGS").split(",");
             start_time.getItems().addAll((Object[]) TIMINGS);
+            start_time.setValue(TIMINGS[0]);
             end_time.getItems().addAll((Object[]) TIMINGS);
+            end_time.setValue(TIMINGS[0]);
         } catch (IOException e) {
             start_time.setVisible(false);
             end_time.setVisible(false);
-            Logger.getLogger(RentReserveFormController.class.getName()).
+            Logger.getLogger(VehicleListViewController.class.getName()).
                     log(Level.SEVERE, null, e);
         }
     }
@@ -236,7 +225,7 @@ public class VehicleListViewController implements Initializable {
      * @param time ComboBox object that holds times in string format.
      * @return Timestamp
      */
-    private static Timestamp getTimestamp(DatePicker date, ComboBox time) {
+    private Timestamp getTimestamp(DatePicker date, ComboBox time) {
         String timeSplit[] = time.getValue().toString().split(":");
         int hour = 0;
         int min = 0;
@@ -268,6 +257,7 @@ public class VehicleListViewController implements Initializable {
                     }
                 };
         startDateField.setDayCellFactory(startDayCellFactory);
+        startDateField.setValue(LocalDate.now());
         
         final Callback<DatePicker, DateCell> endDayCellFactory = 
                 new Callback<DatePicker, DateCell>() {
@@ -284,6 +274,7 @@ public class VehicleListViewController implements Initializable {
                     }
                 };
         endDateField.setDayCellFactory(endDayCellFactory);
+        endDateField.setValue(LocalDate.now().plusDays(10));
     }
     
     
@@ -297,11 +288,11 @@ public class VehicleListViewController implements Initializable {
      * 
      */
     @FXML private void endDateChanged() {
-        if (startDateField.getValue() != null && endDateField.getValue() != null && 
+        /*if (startDateField.getValue() != null && endDateField.getValue() != null && 
                 !startDateField.getValue().equals(endDateField.getValue())) {
             end_time.getItems().removeAll((Object[]) TIMINGS);
             end_time.getItems().addAll((Object[]) TIMINGS);
-        }
+        }*/
     }
     
     /**
@@ -309,7 +300,7 @@ public class VehicleListViewController implements Initializable {
      * the start time selected in the end time combo box.
      */
     @FXML private void startTimeChanged() {
-        if (startDateField.getValue() != null && endDateField.getValue() != null
+        /*if (startDateField.getValue() != null && endDateField.getValue() != null
                 && startDateField.getValue().equals(endDateField.getValue())) {
             end_time.getItems().removeAll((Object[]) TIMINGS);
             
@@ -326,11 +317,7 @@ public class VehicleListViewController implements Initializable {
         } else if (startDateField.getValue() != null && endDateField.getValue() != null
                 && !startDateField.getValue().equals(endDateField.getValue())) {
             end_time.getItems().addAll((Object[]) TIMINGS);
-        }
-        
-        
-             
-        
+        }*/
     }
     
     
@@ -452,25 +439,20 @@ public class VehicleListViewController implements Initializable {
   public TableView getTableAvailabiltyView(String b_name,String cat,String typ)
    {
        
-       TableView<Vehicle> table = new TableView<Vehicle>();
+        TableView<Vehicle> table = new TableView<Vehicle>();
 	table.setTableMenuButtonVisible(true);
         
-       
-        
-       TableColumn albumArt = new TableColumn("Album Art");
+        TableColumn albumArt = new TableColumn("Album Art");
 	albumArt.setCellValueFactory(new PropertyValueFactory("album"));
-	albumArt.setPrefWidth(200);
-        
+	albumArt.setPrefWidth(100);
         
         TableColumn pnum = new TableColumn("PlateNumber");
 	pnum.setCellValueFactory(new PropertyValueFactory("pnum"));
 	pnum.setPrefWidth(70);
-	
         
 	TableColumn vid = new TableColumn("Vehilce ID");
 	vid.setCellValueFactory(new PropertyValueFactory("vid"));
 	vid.setPrefWidth(70);
-	
         
         TableColumn vname = new TableColumn("Vehicle Name");
 	vname.setCellValueFactory(new PropertyValueFactory("vname"));
@@ -483,10 +465,6 @@ public class VehicleListViewController implements Initializable {
         TableColumn bname = new TableColumn("Branch Name");
 	bname.setCellValueFactory(new PropertyValueFactory("bname"));
 	bname.setPrefWidth(70);
-	
-    
-        
-        
         
         albumArt.setCellFactory(new Callback<TableColumn<Vehicle,Thumbnail>,TableCell<Vehicle,Thumbnail>>(){       
 	    @Override
@@ -510,7 +488,7 @@ public class VehicleListViewController implements Initializable {
                             public void handle(ActionEvent event) {
                                  Button x = (Button) event.getSource();
                                try {
-                                   VehicleListViewController.handlerMethod(event);
+                                   handlerMethod(event);
                                } catch (IOException ex) {
                                    Logger.getLogger(VehicleListViewController.class.getName()).log(Level.SEVERE, null, ex);
                                }
@@ -534,69 +512,58 @@ public class VehicleListViewController implements Initializable {
         
         try
         {
-          /* if (b_name.equals("All Locations") && cat.equals("All Category"))
-            que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
-"on (v.vehicle_id = fsv.vehicle_id) \n" +
-"where fsv.vehicle_id is null ) all_vehicles\n" +
-"left outer join \n" +
-"(select vehicle_id from reserve where end_date_time between current_timestamp and TIMESTAMPADD(DAY,10,current_timestamp)) res\n" +
-"on (res.vehicle_id = all_vehicles.vehicle_id)\n" +
-"left outer join\n" +
-"(select vehicle_id from rent where end_date_time between current_timestamp and TIMESTAMPADD(DAY,10,current_timestamp)) r\n" +
-"on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
-"where res.vehicle_id is null and r.vehicle_id is null" ;   
-           else if (!b_name.equals("All Locations") && !cat.equals("All Category"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and v.vehicle_category ='" + cat + "' and b.city ='" + b_name + "'"  ;    
-           else if (!b_name.equals("All Locations"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and b.city ='" + b_name + "'"  ;       
-           else
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and v.vehicle_category ='" + cat + "'" ;    
-           
-            */
             if (b_name.equals("All Locations") && cat.equals("All Category"))
-            que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
+           que   = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from\n" +
+" (select distinct v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,vt.daily_rate,vt.hourly_rate,vt.weekly_rate,vt.daily_premium,vt.hourly_premium,vt.weekly_premium,v.vehicle_manufactured_year,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
 "on (v.vehicle_id = fsv.vehicle_id) \n" +
+"inner join vehicle_category vt on (v.vehicle_category = vt.vehicle_category)\n" +
 "where fsv.vehicle_id is null ) all_vehicles\n" +
 "left outer join \n" +
-"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time) +"'  and '" + getTimestamp(endDateField, end_time) +"' res\n" +
+"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) res\n" +
 "on (res.vehicle_id = all_vehicles.vehicle_id)\n" +
 "left outer join\n" +
-"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time) +"' and '" + getTimestamp(endDateField, end_time) +"' r\n" +
+"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) r\n" +
 "on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
-"where res.vehicle_id is null and r.vehicle_id is null and all_vehicles.vehicle_type = '" + typ + "'" ; 
+"where res.vehicle_id is null and r.vehicle_id is null and  all_vehicles.vehicle_type = '" +typ +"'";
           else if (!b_name.equals("All Locations") && !cat.equals("All Category"))
-que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
+que   = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from\n" +
+" (select distinct v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,vt.daily_rate,vt.hourly_rate,vt.weekly_rate,vt.daily_premium,vt.hourly_premium,vt.weekly_premium,v.vehicle_manufactured_year,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
 "on (v.vehicle_id = fsv.vehicle_id) \n" +
+"inner join vehicle_category vt on (v.vehicle_category = vt.vehicle_category)\n" +
 "where fsv.vehicle_id is null ) all_vehicles\n" +
 "left outer join \n" +
-"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time) +"'  and '" + getTimestamp(endDateField, end_time) +"' res\n" +
+"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) res\n" +
 "on (res.vehicle_id = all_vehicles.vehicle_id)\n" +
 "left outer join\n" +
-"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time) +"' and '" + getTimestamp(endDateField, end_time) +"' r\n" +
+"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) r\n" +
 "on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
-"where res.vehicle_id is null and r.vehicle_id is null and all_vehicles.vehicle_type = '" + typ + "' and all_vehicles.vehicle_category='" +cat+ "' and all_vehicles.city = '" +b_name + "'" ; 
+"where res.vehicle_id is null and r.vehicle_id is null and  all_vehicles.vehicle_type = '" +typ +"' and all_vehicles.vehicle_category='" +cat+ "' and all_vehicles.city = '" +b_name + "'" ; 
               else if (!b_name.equals("All Locations"))
-que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
+que    = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from\n" +
+" (select distinct v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,vt.daily_rate,vt.hourly_rate,vt.weekly_rate,vt.daily_premium,vt.hourly_premium,vt.weekly_premium,v.vehicle_manufactured_year,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
 "on (v.vehicle_id = fsv.vehicle_id) \n" +
+"inner join vehicle_category vt on (v.vehicle_category = vt.vehicle_category)\n" +
 "where fsv.vehicle_id is null ) all_vehicles\n" +
 "left outer join \n" +
-"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time) +"'  and '" + getTimestamp(endDateField, end_time) +"' res\n" +
+"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) res\n" +
 "on (res.vehicle_id = all_vehicles.vehicle_id)\n" +
 "left outer join\n" +
-"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time) +"' and '" + getTimestamp(endDateField, end_time) +"' r\n" +
+"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) r\n" +
 "on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
-"where res.vehicle_id is null and r.vehicle_id is null and all_vehicles.vehicle_type = '" + typ + "' and all_vehicles.city = '" +b_name + "'" ; 
+"where res.vehicle_id is null and r.vehicle_id is null and  all_vehicles.vehicle_type = '" +typ +"' and all_vehicles.city = '" +b_name + "'" ; 
             else
-                  que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
+                  que   = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from\n" +
+" (select distinct v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,vt.daily_rate,vt.hourly_rate,vt.weekly_rate,vt.daily_premium,vt.hourly_premium,vt.weekly_premium,v.vehicle_manufactured_year,v.vehicle_type from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
 "on (v.vehicle_id = fsv.vehicle_id) \n" +
+"inner join vehicle_category vt on (v.vehicle_category = vt.vehicle_category)\n" +
 "where fsv.vehicle_id is null ) all_vehicles\n" +
 "left outer join \n" +
-"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time) +"'  and '" + getTimestamp(endDateField, end_time) +"' res\n" +
+"(select vehicle_id from reserve where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) res\n" +
 "on (res.vehicle_id = all_vehicles.vehicle_id)\n" +
 "left outer join\n" +
-"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time) +"' and '" + getTimestamp(endDateField, end_time) +"' r\n" +
+"(select vehicle_id from rent where end_date_time between '" + getTimestamp(startDateField, start_time).toString() + "' and '" + getTimestamp(endDateField, end_time).toString() + "' ) r\n" +
 "on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
-"where res.vehicle_id is null and r.vehicle_id is null and all_vehicles.vehicle_type = '" + typ + "' and all_vehicles.vehicle_category='" +cat+ "'" ; 
+"where res.vehicle_id is null and r.vehicle_id is null and  all_vehicles.vehicle_type = '" +typ +"' and all_vehicles.vehicle_category='" +cat+ "'" ; 
 
                   
  
@@ -752,20 +719,16 @@ que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.veh
   
    
    
-   //button.setOnAction(new EventHandler<ActionEvent>() {
+    //button.setOnAction(new EventHandler<ActionEvent>() {
                            
-                            public  static void handlerMethod(ActionEvent event) throws IOException {
-                                 Button x = (Button) event.getSource();
-                                  Stage rentReserveStage = new Stage();
-        RentReserveFormController.setModeRent(x.getId(), getTimestamp(startDateField, start_time), getTimestamp(endDateField, end_time));
+    public void handlerMethod(ActionEvent event) throws IOException {
+        Button x = (Button) event.getSource();
+        Stage rentReserveStage = new Stage();
+        RentReserveFormController.setModeRent(Integer.parseInt(x.getId()), getTimestamp(startDateField, start_time), getTimestamp(endDateField, end_time));
         FXMLLoader myLoader = new FXMLLoader(RentReserveFormController.class.getResource("RentReserveForm.fxml"));
         AnchorPane myPane = (AnchorPane) myLoader.load();        
         Scene myScene = new Scene(myPane);
         rentReserveStage.setScene(myScene);
-        rentReserveStage.show();
-                                
-            }
-       
-    
-    
+        rentReserveStage.show();                     
+    }
 }
