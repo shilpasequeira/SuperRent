@@ -31,7 +31,7 @@
       <TextField fx:id="creditCardField" layoutX="208.0" layoutY="429.0" prefHeight="35.0" prefWidth="247.0" visible="false" />
       <Label fx:id="creditExpiryLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="492.0" layoutY="426.0" prefHeight="35.0" prefWidth="78.0" text="Expiry Date *" textAlignment="RIGHT" visible="false" />
       <Button fx:id="estimateButton" layoutX="553.0" layoutY="502.0" mnemonicParsing="false" onAction="#estimateButtonPressed" text="Estimate" />
-      <Label fx:id="estimateLabel" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="301.0" layoutY="498.0" prefHeight="35.0" prefWidth="210.0" textAlignment="RIGHT">
+      <Label fx:id="estimateLabel" alignment="BASELINE_CENTER" contentDisplay="RIGHT" layoutX="238.0" layoutY="498.0" prefHeight="35.0" prefWidth="313.0" textAlignment="RIGHT">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>

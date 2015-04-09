@@ -33,10 +33,6 @@ public class RentReserveFormController implements Initializable  {
     private static Rent rentModel;
     private static Reserve reserveModel;
     private static Vehicle vehicleModel;
-
-    public static void setModeRent(String id, Timestamp timestamp, Timestamp timestamp0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     private Customer customerModel;
     private static Timestamp startDateTime;
     private static Timestamp endDateTime;
@@ -350,10 +346,10 @@ public class RentReserveFormController implements Initializable  {
 
             if (mode.equals(RENT)) {
                 rentModel.confirmRental();
-                estimateLabel.setText("Rental Confirmed");
+                estimateLabel.setText("Confirmation # " + rentModel.getID());
             } else {
                 reserveModel.confirmReservation();
-                estimateLabel.setText("Reservation Confirmed");
+                estimateLabel.setText("Confirmation # " + reserveModel.getID());
             }
             
             estimateButton.setDisable(true);
