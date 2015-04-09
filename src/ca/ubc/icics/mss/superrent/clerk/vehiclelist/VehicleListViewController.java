@@ -724,7 +724,17 @@ que    = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.
     public void handlerMethod(ActionEvent event) throws IOException {
         Button x = (Button) event.getSource();
         Stage rentReserveStage = new Stage();
-        RentReserveFormController.setModeRent(Integer.parseInt(x.getId()), getTimestamp(startDateField, start_time), getTimestamp(endDateField, end_time));
+        
+        if (mode.equals("RENT")) {
+            RentReserveFormController.setModeRent(Integer.parseInt(x.getId()), 
+                    getTimestamp(startDateField, start_time), 
+                    getTimestamp(endDateField, end_time));
+        } else if (mode.equals("RESERVE")) {
+            RentReserveFormController.setModeReserve(Integer.parseInt(x.getId()), 
+                    getTimestamp(startDateField, start_time), 
+                    getTimestamp(endDateField, end_time));
+        }
+        
         FXMLLoader myLoader = new FXMLLoader(RentReserveFormController.class.getResource("RentReserveForm.fxml"));
         AnchorPane myPane = (AnchorPane) myLoader.load();        
         Scene myScene = new Scene(myPane);
