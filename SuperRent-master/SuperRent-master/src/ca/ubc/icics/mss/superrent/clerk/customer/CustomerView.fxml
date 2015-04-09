@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.customer.CustomerViewController">
+    <stylesheets>
+        <URL value="@customerregistration.css" />
+    </stylesheets>
+   <children>
+      <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="cusInfo" text="Customer Info">
+               <content>
+                  <AnchorPane fx:id="InfoCus" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+          <Tab fx:id="rentInfo" onSelectionChanged="#iniRentData" text="Rent Info">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="rentTable" layoutX="4.0" layoutY="4.0" prefHeight="530.0" prefWidth="792.0" />
+                        <Button fx:id="returnRtV" layoutX="692.0" layoutY="537.0" mnemonicParsing="false" onAction="#ContinueReturn" text="Return Vehicle" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="resvInfo" onSelectionChanged="#iniReserveData" text="Reserve Info">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="reserveTable" layoutX="4.0" layoutY="4.0" prefHeight="530.0" prefWidth="792.0" />
+                        <Button fx:id="rentRsV" layoutX="673.0" layoutY="538.0" mnemonicParsing="false" onAction="#ContinueRent" text="Continue To Rent" />
+                        <Button fx:id="CancelRs" layoutX="526.0" layoutY="538.0" mnemonicParsing="false" onAction="#CancelReserve" text="Cancel Reservation" />
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="retnInfo" onSelectionChanged="#iniReturnData" text="Return Info">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="returnTable" layoutX="4.0" layoutY="4.0" prefHeight="559.0" prefWidth="792.0" />
+                     </children></AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,17 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+.button{
+    -fx-text-fill: white;
+    -fx-background-color: Black;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 5;
+}
+.pane {  
+ -fx-background-image: url("headerPane.jpg");   
+}

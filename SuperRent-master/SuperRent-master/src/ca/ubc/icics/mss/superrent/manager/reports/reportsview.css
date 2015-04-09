@@ -1,0 +1,18 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+
+.imageview
+{
+   -fx-background-image: url("no-record-found.jpg");   
+}
+
+.radio-button
+{
+    -fx-border-radius    : 15px  ;
+-fx-height           : 35px
+}

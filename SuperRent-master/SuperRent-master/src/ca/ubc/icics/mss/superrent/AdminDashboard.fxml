@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.AdminDashboardController">
+  <children>
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
+      <children>
+        <Button fx:id="manageUserButton" layoutX="32.0" layoutY="17.0" mnemonicParsing="false" text="Manage User" onAction = "#manageUserButtonAction"/>
+        <Button fx:id="AccessCustomerButton" layoutX="135.0" layoutY="17.0" mnemonicParsing="false" text="Access Clerk" onAction = "#accessClerkButtonAction"/>
+        <Button fx:id="AccessManagerButton" layoutX="253.0" layoutY="17.0" mnemonicParsing="false" text="Access Manager" onAction = "#accessManagerButtonAction" />
+      </children>
+    </Pane>    
+     <Pane layoutX="0.0" layoutY="52.0" fx:id="content" />
+   
+  </children>
+  <stylesheets>
+    <URL value="@mainview.css" />
+  </stylesheets>
+</AnchorPane>

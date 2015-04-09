@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="548.0" prefWidth="860.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.returns.ReturnFormController">
+    <stylesheets>
+        <URL value="@returnform.css" />
+    </stylesheets>
+   <children>
+      <TextField fx:id="odometerReadingField" layoutX="180.0" layoutY="262.0" prefHeight="35.0" prefWidth="150.0" />
+      <Label alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="50.0" layoutY="262.0" prefHeight="35.0" prefWidth="121.0" text="Odometer Reading *" textAlignment="RIGHT" />
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="132.0" layoutY="93.0" prefHeight="35.0" prefWidth="121.0" text="Start Date &amp; Time" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <CheckBox fx:id="tankFullCheckbox" layoutX="86.0" layoutY="323.0" mnemonicParsing="false" text="Tank Full" />
+      <CheckBox fx:id="payWithPointsCheckbox" layoutX="423.0" layoutY="394.0" mnemonicParsing="false" onAction="#payWithPointsChecked" onMouseClicked="#payWithPointsChecked" text="Use Club Member Points :" visible="false" />
+      <Button fx:id="paymentSuccessFullButton" layoutX="541.0" layoutY="491.0" mnemonicParsing="false" onAction="#paymentSuccessFullButtonPressed" text="Payment Successfull" />
+      <Label fx:id="returnInvoiceNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="263.0" layoutY="37.0" prefHeight="35.0" prefWidth="329.0" text="Invoice # " textAlignment="RIGHT">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Label fx:id="errorMessageField" alignment="CENTER" layoutX="132.0" layoutY="14.0" prefHeight="5.0" prefWidth="624.0" textFill="RED" />
+      <Label fx:id="odometerReadingErrorLabel" alignment="CENTER" layoutX="178.0" layoutY="296.0" prefHeight="16.0" prefWidth="150.0" text="This field is required" textFill="RED" visible="false" />
+      <Label fx:id="paymentMethodErrorLabel" alignment="CENTER" layoutX="180.0" layoutY="400.0" prefHeight="16.0" prefWidth="150.0" text="This field is required" textFill="RED" visible="false" />
+      <Label fx:id="startDateTime" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="132.0" layoutY="118.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="endDateTime" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="356.0" layoutY="118.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="rentalTimePeriod" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="581.0" layoutY="118.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="356.0" layoutY="93.0" prefHeight="35.0" prefWidth="121.0" text="End Date &amp; Time" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="579.0" layoutY="93.0" prefHeight="35.0" prefWidth="121.0" text="Rental Time Period" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="579.0" layoutY="166.0" prefHeight="35.0" prefWidth="121.0" text="Make &amp; Model" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="356.0" layoutY="166.0" prefHeight="35.0" prefWidth="121.0" text="License Plate No." textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="vehicleName" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="579.0" layoutY="192.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="vehiclePlateNo" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="355.0" layoutY="192.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="vehicleType" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="132.0" layoutY="192.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="132.0" layoutY="166.0" prefHeight="35.0" prefWidth="121.0" text="Type" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="485.0" layoutY="267.0" prefHeight="35.0" prefWidth="121.0" text="Gross Total :" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="grossTotal" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="612.0" layoutY="267.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="additonalEquipmentCost" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="611.0" layoutY="297.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="426.0" layoutY="297.0" prefHeight="35.0" prefWidth="179.0" text="Additional Equipment Cost :" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="425.0" layoutY="326.0" prefHeight="35.0" prefWidth="179.0" text="Insurance :" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="insuranceCost" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="610.0" layoutY="326.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label fx:id="grandTotal" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="610.0" layoutY="357.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" />
+      <Label alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="425.0" layoutY="357.0" prefHeight="35.0" prefWidth="179.0" text="Grand Total :" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="pointsUsed" alignment="BASELINE_LEFT" contentDisplay="RIGHT" layoutX="610.0" layoutY="386.0" prefHeight="35.0" prefWidth="190.0" textAlignment="RIGHT" visible="false" />
+      <ComboBox fx:id="paymentMethod" layoutX="180.0" layoutY="370.0" prefWidth="150.0" />
+      <Label fx:id="paymentMethodLabel" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="50.0" layoutY="366.0" prefHeight="35.0" prefWidth="121.0" text="Payment Method *" textAlignment="RIGHT" />
+      <Button fx:id="printButton" layoutX="691.0" layoutY="491.0" mnemonicParsing="false" onAction="#printButtonPressed" text="Print" visible="false" />
+   </children>
+</AnchorPane>

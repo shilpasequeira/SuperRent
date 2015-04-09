@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="860.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.vehiclelist.VehicleListViewController">
+ <children>
+    <Pane fx:id="pane" layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
+      <children>
+        <Button fx:id="Available" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#AvailabiltyButtonAction" prefWidth="107.0" text="Available" />
+        <Button id="ForSale" fx:id="Sale" layoutX="141.0" layoutY="12.0" mnemonicParsing="false" onAction="#SalesButtonAction" prefHeight="27.0" prefWidth="108.0" text="For Sale" />
+        <Button id="Overdue" fx:id="Overdue" layoutX="277.0" layoutY="12.0" mnemonicParsing="false" onAction="#OverdueButtonAction" prefWidth="108.0" text="Overdue" />
+        <Button id="LogOutButton" layoutX="414.0" layoutY="12.0" mnemonicParsing="false" prefWidth="107.0" text="Logout" />
+      </children>
+    </Pane>
+     <Pane fx:id="content" />
+      <TabPane fx:id="tabPane" layoutX="141.0" layoutY="58.0" prefHeight="484.0" prefWidth="645.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="tabCar" text="Car">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab fx:id="tabTruck" text="Truck">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <DatePicker fx:id="startDateField" layoutX="10.0" layoutY="180.0" onAction="#startDateChanged" prefHeight="25.0" prefWidth="119.0" />
+      <DatePicker fx:id="endDateField" layoutX="10.0" layoutY="287.0" onAction="#endDateChanged" prefHeight="25.0" prefWidth="119.0" />
+      <ComboBox fx:id="branch" layoutX="10.0" layoutY="72.0" prefHeight="25.0" prefWidth="119.0" promptText="All Locations" />
+      <ComboBox fx:id="category" layoutX="10.0" layoutY="121.0" prefHeight="25.0" prefWidth="119.0" promptText="All Category" />
+      <Button fx:id="Search" layoutX="45.0" layoutY="367.0" mnemonicParsing="false" onAction="#SearchButtonAction" text="Search" />
+      <ComboBox fx:id="start_time" layoutX="10.0" layoutY="223.0" onAction="#startTimeChanged" prefHeight="25.0" prefWidth="119.0" />
+      <ComboBox fx:id="end_time" layoutX="11.0" layoutY="329.0" prefHeight="25.0" prefWidth="119.0" />
+  </children>
+    <stylesheets>
+        <URL value="@vehiclelistview.css" />
+    </stylesheets>
+</AnchorPane>

@@ -1,0 +1,66 @@
+/**
+ *
+ * @author anmolpreet Sandhu
+ */
+
+.root {
+    -fx-padding: 60;
+    -fx-background-color:  radial-gradient(center 50% 50% , radius 135%, rgba(150,150,150,40) 10%,rgba(30,30,30,100) 40%);
+    -fx-background-repeat: no-repeat;   
+    -fx-background-image: url("SuperRentLogo.jpg"); 
+     -fx-border-radius: 30;
+     -fx-border-width:5;
+     -fx-background-position: 110px 140px;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+    -fx-border-color: black;
+       
+}
+#label_user, #label_pass {
+   -fx-font-size: 14px;
+   -fx-text-fill: #cc0000;
+    
+}
+#welcome_text {
+  -fx-font-size: 20px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #ffffff;
+  -fx-font-family: "Arial Black";
+}
+#actiontarget {
+ 
+}
+
+.button {
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: black;
+    -fx-padding: 5 20 5 20;
+    
+}
+.button:hover {
+    -fx-background-color: linear-gradient(#cc0033, #be1d00);
+    -fx-background-radius: 20;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+    -fx-padding: 5 20 5 20;
+}
+
+#label_error {
+  -fx-font-size: 16px;
+  -fx-text-fill: #cc0000;
+}
+#tf_username, #tf_password {
+    -fx-background-color: transparent, #333333, transparent, #333333;
+    -fx-background-radius: 5, 5, 5, 5;
+}
+#tf_username, #tf_password:focused {
+    -fx-background-color: transparent, #666666, transparent, #666666;
+    -fx-background-radius: 5, 5, 5, 5;
+}
+
+.pane{
+    
+     
+    
+}
