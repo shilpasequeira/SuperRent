@@ -12,25 +12,19 @@
 
 <AnchorPane id="AnchorPane" prefHeight="407.9609375" prefWidth="512.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.login.LoginViewController">
   <children>
-    <Label fx:id="welcome_text" layoutX="70.0" layoutY="164.0" text="LOGIN" wrapText="false">
-      <font>
-        <Font size="18.0" />
-      </font>
-    </Label>
-    <Label fx:id="label_user" layoutX="69.0" layoutY="208.0" text="Username:" />
-    <Label fx:id="label_pass" layoutX="71.0" layoutY="244.0" text="Password:" />
-    <Label fx:id="label_error_user_name" layoutX="349.0" layoutY="208.0" prefWidth="97.0" text="Wrong user name">
-      <textFill>
-        <Color blue="0.200" green="0.200" red="1.000" fx:id="x1" />
-      </textFill>
-    </Label>
-    <Button fx:id="loginButton" layoutX="277.0" layoutY="280.0" onAction="#handleButtonAction" text="Login" />
-    <Rectangle arcHeight="5.0" arcWidth="46.0" fill="DODGERBLUE" height="200.0" layoutX="266.0" layoutY="91.0" stroke="#990000" strokeType="INSIDE" visible="false" width="200.0" />
+   <!-- <Label fx:id="welcome_text" layoutX="70.0" layoutY="164.0" text="LOGIN" wrapText="false" /> 
+      <Rectangle arcHeight="5.0" arcWidth="46.0" fill="DODGERBLUE" height="200.0" layoutX="266.0" layoutY="91.0" stroke="#990000" strokeType="INSIDE" visible="false" width="200.0" />
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#dfdfdf" height="242.0" layoutX="186.0" layoutY="73.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="279.0" />
-    <Pane layoutX="10.0" layoutY="14.0" prefHeight="60.0" prefWidth="254.9998779296875" styleClass="pane" />
-    <PasswordField fx:id="tf_password" layoutX="143.0" layoutY="241.0" prefWidth="184.0" />
-    <Label fx:id="label_error_password" layoutX="350.0" layoutY="247.0" prefWidth="97.0" text="Password missmatch" textFill="$x1" />
-    <TextField fx:id="tf_username" layoutX="142.0" layoutY="204.0" prefWidth="184.0" />
+     <Pane layoutX="10.0" layoutY="14.0" prefHeight="60.0" prefWidth="254.9998779296875" styleClass="pane" /> 
+      <Label fx:id="label_error_password" layoutX="350.0" layoutY="247.0" prefWidth="97.0" text="Password missmatch" textFill="$x1" /> 
+      -->
+    <Label fx:id="label_user" layoutX="150.0" layoutY="220.0" text="Username:" />
+    <TextField fx:id="tf_username" layoutX="150.0" layoutY="235.0" prefWidth="184.0" />
+    <Label fx:id="label_pass" layoutX="150.0" layoutY="265.0" text="Password:" />
+    <PasswordField fx:id="tf_password" layoutX="150.0" layoutY="280.0" prefWidth="184.0" />
+    <Button fx:id="loginButton" layoutX="260.0" layoutY="315.0" onAction="#handleButtonAction" text="Login" />
+    <Label fx:id="label_error" layoutX="80.0" layoutY="370.0"  text="Invalid username/password combination!" />
+    
   </children>
   <stylesheets>
     <URL value="@loginview.css" />
