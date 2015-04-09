@@ -51,11 +51,6 @@ public class CustomerViewController implements Initializable {
     @FXML
     private AnchorPane InfoCus;
     
-    private final String driver = "com.mysql.jdbc.Driver";
-    private final String URL = "jdbc:mysql://dbserver.mss.icics.ubc.ca/team02";  
-    private final String USERNAME = "team02";  
-    private final String PASSWORD = "s0ftw@re";
-    
     //rent table columns
     private TableColumn<Rent, Integer> rtID;
     private TableColumn<Rent, Integer> rtcusID;
@@ -121,11 +116,12 @@ public class CustomerViewController implements Initializable {
     
     public void iniReserveData() throws ClassNotFoundException {
         rsInfolist.clear();
-        try{
-            Class.forName(driver);
-            Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select reserve_id, reserve.customer_id, vehicle_id, start_date_time, end_date_time, estimate from customer, reserve where phone_no = "+PhoneNumber+" and customer.customer_id = reserve.customer_id;");
+        try (Connection con = SQLConnection.getConnection();
+                ResultSet rs = con.createStatement().executeQuery("select reserve_id, "
+                        + "reserve.customer_id, vehicle_id, start_date_time, "
+                        + "end_date_time, estimate from customer, reserve "
+                        + "where phone_no = "+PhoneNumber+" and customer.customer_id = "
+                        + "reserve.customer_id;")) {
                 
             while(rs.next()){
                 Reserve rsv = new Reserve();
@@ -135,12 +131,8 @@ public class CustomerViewController implements Initializable {
                 rsv.setStartDateTime(rs.getTimestamp("start_date_time"));
                 rsv.setEndDateTime(rs.getTimestamp("end_date_time"));
                 rsv.setEstimate(rs.getInt("estimate"));
-//                Reserve rsv = new Reserve(id);
                 rsInfolist.add(rsv);
             }
-            rs.close();
-            stmt.close();
-            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(CustomerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -159,14 +151,6 @@ public class CustomerViewController implements Initializable {
             
             while(rs.next()) {
                 Return rtn = new Return(rs.getInt("return_id"));
-                /*rtn.setAmount(rs.getInt("amount"));
-                rtn.setIsPaid(rs.getInt("is_paid"));
-                rtn.setOdomRead(rs.getInt("odometer_reading"));
-                rtn.setPointUsed(rs.getInt("points_used"));
-                rtn.setRentID(rs.getInt("rent_id"));
-                rtn.setReturnID(rs.getInt("return_id"));
-                rtn.setTankFull(rs.getInt("tank_full"));
-                rtn.setTransacTime(rs.getTimestamp("transaction_timestamp"));*/
                 rtnInfolist.add(rtn);
             }
         } catch (SQLException ex) {
@@ -189,18 +173,6 @@ public class CustomerViewController implements Initializable {
                                 + "and phone_no = "+PhoneNumber+";");) {
             while(rs.next()){
                 Rent rt = new Rent(rs.getInt("rent_id"));
-                /*rt.setCardExpiryMonth(rs.getInt("credit_card_expiry_month"));
-                rt.setCardExpiryYear(rs.getInt("credit_card_expiry_year"));
-                rt.setCardNumber(rs.getString("credit_card_no"));
-                rt.setCustomerID(rs.getInt("customer_id"));
-                rt.setDriversLicense(rs.getString("drivers_license"));
-                rt.setEndDateTime(rs.getTimestamp("end_date_time"));
-                rt.setEstimate(rs.getInt("estimate"));
-                rt.setID(rs.getInt("rent_id"));
-                rt.setOdometerReading(rs.getLong("odometer_reading"));
-                rt.setReserveID(rs.getInt("reserve_id"));
-                rt.setStartDateTime(rs.getTimestamp("start_date_time"));
-                rt.setVehicleID(rs.getInt("vehicle_id"));*/
                 rtInfolist.add(rt);
             }
         } catch (SQLException ex) {
