@@ -22,19 +22,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.sql.Connection;  
-import java.sql.DriverManager;  
-import java.sql.PreparedStatement;  
+import java.sql.Connection;
 import java.sql.ResultSet;  
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -75,38 +71,26 @@ public class ClerkDashboardController implements Initializable {
     private ObservableList RCList = FXCollections.observableArrayList();
     private ObservableList BName = FXCollections.observableArrayList();
     
-    private final String driver = "com.mysql.jdbc.Driver";
-    private final String URL = "jdbc:mysql://dbserver.mss.icics.ubc.ca/team02";  
-    private final String USERNAME = "team02";  
-    private final String PASSWORD = "s0ftw@re";
-    
     public void oPenRC () throws SQLException, ClassNotFoundException {
         System.out.println(selectedBranch);
         RCList.clear();
-        try {
-            Class.forName(driver);
-            Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             System.out.println("Succeeded connecting to the Database!");
-            Statement stmnt = con.createStatement();
-//          
-            ResultSet rs = stmnt.executeQuery("select vehicle_category.vehicle_category, hourly_rate, daily_rate, weekly_rate, count(vehicle_id) "
+        try (Connection con = SQLConnection.getConnection();
+                ResultSet rs = con.createStatement().executeQuery("select vehicle_category.vehicle_category, "
+                        + "hourly_rate, daily_rate, weekly_rate, count(vehicle_id) "
                     + "from vehicle, vehicle_category, branch "
                     + "where vehicle.vehicle_category = vehicle_category.vehicle_category "
                     + "and branch.branch_id = vehicle.branch_id "
                     + "and branch.city like '"+selectedBranch+"' "
-                    + "group by vehicle_category.vehicle_category;");
-            
+                    + "group by vehicle_category.vehicle_category;");) {
+        
             while(rs.next()) {
                 RateCard rc = new RateCard();
                 rc.setCategory(rs.getString("vehicle_category.vehicle_category"));
                 rc.setHourlyRate(rs.getFloat("hourly_rate"));
                 rc.setDailyRate(rs.getFloat("daily_rate"));
                 rc.setWeeklyRate(rs.getFloat("weekly_rate"));
-                //rc.setNumAvail(rs.getInt("count(vehicle_id)"));
                 RCList.add(rc);
             }
-            stmnt.close();
-            con.close();
         }catch (SQLException e){
             System.out.println("abc");
         }
