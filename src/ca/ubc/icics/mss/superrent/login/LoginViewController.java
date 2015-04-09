@@ -8,6 +8,7 @@ package ca.ubc.icics.mss.superrent.login;
 import ca.ubc.icics.mss.superrent.Main;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
 import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyTextField;
+import static ca.ubc.icics.mss.superrent.validation.md5Check.md5;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -41,9 +42,9 @@ public class LoginViewController implements Initializable {
     @FXML
     private PasswordField tf_password;
     @FXML
-    private Label label_error_user_name;
-    @FXML
-    private Label label_error_password;
+    private Label label_error;
+  //  @FXML
+  //  private Label label_error_password;
     @FXML
     private Button loginButton;
 
@@ -62,13 +63,16 @@ public class LoginViewController implements Initializable {
     
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException {
-        label_error_password.setVisible(false);
-        if (tf_password.getText().equals(password)) {
+        label_error.setVisible(false);
+        
+        // md5 encryption check //
+        
+        if (md5(tf_password.getText()).equals(password)) {
             objMain.setUser(userType);
             loginSuccessful = true;
         } else 
         {
-            label_error_password.setVisible(true);
+            label_error.setVisible(true);
         }
 
     }
@@ -76,14 +80,14 @@ public class LoginViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        label_error_user_name.setVisible(false);
-        label_error_password.setVisible(false);
+        label_error.setVisible(false);
+
         tf_password.setDisable(true);
         loginButton.setDisable(true);
 
         con = SQLConnection.getConnection();
 
-        tf_username.setOnMouseMoved((event) -> {
+        tf_username.setOnAction((event) -> {
 
             if (isEmptyTextField(tf_username) == false && tf_username.getText().length() > 2 && tf_username.getText().contains("@") && tf_username.getText().contains(".")) {
 
@@ -92,7 +96,7 @@ public class LoginViewController implements Initializable {
                     ResultSet rs = con.createStatement().executeQuery(SQL);
                     while (rs.next()) {
                         validUser = true;
-                        label_error_user_name.setVisible(false);
+                        label_error.setVisible(false);
                         tf_password.setDisable(false);
                         password = rs.getString("password");
                         userName = rs.getString("username");
@@ -100,7 +104,7 @@ public class LoginViewController implements Initializable {
                     }
 
                     if (!validUser) {
-                        label_error_user_name.setVisible(true);
+                        label_error.setVisible(true);
                     }
                     validUser = false;
                 } catch (SQLException ex) {
@@ -108,11 +112,11 @@ public class LoginViewController implements Initializable {
                 }
 
             } else if(tf_username.getText().length() > 2) {
-                label_error_user_name.setVisible(true);
+                label_error.setVisible(true);
             }
         });
 
-        tf_password.setOnMouseMoved((event) -> {
+        tf_password.setOnAction((event) -> {
             if (tf_password.getText().length() > 1) {
                 loginButton.setDisable(false);
             }
