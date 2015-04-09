@@ -65,31 +65,7 @@ public class LoginViewController implements Initializable {
     private void handleButtonAction(ActionEvent event) throws IOException {
         label_error.setVisible(false);
         
-        // md5 encryption check //
-        
-        if (md5(tf_password.getText()).equals(password)) {
-            objMain.setUser(userType);
-            loginSuccessful = true;
-        } else 
-        {
-            label_error.setVisible(true);
-        }
-
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-        label_error.setVisible(false);
-
-        tf_password.setDisable(true);
-        loginButton.setDisable(true);
-
-        con = SQLConnection.getConnection();
-
-        tf_username.setOnAction((event) -> {
-
-            if (isEmptyTextField(tf_username) == false && tf_username.getText().length() > 2 && tf_username.getText().contains("@") && tf_username.getText().contains(".")) {
+         if (isEmptyTextField(tf_username) == false && tf_username.getText().length() > 2 && tf_username.getText().contains("@") && tf_username.getText().contains(".")) {
 
                 String SQL = "SELECT * from user where username = '" + tf_username.getText() + "'";
                 try {
@@ -114,14 +90,24 @@ public class LoginViewController implements Initializable {
             } else if(tf_username.getText().length() > 2) {
                 label_error.setVisible(true);
             }
-        });
+        
+        // md5 encryption check //
+        
+        if (md5(tf_password.getText()).equals(password)) {
+            objMain.setUser(userType);
+            loginSuccessful = true;
+        } else 
+        {
+            label_error.setVisible(true);
+        }
 
-        tf_password.setOnAction((event) -> {
-            if (tf_password.getText().length() > 1) {
-                loginButton.setDisable(false);
-            }
+    }
 
-        });
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        label_error.setVisible(false);
+        con = SQLConnection.getConnection();
     }
 
     public void setPrevStage(Main obj) {

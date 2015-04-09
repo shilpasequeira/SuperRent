@@ -51,7 +51,7 @@ public class AdminDashboardController implements Initializable {
         try {    
            
             content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("clerk/ClerkDashboard.fxml")));
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("clerk/clerkMainView.fxml")));
         } catch (IOException ex) {
             Logger.getLogger(AdminDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
