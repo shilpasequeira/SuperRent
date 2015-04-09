@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.vehiclelist.VehicleListViewController">
+<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="860.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.vehiclelist.VehicleListViewController">
  <children>
     <Pane fx:id="pane" layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
       <children>
