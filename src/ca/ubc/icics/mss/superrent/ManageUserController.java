@@ -8,6 +8,7 @@ package ca.ubc.icics.mss.superrent;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
 import ca.ubc.icics.mss.superrent.manager.reports.Report;
 import ca.ubc.icics.mss.superrent.manager.reports.ReportsViewController;
+import static ca.ubc.icics.mss.superrent.validation.md5Check.md5;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -221,7 +222,7 @@ public class ManageUserController implements Initializable {
     public void submitButton(ActionEvent event) {
         RoleItemAdd.setText(ManagerItem.getText());
         SubmitButtonAdd.setDisable(false);
-        String SQL = "insert into user values('" + UserNameAdd.getText() + "','" + PasswordAdd.getText() + "','" + FirstNameAdd.getText() + "','" + LastNameAdd.getText() + "','" + RoleItemAdd.getText() + "')";
+        String SQL = "insert into user values('" + UserNameAdd.getText() + "','" + md5(PasswordAdd.getText()).toString() + "','" + FirstNameAdd.getText() + "','" + LastNameAdd.getText() + "','" + RoleItemAdd.getText() + "')";
         try {
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
