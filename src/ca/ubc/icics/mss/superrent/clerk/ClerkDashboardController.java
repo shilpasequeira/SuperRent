@@ -8,6 +8,7 @@ package ca.ubc.icics.mss.superrent.clerk;
 import ca.ubc.icics.mss.superrent.manager.ratecard.RateCard;
 import ca.ubc.icics.mss.superrent.clerk.customer.CustomerViewController;
 import ca.ubc.icics.mss.superrent.clerk.customer.*;
+import ca.ubc.icics.mss.superrent.clerk.vehiclelist.VehicleListViewController;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +32,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -54,6 +56,8 @@ public class ClerkDashboardController implements Initializable {
     private Pane HP;
     @FXML
     private Pane RC;
+    @FXML
+    private Pane content;
     @FXML
     private TableView sdata;
     @FXML
@@ -81,8 +85,7 @@ public class ClerkDashboardController implements Initializable {
                     + "where vehicle.vehicle_category = vehicle_category.vehicle_category "
                     + "and branch.branch_id = vehicle.branch_id "
                     + "and branch.city like '"+selectedBranch+"' "
-                    + "group by vehicle_category.vehicle_category;");) {
-        
+                    + "group by vehicle_category.vehicle_category;")){
             while(rs.next()) {
                 RateCard rc = new RateCard();
                 rc.setCategory(rs.getString("vehicle_category.vehicle_category"));
@@ -94,7 +97,7 @@ public class ClerkDashboardController implements Initializable {
         }catch (SQLException e){
             System.out.println("abc");
         }
-        
+        content.getChildren().clear();
         HP.setVisible(false);
         RC.setVisible(true);
     }
@@ -102,6 +105,7 @@ public class ClerkDashboardController implements Initializable {
     public void HomePage () {
         HP.setVisible(true);
         RC.setVisible(false);
+        content.getChildren().clear();
     }
     
     public void oPenCusView() throws IOException, SQLException {
@@ -114,13 +118,10 @@ public class ClerkDashboardController implements Initializable {
             
             if(rs.next()){
                 validPhoneNum.setText("");
-                Stage stage = new Stage();
-                stage.setTitle("CustomerView");
-                Pane myPane = null;
-                myPane = FXMLLoader.load(Customer.class.getResource("CustomerView.fxml"));
-                Scene scene = new Scene(myPane);
-                stage.setScene(scene);
-                stage.show();
+                content.getChildren().clear();
+                content.getChildren().add(FXMLLoader.load(Customer.class.getResource("CustomerView.fxml")));
+                HP.setVisible(false);
+                RC.setVisible(false);
             }
             else{
                 System.out.println("no such phone#...");
@@ -128,6 +129,41 @@ public class ClerkDashboardController implements Initializable {
             }
         } catch (SQLException e) {
             Logger.getLogger(ClerkDashboardController.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void openRentView(ActionEvent e) {
+        HP.setVisible(false);
+        RC.setVisible(false);
+        try {           
+            content.getChildren().clear();
+            VehicleListViewController.setModeRent();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("vehiclelist/VehicleListView.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ClerkDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void openReserveView(ActionEvent e) {
+        HP.setVisible(false);
+        RC.setVisible(false);
+        try {           
+            content.getChildren().clear();
+            VehicleListViewController.setModeReserve();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("vehiclelist/VehicleListView.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ClerkDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void openReportView(ActionEvent e) {
+        HP.setVisible(false);
+        RC.setVisible(false);
+        try {           
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("vehiclelist/VehicleListView.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ClerkDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -155,10 +191,7 @@ public class ClerkDashboardController implements Initializable {
         selectedBranch = (String)BName.get(0);
         
         //group the two radiobutton
-        ToggleGroup groupT = new ToggleGroup();
-        carRadio.setToggleGroup(groupT);
-        truckRadio.setToggleGroup(groupT);
-        carRadio.setSelected(true);
+        
         
         sdata.setItems(RCList);
         
