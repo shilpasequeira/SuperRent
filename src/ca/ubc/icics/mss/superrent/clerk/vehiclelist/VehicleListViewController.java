@@ -47,6 +47,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import ca.ubc.icics.mss.superrent.clerk.rentreserve.RentReserveFormController;
+import javafx.scene.control.Label;
 /**
  * FXML Controller class
  *
@@ -92,6 +93,7 @@ public class VehicleListViewController implements Initializable {
     
     @FXML private DatePicker startDateField;
     @FXML private DatePicker endDateField;
+    @FXML private Label Title;
     
     private TableView table;
     private TableView tableTruck;
@@ -132,6 +134,22 @@ public class VehicleListViewController implements Initializable {
         tableTruck.setPrefWidth(670);
         tabTruck.setContent(tableTruck);
         currentButton = "Available";
+        if (mode == RENT || mode == RESERVE )
+        {
+            Available.setVisible(false);
+            Overdue.setVisible(false);
+            Sale.setVisible(false);
+            Title.setVisible(true);
+        }
+        else
+        {
+            Available.setVisible(true);
+            Overdue.setVisible(true);
+            Sale.setVisible(true);
+            Title.setVisible(false);
+        }
+        
+        
     }
     
     public static void setModeRent() {
@@ -150,6 +168,9 @@ public class VehicleListViewController implements Initializable {
        table = getTableOverdueView("All Locations","All Category","CAR");
        table.setPrefWidth(670);
        tabCar.setContent(table);
+       tableTruck = getTableOverdueView("All Locations","All Category","CAR");
+       tableTruck.setPrefWidth(670);
+       tabTruck.setContent(tableTruck);
         
     }
     
@@ -160,6 +181,9 @@ public class VehicleListViewController implements Initializable {
        table = getTableSalesView("All Locations","All Category","CAR");
        table.setPrefWidth(670);
        tabCar.setContent(table);
+       tableTruck = getTableSalesView("All Locations","All Category","TRUCK");
+       tableTruck.setPrefWidth(670);
+       tabTruck.setContent(tableTruck);
     }
 
     
@@ -169,6 +193,9 @@ public class VehicleListViewController implements Initializable {
        table = getTableAvailabiltyView("All Locations","All Category","CAR");
        table.setPrefWidth(670);
        tabCar.setContent(table);
+       tableTruck = getTableAvailabiltyView("All Locations","All Category","TRUCK");
+       tableTruck.setPrefWidth(670);
+       tabTruck.setContent(tableTruck);
     }
     
      @FXML
@@ -187,13 +214,25 @@ public class VehicleListViewController implements Initializable {
            
   
        if ( currentButton.equals("Available"))
+       {
        table = getTableAvailabiltyView(b_name,cat,"CAR");
+       tableTruck = getTableAvailabiltyView(b_name,cat,"TRUCK");
+       }
        else if ( currentButton.equals("Overdue"))
+       {
        table = getTableOverdueView(b_name,cat,"CAR");
+       tableTruck = getTableOverdueView(b_name,cat,"TRUCK");
+       }
        else if ( currentButton.equals("For Sale"))
+       {
        table = getTableSalesView(b_name,cat,"CAR");
+       tableTruck = getTableSalesView(b_name,cat,"TRUCK");
+       }
        table.setPrefWidth(670);
        tabCar.setContent(table);
+       tableTruck.setPrefWidth(670);
+       tabTruck.setContent(tableTruck);
+       
     }
     
     
@@ -725,15 +764,18 @@ que    = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.
         Button x = (Button) event.getSource();
         Stage rentReserveStage = new Stage();
         
-        if (mode.equals("RENT")) {
+    switch (mode) {
+        case "RENT":
             RentReserveFormController.setModeRent(Integer.parseInt(x.getId()), 
-                    getTimestamp(startDateField, start_time), 
+                    getTimestamp(startDateField, start_time),
                     getTimestamp(endDateField, end_time));
-        } else if (mode.equals("RESERVE")) {
+            break;
+        case "RESERVE":
             RentReserveFormController.setModeReserve(Integer.parseInt(x.getId()), 
-                    getTimestamp(startDateField, start_time), 
+                    getTimestamp(startDateField, start_time),
                     getTimestamp(endDateField, end_time));
-        }
+            break;
+    }
         
         FXMLLoader myLoader = new FXMLLoader(RentReserveFormController.class.getResource("RentReserveForm.fxml"));
         AnchorPane myPane = (AnchorPane) myLoader.load();        
