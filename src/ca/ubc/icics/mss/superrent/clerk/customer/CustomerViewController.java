@@ -11,6 +11,7 @@ import ca.ubc.icics.mss.superrent.clerk.rentreserve.Reserve;
 import ca.ubc.icics.mss.superrent.clerk.returns.Return;
 import ca.ubc.icics.mss.superrent.clerk.returns.ReturnFormController;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
+import ca.ubc.icics.mss.superrent.validation.Validate;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -28,8 +29,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -50,6 +54,33 @@ public class CustomerViewController implements Initializable {
     private TableView returnTable;
     @FXML
     private AnchorPane InfoCus;
+    @FXML private Label errorMessageField;
+    @FXML private Label firstNameLabel;
+    @FXML private TextField firstNameField;
+    @FXML private Label firstNameErrorLabel;
+    @FXML private Label lastNameLabel;
+    @FXML private TextField lastNameField;
+    @FXML private Label lastNameErrorLabel;
+    @FXML private Label addressLabel;
+    @FXML private TextField addressField;
+    @FXML private Label addressErrorLabel;
+    @FXML private Label cityLabel;
+    @FXML private TextField cityField;
+    @FXML private Label cityErrorLabel;
+    @FXML private Label pincodeLabel;
+    @FXML private TextField pincodeField;
+    @FXML private Label pincodeErrorLabel;
+    @FXML private Label phoneLabel;
+    @FXML private TextField phoneField;
+    @FXML private Label phoneErrorLabel;
+    @FXML private Label clubMemberPts;
+    @FXML
+    private CheckBox isRoadStarCheckBox;
+    @FXML
+    private CheckBox applyMembershipCheckBox;
+    
+    
+    private Customer customerModel;
     
     //rent table columns
     private TableColumn<Rent, Integer> rtID;
@@ -108,21 +139,37 @@ public class CustomerViewController implements Initializable {
     
     public void ContinueRent() {
         System.out.println("rent this vehicle..");
+        try {
+            Reserve reserveModel = (Reserve) reserveTable.getSelectionModel().getSelectedItem();
+            System.out.println("return this vehicle.. " + reserveModel.getID());
+            
+            Stage returnStage = new Stage();
+            RentReserveFormController.setModeRentWithReservation(reserveModel.getReserveID());
+            FXMLLoader myLoader = new FXMLLoader(RentReserveFormController.class.getResource("RentReserveForm.fxml"));
+            AnchorPane myPane = (AnchorPane) myLoader.load();
+            Scene myScene = new Scene(myPane);
+            returnStage.setScene(myScene);
+            returnStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(CustomerViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public void CancelReserve() {
+    public void CancelReserve() throws ClassNotFoundException {
         System.out.println("cancel this reservation");
+        Reserve reserveModel = (Reserve) reserveTable.getSelectionModel().getSelectedItem();
+        reserveModel.cancelReservation(reserveModel.getReserveID());
+        iniReserveData();
     }
     
     public void iniReserveData() throws ClassNotFoundException {
         rsInfolist.clear();
-        try (Connection con = SQLConnection.getConnection();
-                ResultSet rs = con.createStatement().executeQuery("select reserve_id, "
-                        + "reserve.customer_id, vehicle_id, start_date_time, "
-                        + "end_date_time, estimate from customer, reserve "
-                        + "where phone_no = "+PhoneNumber+" and customer.customer_id = "
-                        + "reserve.customer_id;")) {
-                
+        try(Connection con = SQLConnection.getConnection();
+                ResultSet rs = con.createStatement().executeQuery("select reserve_id,"
+                        + " reserve.customer_id, vehicle_id, start_date_time,"
+                        + " end_date_time, estimate from customer, reserve where"
+                        + " phone_no = "+PhoneNumber+" and customer.customer_id ="
+                        + " reserve.customer_id;");){
             while(rs.next()){
                 Reserve rsv = new Reserve();
                 rsv.setCustomerID(rs.getInt("reserve.customer_id"));
@@ -180,6 +227,62 @@ public class CustomerViewController implements Initializable {
         }
         
     }
+    
+    public void iniCusInfo() {
+        customerModel = CustomerRepository.searchForCustomerByPhone(
+                    PhoneNumber);
+        phoneField.setText(PhoneNumber);
+        firstNameField.setText(customerModel.getFirstName());
+        lastNameField.setText(customerModel.getLastName());
+        addressField.setText(customerModel.getAddress());
+        cityField.setText(customerModel.getCity());
+        pincodeField.setText(customerModel.getPincode());
+        isRoadStarCheckBox.setSelected(customerModel.getIsRoadStar());
+        applyMembershipCheckBox.setSelected(customerModel.getIsClubMember());
+        clubMemberPts.setText("Points : "+customerModel.getPoints());
+        //phoneNumberEntered();
+    }
+    
+    @FXML private void phoneNumberEntered() {
+        System.out.println("phoneNumberEntered");
+        // Check if the phone number is a valid format.
+        if (Validate.isValidPhoneNumber(phoneField, phoneErrorLabel)) {
+            // Convert the phone number to integer and search for a customer
+            // with that phone number.
+            Customer customerModel1 = CustomerRepository.searchForCustomerByPhone(
+                    phoneField.getText().trim());
+            if(customerModel1 != null && customerModel1.getID() != customerModel.getID()){
+                this.errorMessageField.setText("This phone number already exists");
+            }
+            else{
+                this.errorMessageField.setText("");
+            }
+        }
+    }
+    
+    public void saveCustomer() {
+        boolean valid = Validate.isValidPhoneNumber(phoneField, phoneErrorLabel) && 
+                !Validate.isEmptyTextField(firstNameField, firstNameErrorLabel) &&
+                    !Validate.isEmptyTextField(lastNameField, lastNameErrorLabel) &&
+                    !Validate.isEmptyTextField(addressField, addressErrorLabel) &&
+                    !Validate.isEmptyTextField(cityField, cityErrorLabel) &&
+                    !Validate.isEmptyTextField(pincodeField, pincodeErrorLabel);
+        if (valid) {
+            errorMessageField.setVisible(false);
+            customerModel.updateCustomer(firstNameField.getText().trim(), lastNameField.getText().trim(), 
+                    addressField.getText().trim(), phoneField.getText().trim(), cityField.getText().trim(),
+                    pincodeField.getText().trim(), isRoadStarCheckBox.selectedProperty().getValue(), 
+                    applyMembershipCheckBox.selectedProperty().getValue());
+            if(applyMembershipCheckBox.selectedProperty().getValue()){
+                clubMemberPts.setText("Points : "+customerModel.getPoints());
+            }
+            else{
+                clubMemberPts.setText("");
+            }
+        } else {
+            errorMessageField.setText("Please check the errors.");
+        }
+    }
     /**
      * Initializes the controller class.
      */
@@ -188,16 +291,7 @@ public class CustomerViewController implements Initializable {
         // TODO
         System.out.println(PhoneNumber);
         //============================Info======================================
-        //InfoCus.getChildren().setAll(FXMLLoader.load(RateCard.class.getResource("ratecard.fxml")));
-//        Pane myPane = null;
-//        try {
-//            myPane = FXMLLoader.load(RateCard.class.getResource("ratecard.fxml"));
-//            InfoCus.getChildren().addAll(myPane);
-//            //======================================================================
-//        } catch (IOException ex) {
-//            Logger.getLogger(CustomerViewController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
+        iniCusInfo();
         //============================rent Table================================
         rtID = new TableColumn("rentID");
         //rType.setMinWidth(141.4);
