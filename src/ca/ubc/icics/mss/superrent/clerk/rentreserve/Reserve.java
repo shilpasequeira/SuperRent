@@ -330,4 +330,17 @@ public class Reserve {
     public int getEstimate() {
         return estimate;
     }
+
+    
+    public void cancelReservation (int resId) {
+        try(Connection con = SQLConnection.getConnection();
+                Statement stmt = con.createStatement();){
+            stmt.executeUpdate(
+                    "delete from reserve where reserve_id = "
+                            + resId+";");
+        }catch (SQLException e){
+            System.out.println("update fail");
+        }
+    }
+    
 }
