@@ -160,6 +160,9 @@ public class VehicleListViewController implements Initializable {
         mode = RESERVE;
     }
     
+    public static void setModeReport() {
+        mode = REPORT;
+    }
     
     @FXML
     private void OverdueButtonAction(ActionEvent event) {

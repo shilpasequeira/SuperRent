@@ -159,7 +159,8 @@ public class ClerkDashboardController implements Initializable {
     public void openReportView(ActionEvent e) {
         HP.setVisible(false);
         RC.setVisible(false);
-        try {           
+        try {     
+            VehicleListViewController.setModeReport();
             content.getChildren().clear();
             content.getChildren().add(FXMLLoader.load(getClass().getResource("vehiclelist/VehicleListView.fxml")));
         } catch (IOException ex) {
