@@ -43,6 +43,10 @@ public class ManageUserController implements Initializable {
 
     @FXML
     private TextField FirstNameAdd;
+    @FXML
+    private TextField cityTB;
+    @FXML
+    private TextField LocationTB;
 
     @FXML
     private TextField LastNameAdd;
@@ -90,6 +94,10 @@ public class ManageUserController implements Initializable {
 
     @FXML
     private Label userAdded;
+    
+    @FXML
+    private Label BranchError;
+     ;
 
     @FXML
     private TextField SearchUserTextBox;
@@ -101,6 +109,11 @@ public class ManageUserController implements Initializable {
     Statement st = null;
     private PreparedStatement preparedStatement;
 
+    @FXML
+    private Pane BranchPane;
+
+    
+    
     /**
      * Initializes the controller class.
      */
@@ -113,7 +126,7 @@ public class ManageUserController implements Initializable {
         AddUserID.setToggleGroup(RentReturn);
         setVisibility();
         con = SQLConnection.getConnection();
-
+        BranchPane.setVisible(false);
         UserNameAdd.setOnMouseMoved((event) -> {
             String SQL = "SELECT * from user where username = '" + UserNameAdd.getText() + "'";
             try {
@@ -199,11 +212,27 @@ public class ManageUserController implements Initializable {
         Remove.setVisible(false);
         ModifyButtonAdd.setVisible(false);
         ModifyButtonAdd.setDisable(true);
+        BranchPane.setVisible(false);
     }
 
     @FXML
-    public void userVerificationAction(ActionEvent event) {
-
+    public void branchAddAction(ActionEvent event) {
+        BranchPane.setVisible(true);
+        String SQL = "insert into branch(city,location) values('" + cityTB.getText() + "','" + LocationTB.getText()+ "')";
+        try {
+            preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
+            preparedStatement.executeUpdate();
+            BranchError.setText("Branch Added");
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+            BranchError.setText("Location already available");
+        }
+        
+    }
+    
+    @FXML
+    public void branchRadioAddAction(ActionEvent event) {
+        BranchPane.setVisible(true);   
     }
 
     @FXML

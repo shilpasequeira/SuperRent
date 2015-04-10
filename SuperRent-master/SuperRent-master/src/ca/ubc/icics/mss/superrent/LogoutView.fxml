@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" layoutX="80.0" minHeight="21.000077929682448" prefHeight="21.000077929682448" prefWidth="61.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.applicationAccess">
+  <children>
+    <Button layoutX="650.0" layoutY="10.0" mnemonicParsing="false" onAction="#logOutButton" prefWidth="61.0" text="LogOut" />
+  </children>
+  <stylesheets>
+    <URL value="@logoutview.css" />
+  </stylesheets>
+</AnchorPane>

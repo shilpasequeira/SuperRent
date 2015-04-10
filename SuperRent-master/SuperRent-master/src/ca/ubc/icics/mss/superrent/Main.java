@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package ca.ubc.icics.mss.superrent;
-
 import ca.ubc.icics.mss.superrent.login.LoginViewController;
 import java.io.IOException;
 import javafx.application.Application;
@@ -19,12 +18,11 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private Stage primaryStage;
+    private  Stage primaryStage;
     private applicationAccess applicationAccess;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         this.primaryStage = primaryStage;
         FXMLLoader myLoader = new FXMLLoader(getClass().getResource("login/LoginView.fxml"));
         AnchorPane myPane = (AnchorPane) myLoader.load();
@@ -37,8 +35,8 @@ public class Main extends Application {
 
     public void setUser(String role) throws IOException {
         applicationAccess = new applicationAccess();
-        primaryStage.close();
-        applicationAccess.setViewForUser(role);
+       // primaryStage.close();
+        applicationAccess.setViewForUser(role,primaryStage);
     }
 
     /**
