@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" layoutX="80.0" minHeight="9.999986376948073" minWidth="13.0" prefHeight="9.999986376948073" prefWidth="124.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.applicationAccess">
+<AnchorPane id="AnchorPane" layoutX="80.0" minHeight="9.999986376948073" minWidth="13.0" prefHeight="28.000001635737135" prefWidth="47.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.applicationAccess">
   <children>
-    <Button contentDisplay="TOP" layoutX="650.0" layoutY="10.0" minHeight="18.0" mnemonicParsing="false" onAction="#logOutButton" prefHeight="18.0" prefWidth="61.0" text="LogOut" textAlignment="CENTER" textFill="RED" wrapText="true">
+    <Button contentDisplay="TOP" layoutX="-20.0" layoutY="15.0" minHeight="18.0" mnemonicParsing="false" onAction="#logOutButton" prefHeight="29.0" prefWidth="67.0" text="LogOut" textAlignment="CENTER" textFill="RED" wrapText="true">
       <font>
-        <Font size="8.0" />
+        <Font size="12.0" />
       </font>
     </Button>
   </children>
