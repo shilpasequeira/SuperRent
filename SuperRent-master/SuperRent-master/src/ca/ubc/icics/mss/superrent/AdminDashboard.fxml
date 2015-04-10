@@ -11,9 +11,9 @@
   <children>
     <Pane layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
       <children>
-        <Button fx:id="manageUserButton" layoutX="32.0" layoutY="11.0" mnemonicParsing="false" onAction="#manageUserButtonAction" prefHeight="27.9609375" prefWidth="82.00009999999747" text="Manage " />
-        <Button fx:id="AccessCustomerButton" layoutX="135.0" layoutY="11.0" mnemonicParsing="false" onAction="#accessClerkButtonAction" prefHeight="27.9609375" prefWidth="76.00009999999747" text=" Clerk" />
-        <Button fx:id="AccessManagerButton" layoutX="253.0" layoutY="11.0" mnemonicParsing="false" onAction="#accessManagerButtonAction" prefHeight="27.9609375" prefWidth="76.00009999999747" text=" Manager" />
+        <Button fx:id="manageUserButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#manageUserButtonAction" prefHeight="27.9609375" prefWidth="82.00009999999747" text="Manage " />
+        <Button fx:id="AccessCustomerButton" layoutX="113.0" layoutY="14.0" mnemonicParsing="false" onAction="#accessClerkButtonAction" prefHeight="27.9609375" prefWidth="76.00009999999747" text=" Clerk" />
+        <Button fx:id="AccessManagerButton" layoutX="205.0" layoutY="14.0" mnemonicParsing="false" onAction="#accessManagerButtonAction" prefHeight="27.9609375" prefWidth="76.00009999999747" text=" Manager" />
       </children>
     </Pane>
     <Pane fx:id="content" layoutX="0.0" layoutY="52.0" />

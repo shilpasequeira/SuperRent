@@ -6,10 +6,15 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" layoutX="80.0" minHeight="21.000077929682448" prefHeight="21.000077929682448" prefWidth="61.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.applicationAccess">
+<AnchorPane id="AnchorPane" layoutX="80.0" minHeight="9.999986376948073" minWidth="13.0" prefHeight="9.999986376948073" prefWidth="124.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.applicationAccess">
   <children>
-    <Button layoutX="650.0" layoutY="10.0" mnemonicParsing="false" onAction="#logOutButton" prefWidth="61.0" text="LogOut" />
+    <Button contentDisplay="TOP" layoutX="650.0" layoutY="10.0" minHeight="18.0" mnemonicParsing="false" onAction="#logOutButton" prefHeight="18.0" prefWidth="61.0" text="LogOut" textAlignment="CENTER" textFill="RED" wrapText="true">
+      <font>
+        <Font size="8.0" />
+      </font>
+    </Button>
   </children>
   <stylesheets>
     <URL value="@logoutview.css" />
