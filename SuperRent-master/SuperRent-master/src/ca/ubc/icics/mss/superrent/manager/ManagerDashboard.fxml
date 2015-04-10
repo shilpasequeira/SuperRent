@@ -11,9 +11,9 @@
   <children>
     <Pane fx:id="pane" layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
       <children>
-        <Button fx:id="ReportGenerationButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#ReportButtonAction" prefWidth="68.0" text="Reports" />
-        <Button fx:id="ManageInventoryButton" layoutX="118.0" layoutY="12.0" mnemonicParsing="false" onAction="#manageInventoryButtonAction" text="Inventory" />
-        <Button fx:id="RateCardButton" layoutX="205.0" layoutY="12.0" mnemonicParsing="false" onAction="#ratecardButtonAction" prefWidth="81.0" text="Rate Card " />
+        <Button fx:id="ReportGenerationButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#ReportButtonAction" prefWidth="80.99990000000253" text="Reports" />
+        <Button fx:id="ManageInventoryButton" layoutX="118.0" layoutY="12.0" mnemonicParsing="false" onAction="#manageInventoryButtonAction" prefWidth="68.0" text="Inventory" />
+        <Button fx:id="RateCardButton" layoutX="205.0" layoutY="12.0" mnemonicParsing="false" onAction="#ratecardButtonAction" prefWidth="96.0" text="Rate Card " />
       </children>
     </Pane>
     <Pane fx:id="content" layoutX="0.0" layoutY="52.0" />

@@ -42,7 +42,7 @@
     <Label fx:id="UserNameLabel" layoutX="173.0" layoutY="226.0" prefWidth="168.0" text="" />
     <Button fx:id="Remove" layoutX="414.0" layoutY="182.0" mnemonicParsing="false" onAction="#removeButtonAction" prefWidth="86.0" text="Remove" />
     <Button fx:id="EditButton" layoutX="414.0" layoutY="182.0" mnemonicParsing="false" onAction="#editButtonAction" prefWidth="86.0" text="Edit" />
-    <RadioButton id="AddBranch" layoutX="367.0" layoutY="124.0" mnemonicParsing="false" onAction="#branchRadioAddAction" text="Add Branch" />
+    <RadioButton fx:id="AddBranch" layoutX="367.0" layoutY="124.0" mnemonicParsing="false" onAction="#branchRadioAddAction" text="Add Branch" />
     <Pane fx:id="BranchPane" layoutX="105.0" layoutY="174.0" prefHeight="261.0" prefWidth="317.0">
       <children>
         <TextField fx:id="cityTB" layoutX="91.0" layoutY="52.0" prefWidth="200.0" />

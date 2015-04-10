@@ -82,6 +82,9 @@ public class ManageUserController implements Initializable {
 
     @FXML
     private RadioButton EditUser;
+    
+    @FXML
+    private RadioButton AddBranch;
 
     @FXML
     private Pane PaneUserForm;
@@ -124,6 +127,7 @@ public class ManageUserController implements Initializable {
         EditUser.setToggleGroup(RentReturn);
         RemoveUserID.setToggleGroup(RentReturn);
         AddUserID.setToggleGroup(RentReturn);
+        AddBranch.setToggleGroup(RentReturn);
         setVisibility();
         con = SQLConnection.getConnection();
         BranchPane.setVisible(false);
@@ -217,7 +221,7 @@ public class ManageUserController implements Initializable {
 
     @FXML
     public void branchAddAction(ActionEvent event) {
-        BranchPane.setVisible(true);
+      
         String SQL = "insert into branch(city,location) values('" + cityTB.getText() + "','" + LocationTB.getText()+ "')";
         try {
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
@@ -232,6 +236,7 @@ public class ManageUserController implements Initializable {
     
     @FXML
     public void branchRadioAddAction(ActionEvent event) {
+        setVisibility();
         BranchPane.setVisible(true);   
     }
 
