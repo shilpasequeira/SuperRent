@@ -93,7 +93,7 @@ public class ReturnFormController implements Initializable {
         grossTotal.setText(returnModel.getGrossTotal() + " CAD");
         additonalEquipmentCost.setText(returnModel.getEquipmentCost() + " CAD");
         insuranceCost.setText(returnModel.getInsuranceCost() + " CAD");
-        grandTotal.setText(returnModel.getGrandTotal() + " CAD");
+        grandTotal.setText(returnModel.calculateGrandTotal() + " CAD");
     }
     
     /**
@@ -132,10 +132,11 @@ public class ReturnFormController implements Initializable {
             //grandTotal.setText(returnModel.getGrandTotal() + " CAD");
             //pointsUsed.setText(returnModel.getPointsUsed() + " points used.");
             
-            String payMethod = "";
+            String payMethod = "NONE";
             if (paymentMethod.getValue() != null) {
                 payMethod = paymentMethod.getValue().toString();
             }
+            
             returnModel.confirmReturn(
                     Integer.parseInt(odometerReadingField.getText().trim()), 
                     tankFullCheckbox.selectedProperty().getValue(), true,
