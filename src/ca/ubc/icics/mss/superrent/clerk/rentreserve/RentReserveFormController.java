@@ -185,7 +185,7 @@ public class RentReserveFormController implements Initializable  {
             
             // If a customer exists, populate the fields with his values.
             if (customerModel != null) {
-                phoneField.setDisable(true);
+                //phoneField.setDisable(true);
                 firstNameField.setText(customerModel.getFirstName());
                 lastNameField.setText(customerModel.getLastName());
                 addressField.setText(customerModel.getAddress());
@@ -221,23 +221,23 @@ public class RentReserveFormController implements Initializable  {
             // If no customer exists, enable the fields to enter information.
             else {
                 firstNameField.setDisable(false);
-                firstNameField.setText("");
+                //firstNameField.setText("");
                 lastNameField.setDisable(false);
-                lastNameField.setText("");
+                //lastNameField.setText("");
                 addressField.setDisable(false);
-                addressField.setText("");
+                //addressField.setText("");
                 cityField.setDisable(false);
-                cityField.setText("");
+                //cityField.setText("");
                 pincodeField.setDisable(false);
-                pincodeField.setText("");
+                //pincodeField.setText("");
                 isRoadStarCheckBox.setDisable(false);
-                isRoadStarCheckBox.setVisible(true);
-                isRoadStarCheckBox.setSelected(false);
+                //isRoadStarCheckBox.setVisible(true);
+                //isRoadStarCheckBox.setSelected(false);
                 applyMembershipCheckBox.setDisable(false);
-                applyMembershipCheckBox.setVisible(true);
-                applyMembershipCheckBox.setSelected(false);
-                clubMemberPts.setText("");
-                customerModel = null;
+                //applyMembershipCheckBox.setVisible(true);
+                //applyMembershipCheckBox.setSelected(false);
+                //clubMemberPts.setText("");
+                //customerModel = null;
             }
         }
     }
@@ -301,21 +301,26 @@ public class RentReserveFormController implements Initializable  {
         phoneField.setDisable(false);
         phoneErrorLabel.setText("");
         firstNameField.setText("");
+        firstNameField.setDisable(true);
         firstNameErrorLabel.setText("");
         lastNameField.setText("");
+        lastNameField.setDisable(true);
         lastNameErrorLabel.setText("");
         addressField.setText("");
+        addressField.setDisable(true);
         addressErrorLabel.setText("");
         cityField.setText("");
+        cityField.setDisable(true);
         cityErrorLabel.setText("");
         pincodeField.setText("");
+        pincodeField.setDisable(true);
         pincodeErrorLabel.setText("");
         equipmentCheckBox1.setSelected(false);
         equipmentCheckBox2.setSelected(false);
         isRoadStarCheckBox.setSelected(false);
-        isRoadStarCheckBox.setDisable(false);
+        isRoadStarCheckBox.setDisable(true);
         applyMembershipCheckBox.setSelected(false);
-        applyMembershipCheckBox.setDisable(false);
+        applyMembershipCheckBox.setDisable(true);
         clubMemberPts.setText("");
         estimateLabel.setText("");
         
