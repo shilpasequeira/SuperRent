@@ -17,8 +17,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -270,17 +273,27 @@ public class ReportsViewController implements Initializable {
         String textgapdot = "  . \n";
         String columns;
         Writer writer = null;
+        String FileName;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        
+        if (rentreserveSelection.equals("Rent")) {
+            FileName = date.toString().substring(0, 6) + "Rent.csv";
+        } else {
+            FileName = date.toString().substring(0, 6) + "Return.csv";
+
+        }
         try {
             DirectoryChooser dc = new DirectoryChooser();
             File file = dc.showDialog(null);
             if (file != null) {
 
-                file = new File(file.getAbsolutePath() + "/rent.csv");
-            }
-            // File file = new File("C:\\Users\\warrior\\Desktop\\rent.csv");
+                file = new File(file.getAbsolutePath() + "/"+FileName);
+            }           
             writer = new BufferedWriter(new FileWriter(file));
             writer.write(textgapdot);
-            String textgap = "Main Report for vehicle\n";
+            String textgap = " Report for vehicle\n";
             writer.write(textgap);
             if (rentreserveSelection.equals("Rent")) {
                 columns = "ID" + "," + "Category" + "," + " Rent Date" + "," + "Name" + "," + "Estimated Price" + "," + "Branch" + "," + "\n";
@@ -326,11 +339,12 @@ public class ReportsViewController implements Initializable {
             columns = "Total Cost =" + "," + CostLabel.getText() + "," + "\n";
             writer.write(columns);
         } catch (Exception ex) {
-        } finally {
+        }finally
+        {
+           
             writer.flush();
-            writer.close();
+             writer.close();
         }
-
     }
 
     @FXML
