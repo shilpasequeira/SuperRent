@@ -58,7 +58,7 @@ public class LoginViewController implements Initializable {
     private boolean loginSuccessful = false;
     private String userType = "";
     private Object stage;
-    private Main objMain;
+    private static Main objMain;
     
     
     @FXML

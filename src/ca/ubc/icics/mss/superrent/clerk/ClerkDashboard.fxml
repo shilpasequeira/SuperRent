@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" stylesheets="@../manager/managerdashboard.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.clerk.ClerkDashboardController">
-    <children>
-      <Pane prefHeight="53.0" prefWidth="800.0" styleClass="pane">
-         <children>
-            <Button layoutX="145.0" layoutY="11.0" mnemonicParsing="false" onAction="#openRentView" prefHeight="26.0" prefWidth="82.0" text="Rent" />
-            <Button layoutX="275.0" layoutY="11.0" mnemonicParsing="false" onAction="#openReserveView" prefHeight="26.0" prefWidth="75.0" text="Reserve" />
-            <Button layoutX="22.0" layoutY="11.0" mnemonicParsing="false" onAction="#HomePage" prefHeight="26.0" prefWidth="75.0" text="Home" />
-            <Button layoutX="400.0" layoutY="11.0" mnemonicParsing="false" onAction="#oPenRC" prefHeight="26.0" prefWidth="75.0" text="RateCard" />
-            <Button layoutX="527.0" layoutY="11.0" mnemonicParsing="false" onAction="#openReportView" prefHeight="26.0" prefWidth="69.0" text="Reports" />
-         </children>
-      </Pane>
-      <Pane fx:id="content" layoutY="53.0" />
-      <Pane fx:id="RC" layoutX="47.0" layoutY="74.0" prefHeight="512.0" prefWidth="705.0" visible="false">
-         <children>
-            <TableView fx:id="sdata" layoutY="31.0" prefHeight="430.0" prefWidth="705.0">
-            </TableView>
-            <Button fx:id="back" layoutX="656.0" layoutY="466.0" mnemonicParsing="false" onAction="#HomePage" text="Back" />
-            <ChoiceBox fx:id="branch" layoutX="554.0" layoutY="1.0" prefWidth="150.0" />
-         </children>
-      </Pane>
-      <Pane fx:id="HP" layoutX="101.0" layoutY="125.0" prefHeight="354.0" prefWidth="598.0" stylesheets="@../mainview.css">
-         <children>
-            <Label layoutX="154.0" layoutY="52.0" text="Clerk Dashboard">
-               <font>
-                  <Font size="40.0" />
-               </font>
-            </Label>
-            <Label layoutX="64.0" layoutY="162.0" text="Customer's Phone #">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Label>
-            <TextField fx:id="phoneNum" layoutX="347.0" layoutY="164.0" onAction="#oPenCusView" prefHeight="26.0" prefWidth="181.0" />
-            <Label fx:id="validPhoneNum" layoutX="357.0" layoutY="200.0" prefHeight="16.0" prefWidth="161.0" />
-         </children>
-      </Pane>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.clerk.ClerkDashboardController">
+  <children>
+    <Pane prefHeight="53.0" prefWidth="800.0" styleClass="pane">
+      <children>
+        <Button layoutX="257.0" layoutY="14.0" mnemonicParsing="false" onAction="#openRentView" prefHeight="26.0" prefWidth="82.0" text="Rent" />
+        <Button layoutX="363.0" layoutY="14.0" mnemonicParsing="false" onAction="#openReserveView" prefHeight="26.0" prefWidth="75.0" text="Reserve" />
+        <Button layoutX="155.0" layoutY="14.0" mnemonicParsing="false" onAction="#HomePage" prefHeight="26.0" prefWidth="75.0" text="Home" />
+        <Button layoutX="481.0" layoutY="14.0" mnemonicParsing="false" onAction="#oPenRC" prefHeight="26.0" prefWidth="75.0" text="RateCard" />
+        <Button layoutX="580.0" layoutY="14.0" mnemonicParsing="false" onAction="#openReportView" prefHeight="26.0" prefWidth="69.0" text="Reports" />
+      </children>
+    </Pane>
+    <Pane fx:id="content" layoutY="53.0" />
+    <Pane fx:id="RC" layoutX="47.0" layoutY="74.0" prefHeight="512.0" prefWidth="705.0" visible="false">
+      <children>
+        <TableView fx:id="sdata" layoutY="31.0" prefHeight="430.0" prefWidth="705.0" />
+        <Button fx:id="back" layoutX="656.0" layoutY="466.0" mnemonicParsing="false" onAction="#HomePage" text="Back" />
+        <ChoiceBox fx:id="branch" layoutX="554.0" layoutY="1.0" prefWidth="150.0" />
+      </children>
+    </Pane>
+    <Pane fx:id="HP" layoutX="101.0" layoutY="125.0" prefHeight="354.0" prefWidth="598.0">
+      <children>
+        <Label layoutX="154.0" layoutY="52.0" text="Clerk Dashboard">
+          <font>
+            <Font size="40.0" />
+          </font>
+        </Label>
+        <Label layoutX="64.0" layoutY="162.0" text="Customer's Phone #">
+          <font>
+            <Font size="25.0" />
+          </font>
+        </Label>
+        <TextField fx:id="phoneNum" layoutX="347.0" layoutY="164.0" onAction="#oPenCusView" prefHeight="26.0" prefWidth="181.0" />
+        <Label fx:id="validPhoneNum" layoutX="357.0" layoutY="200.0" prefHeight="16.0" prefWidth="161.0" />
+      </children>
+    </Pane>
+  </children>
+   <stylesheets>
+    <URL value="@clerkdashboard.css" />
+  </stylesheets>
 </AnchorPane>

@@ -7,14 +7,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.manager.ManagerDashboardController">
+<AnchorPane id="AnchorPane" prefHeight="1024.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.manager.ManagerDashboardController">
   <children>
     <Pane fx:id="pane" layoutX="0.0" layoutY="0.0" prefHeight="52.0" prefWidth="800.0" styleClass="pane">
       <children>
-        <Button fx:id="ReportGenerationButton" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#ReportButtonAction" prefWidth="68.0" text="Reports" />
-        <Button fx:id="ManageInventoryButton" layoutX="118.0" layoutY="12.0" mnemonicParsing="false" onAction="#manageInventoryButtonAction" text="Inventory" />
-        <Button fx:id="RateCardButton" layoutX="205.0" layoutY="12.0" mnemonicParsing="false" onAction="#ratecardButtonAction" prefWidth="81.0" text="Rate Card " />
-        <Button fx:id="LogOutButton" layoutX="310.0" layoutY="13.0" mnemonicParsing="false" prefWidth="63.0" text="Logout" />
+        <Button fx:id="ReportGenerationButton" layoutX="178.0" layoutY="14.0" mnemonicParsing="false" onAction="#ReportButtonAction" prefWidth="68.0" text="Reports" />
+        <Button fx:id="ManageInventoryButton" layoutX="262.0" layoutY="14.0" mnemonicParsing="false" onAction="#manageInventoryButtonAction" text="Inventory" />
+        <Button fx:id="RateCardButton" layoutX="344.0" layoutY="13.0" mnemonicParsing="false" onAction="#ratecardButtonAction" prefWidth="81.0" text="Rate Card " />
       </children>
     </Pane>
     <Pane fx:id="content" layoutX="0.0" layoutY="52.0" />
