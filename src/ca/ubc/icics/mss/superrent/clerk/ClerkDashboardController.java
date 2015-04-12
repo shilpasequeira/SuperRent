@@ -10,6 +10,7 @@ import ca.ubc.icics.mss.superrent.clerk.customer.CustomerViewController;
 import ca.ubc.icics.mss.superrent.clerk.customer.*;
 import ca.ubc.icics.mss.superrent.clerk.vehiclelist.VehicleListViewController;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
+import static ca.ubc.icics.mss.superrent.validation.Validate.isValidPhoneNumber;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -109,26 +110,31 @@ public class ClerkDashboardController implements Initializable {
     }
     
     public void oPenCusView() throws IOException, SQLException {
-        String phone_number = phoneNum.getText();
-        CustomerViewController.setPhoneNum(phone_number);
-        
-        try (Connection con = SQLConnection.getConnection();
-                ResultSet rs = con.createStatement().executeQuery("select * from "
-                        + "customer where phone_no = "+phone_number+";")) {
-            
-            if(rs.next()){
-                validPhoneNum.setText("");
-                content.getChildren().clear();
-                content.getChildren().add(FXMLLoader.load(Customer.class.getResource("CustomerView.fxml")));
-                HP.setVisible(false);
-                RC.setVisible(false);
+        if(isValidPhoneNumber (phoneNum)) {
+            String phone_number = phoneNum.getText();
+            CustomerViewController.setPhoneNum(phone_number);
+
+            try (Connection con = SQLConnection.getConnection();
+                    ResultSet rs = con.createStatement().executeQuery("select * from "
+                            + "customer where phone_no = "+phone_number+";")) {
+
+                if(rs.next()){
+                    validPhoneNum.setText("");
+                    content.getChildren().clear();
+                    content.getChildren().add(FXMLLoader.load(Customer.class.getResource("CustomerView.fxml")));
+                    HP.setVisible(false);
+                    RC.setVisible(false);
+                }
+                else{
+                    System.out.println("no such phone#...");
+                    validPhoneNum.setText("Nonexistent Phone NO");
+                }
+            } catch (SQLException e) {
+                Logger.getLogger(ClerkDashboardController.class.getName()).log(Level.SEVERE, null, e);
             }
-            else{
-                System.out.println("no such phone#...");
-                validPhoneNum.setText("Nonexist Phone NO");
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(ClerkDashboardController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        else {
+            validPhoneNum.setText("Invalid Phone Number");
         }
     }
     
