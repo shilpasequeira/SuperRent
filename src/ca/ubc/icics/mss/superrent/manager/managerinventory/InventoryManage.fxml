@@ -8,108 +8,117 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="860.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.manager.managerinventory.InventoryManageController">
+<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.manager.managerinventory.InventoryManageController">
     <stylesheets>
         <URL value="@addvehicle.css" />
     </stylesheets>
     <children>
-      <TextField fx:id="sPlate" layoutX="106.0" layoutY="90.0" />
-      <Button layoutX="293.0" layoutY="90.0" mnemonicParsing="false" onAction="#sPlate" text="Search By Plate No." />
-      <Text layoutX="448.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
+      
+      
+      
+      <Button fx:id="cancelsale" layoutX="630.0" layoutY="515.0" mnemonicParsing="false" onAction="#cancelsale" text="Cancel For Sale" />
+      <TextField fx:id="sPlate" layoutX="51.0" layoutY="66.0" />
+      <Button layoutX="278.0" layoutY="66.0" mnemonicParsing="false" onAction="#sPlate" text="Search By Plate No." />
+      <Text layoutX="450.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
       <Group layoutX="35.0" layoutY="-5.0" />
-      <ComboBox fx:id="Location" layoutX="218.0" layoutY="46.0" onAction="#search" prefWidth="150.0" />
-      <Text layoutX="258.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" />
-      <Text layoutX="633.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
-      <ComboBox fx:id="Year" blendMode="MULTIPLY" layoutX="398.0" layoutY="46.0" onAction="#search" prefWidth="150.0" />
-      <ComboBox fx:id="Type" layoutX="578.0" layoutY="46.0" onAction="#search" prefWidth="150.0" />
+      <ComboBox fx:id="Location" layoutX="190.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
+      <Text layoutX="260.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" />
+      <Text layoutX="635.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
+      <ComboBox fx:id="Year" blendMode="MULTIPLY" layoutX="390.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
+      <ComboBox fx:id="Type" layoutX="590.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
       <Group />
-      <TableView fx:id="tb" layoutX="106.0" layoutY="125.0" onMouseClicked="#tbact" prefHeight="560.0" prefWidth="700.0">
+      <TableView fx:id="tb" layoutX="51.0" layoutY="103.0" onMouseClicked="#tbact" prefHeight="400.0" prefWidth="693.0">
 
       </TableView>
-      <Button layoutX="376.0" layoutY="691.0" mnemonicParsing="false" onAction="#AddVehicle" text="Add Vehicle" />
-      <Button fx:id="Edit" layoutX="491.0" layoutY="692.0" mnemonicParsing="false" onAction="#EditVehicle" text="Edit Vehicle" />
-      <Button fx:id="movetosale" layoutX="600.0" layoutY="692.0" mnemonicParsing="false" onAction="#Movetosale" text="Move to sale" visible="false" />
-      <Button fx:id="sale" layoutX="730.0" layoutY="692.0" mnemonicParsing="false" text="Sale" visible="false" onAction="#opensale"  />
-      <Text layoutX="128.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
-      <ComboBox fx:id="Status" layoutX="103.0" layoutY="46.0" onAction="#search" prefHeight="25.0" prefWidth="88.0" />
+      <Button layoutX="312.0" layoutY="515.0" mnemonicParsing="false" onAction="#AddVehicle" text="Add Vehicle" />
+      <Button fx:id="Edit" layoutX="418.0" layoutY="515.0" mnemonicParsing="false" onAction="#EditVehicle" text="Edit Vehicle" />
+      <Button fx:id="movetosale" layoutX="523.0" layoutY="515.0" mnemonicParsing="false" onAction="#Movetosale" text="Move to sale" />
+      <Button fx:id="sale" layoutX="545.0" layoutY="515.0" mnemonicParsing="false" onAction="#opensale" text="Sale" />
+      <Text layoutX="72.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
+      <ComboBox fx:id="Status" layoutX="51.0" layoutY="35.0" onAction="#search" prefHeight="25.0" prefWidth="88.0" />
       
+            
       
-      
-      <Pane fx:id="inpane" layoutX="100.0" layoutY="80.0" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #D1E9E9;" visible="false">
+             <Pane fx:id="edpane" prefHeight="544.0" prefWidth="800.0" style="-fx-background-color: #f5f5f5;" visible="false">
          <children>
-      <Text layoutX="148.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Car Company" />
-      <Text layoutX="203.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
-      <TextField fx:id="direction" layoutX="250.0" layoutY="230.0" prefHeight="25.0" prefWidth="150.0" />
-      <Text layoutX="141.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image" />
-      <Group layoutX="35.0" layoutY="-5.0" />
-      <ComboBox fx:id="location" layoutX="250.0" layoutY="290.0" prefWidth="150.0" />
-      <Text layoutX="179.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" />
-      <Text layoutX="173.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
-      <ComboBox fx:id="year" blendMode="MULTIPLY" layoutX="250.0" layoutY="170.0" prefWidth="150.0" />
-      <Button layoutX="200.0" layoutY="500.0" mnemonicParsing="false" onAction="#add" text="Add" />
-      <Button fx:id="cancel" layoutX="400.0" layoutY="500.0" mnemonicParsing="false" onAction="#refresh" text="Cancel" />
-      <Button layoutX="424.0" layoutY="229.0" mnemonicParsing="false" onAction="#browseaction" text="Browse" />
-      <TextField fx:id="company" layoutX="249.0" layoutY="107.0" prefHeight="25.0" prefWidth="150.0" />
-      <ComboBox fx:id="aCategory" layoutX="250.0" layoutY="350.0" prefWidth="150.0" />
-            <ComboBox fx:id="type" layoutX="248.0" layoutY="47.0" prefWidth="150.0" />
-            <Text layoutX="202.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
-            <TextField fx:id="aPlateNo" layoutX="251.0" layoutY="407.0" prefHeight="25.0" prefWidth="150.0" />
-            <Text layoutX="172.0" layoutY="423.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
+      <Text layoutX="401.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Car Company" />
+      <Text layoutX="174.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
+      <TextField fx:id="edirection" layoutX="222.0" layoutY="350.0" prefHeight="25.0" prefWidth="150.0" />
+      <Text layoutX="113.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image" />
+      <Group layoutX="75.0" layoutY="29.0" />
+      <ComboBox fx:id="elocation" layoutX="501.0" layoutY="170.0" prefWidth="150.0" />
+      <Text layoutX="430.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" />
+      <Text layoutX="145.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
+      <ComboBox fx:id="eyear" blendMode="MULTIPLY" layoutX="221.0" layoutY="174.0" prefWidth="150.0" />
+      <Button layoutX="270.0" layoutY="428.0" mnemonicParsing="false" onAction="#Update" text="Update" />
+      <Button fx:id="ecancel" layoutX="470.0" layoutY="428.0" mnemonicParsing="false" onAction="#eCancelin" text="Cancel" />
+      <Button layoutX="396.0" layoutY="349.0" mnemonicParsing="false" onAction="#browseaction" text="Browse" />
+      <TextField fx:id="ecompany" layoutX="502.0" layoutY="97.0" prefHeight="25.0" prefWidth="150.0" />
+      <ComboBox fx:id="eCategory" layoutX="222.0" layoutY="233.0" prefWidth="150.0" />
+            <ComboBox fx:id="etype" layoutX="221.0" layoutY="94.0" prefWidth="150.0" />
+            <Text layoutX="175.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
+            <TextField fx:id="PlateNo" layoutX="501.0" layoutY="234.0" prefHeight="25.0" prefWidth="150.0" />
+            <Text layoutX="422.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
+            <Text layoutX="113.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For Sale Price" />
+            <TextField fx:id="esaleprice" editable="false" layoutX="223.0" layoutY="284.0" prefHeight="25.0" prefWidth="150.0" />
+   </children>
+      </Pane>
+      
+      
+      
+      <Pane fx:id="inpane" layoutX="-2.0" layoutY="2.0" prefHeight="544.0" prefWidth="800.0" style="-fx-background-color: #f5f5f5;" visible="false">
+         <children>
+      <Text layoutX="383.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Car Company" />
+      <Text layoutX="154.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
+      <TextField fx:id="direction" layoutX="331.0" layoutY="337.0" prefHeight="25.0" prefWidth="150.0" />
+      <Text layoutX="222.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image" />
+      <Group layoutX="88.0" layoutY="-4.0" />
+      <ComboBox fx:id="location" layoutX="483.0" layoutY="168.0" prefWidth="150.0" />
+      <Text layoutX="412.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" />
+      <Text layoutX="124.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
+      <ComboBox fx:id="year" blendMode="MULTIPLY" layoutX="201.0" layoutY="168.0" prefWidth="150.0" />
+      <Button layoutX="324.0" layoutY="414.0" mnemonicParsing="false" onAction="#add" text="Add" />
+      <Button fx:id="cancel" layoutX="418.0" layoutY="416.0" mnemonicParsing="false" onAction="#refresh" text="Cancel" />
+      <Button layoutX="505.0" layoutY="336.0" mnemonicParsing="false" onAction="#browseaction" text="Browse" />
+      <TextField fx:id="company" layoutX="484.0" layoutY="89.0" prefHeight="25.0" prefWidth="150.0" />
+      <ComboBox fx:id="aCategory" layoutX="201.0" layoutY="245.0" prefWidth="150.0" />
+            <ComboBox fx:id="type" layoutX="203.0" layoutY="88.0" prefWidth="150.0" />
+            <Text layoutX="157.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
+            <TextField fx:id="aPlateNo" layoutX="484.0" layoutY="242.0" prefHeight="25.0" prefWidth="150.0" />
+            <Text layoutX="405.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
             
    </children>
       </Pane>
       
       
       
-       <Pane fx:id="edpane" layoutX="100.0" layoutY="80.0" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #D1E9E9;" visible="false">
+      <Pane fx:id="Forsale" layoutX="300.0" layoutY="192.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f5f5f5;" visible="false">
          <children>
-      <Text layoutX="148.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Car Company" />
-      <Text layoutX="203.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
-      <TextField fx:id="edirection" layoutX="250.0" layoutY="230.0" prefHeight="25.0" prefWidth="150.0" />
-      <Text layoutX="141.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image" />
-      <Group layoutX="35.0" layoutY="-5.0" />
-      <ComboBox fx:id="elocation" layoutX="250.0" layoutY="290.0" prefWidth="150.0" />
-      <Text layoutX="179.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" />
-      <Text layoutX="173.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
-      <ComboBox fx:id="eyear" blendMode="MULTIPLY" layoutX="250.0" layoutY="170.0" prefWidth="150.0" />
-      <Button layoutX="200.0" layoutY="500.0" mnemonicParsing="false" onAction="#Update" text="Update" />
-      <Button fx:id="ecancel" layoutX="400.0" layoutY="500.0" mnemonicParsing="false" onAction="#eCancelin" text="Cancel" />
-      <Button layoutX="424.0" layoutY="229.0" mnemonicParsing="false" onAction="#browseaction" text="Browse" />
-      <TextField fx:id="ecompany" layoutX="249.0" layoutY="107.0" prefHeight="25.0" prefWidth="150.0" />
-      <ComboBox fx:id="eCategory" layoutX="250.0" layoutY="350.0" prefWidth="150.0" />
-            <ComboBox fx:id="etype" layoutX="248.0" layoutY="47.0" prefWidth="150.0" />
-            <Text layoutX="202.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
-            <TextField fx:id="PlateNo" layoutX="251.0" layoutY="407.0" prefHeight="25.0" prefWidth="150.0" />
-            <Text layoutX="172.0" layoutY="423.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
-            <Text layoutX="140.0" layoutY="466.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For Sale Price" />
-            <TextField fx:id="esaleprice" editable="false" layoutX="250.0" layoutY="452.0" prefHeight="25.0" prefWidth="150.0" />
-   </children>
-      </Pane>
-      
-      
-      
-      <Pane fx:id="Forsale" layoutX="350.0" layoutY="250.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green;" visible="false">
-         <children>
-            <TextField fx:id="forsaleprice" layoutX="14.0" layoutY="84.0" />
-            <Button layoutX="50.0" layoutY="125.0" mnemonicParsing="false" onAction="#Moveforsale" text="Add For Sale" />
-            <Text layoutX="72.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" />
-            <Button layoutX="51.0" layoutY="163.0" mnemonicParsing="false" onAction="#eCancelin" prefHeight="25.0" prefWidth="101.0" text="Cancel" />
+            <TextField fx:id="forsaleprice" layoutX="30.0" layoutY="67.0" prefHeight="25.0" prefWidth="138.0" />
+            <Button layoutX="47.0" layoutY="102.0" mnemonicParsing="false" onAction="#Moveforsale" text="Add For Sale" />
+            <Text layoutX="67.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" wrappingWidth="65.6201171875">
+               <font>
+                  <Font size="20.0" />
+               </font></Text>
+            <Button layoutX="47.0" layoutY="145.0" mnemonicParsing="false" onAction="#eCancelin" prefHeight="25.0" prefWidth="101.0" text="Cancel" />
          </children>
       </Pane>
       
       
-      
-      <Button fx:id="cancelsale" layoutX="600.0" layoutY="692.0" mnemonicParsing="false" onAction="#cancelsale" text="Cancel For Sale" visible="false" />
-      
-      
-      <Pane fx:id="salepane" layoutX="360.0" layoutY="260.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green;" visible="false">
+      <Pane fx:id="salepane" layoutX="200.0" layoutY="170.0" prefHeight="246.0" prefWidth="367.0" style="-fx-background-color: #f5f5f5;" visible="false">
          <children>
-            <TextField fx:id="saleprice" layoutX="16.0" layoutY="34.0" />
-            <Button layoutX="50.0" layoutY="125.0" mnemonicParsing="false" onAction="#sale" text="Sale" />
-            <Text layoutX="75.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" />
-            <Button layoutX="51.0" layoutY="163.0" mnemonicParsing="false" onAction="#cansale" prefHeight="25.0" prefWidth="101.0" text="Cancel" />
-            <DatePicker fx:id="saledate" layoutX="16.0" layoutY="88.0" prefHeight="25.0" prefWidth="171.0" />
-            <Text layoutX="75.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
+            <TextField fx:id="saleprice" layoutX="135.0" layoutY="41.0" prefHeight="25.0" prefWidth="171.0" />
+            <Button layoutX="91.0" layoutY="158.0" mnemonicParsing="false" onAction="#sale" prefHeight="25.0" prefWidth="88.0" text="Sale" />
+            <Text layoutX="67.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
+               <font>
+                  <Font size="20.0" />
+               </font></Text>
+            <Button layoutX="206.0" layoutY="159.0" mnemonicParsing="false" onAction="#cansale" prefHeight="25.0" prefWidth="101.0" text="Cancel" />
+            <DatePicker fx:id="saledate" layoutX="134.0" layoutY="93.0" prefHeight="25.0" prefWidth="171.0" />
+            <Text layoutX="67.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date">
+               <font>
+                  <Font size="20.0" />
+               </font></Text>
          </children>
       </Pane>
    </children>

@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -38,6 +39,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -322,12 +324,13 @@ public class InventoryManageController implements Initializable {
         
     }
     @FXML
-    public void eCancelin(ActionEvent event){
+    public void eCancelin(ActionEvent event) throws SQLException{
         edpane.setVisible(false);
         Forsale.setVisible(false);
         forsaleprice.setText("");
         esaleprice.setText("");
         esaleprice.setEditable(false);
+        con.close();
     }
     @FXML
     public void EditVehicle(ActionEvent event) throws SQLException, ClassNotFoundException{
@@ -348,6 +351,7 @@ public class InventoryManageController implements Initializable {
             ResultSet rs=con.createStatement().executeQuery("select for_sale_price from for_sale_vehicle where vehicle_id='"+in.VehicleID+"';");
             rs.next();
             esaleprice.setText(rs.getString(1));  
+            con.close();
         }
     }
     @FXML
@@ -359,6 +363,7 @@ public class InventoryManageController implements Initializable {
     @FXML
     public void Movetosale(ActionEvent event){
         Forsale.setVisible(true);    
+        
     }
     @FXML
     public void cancelsale(ActionEvent event){
