@@ -57,8 +57,8 @@
         <TableColumn prefWidth="75.0" text="Count" fx:id="ReportTableCountCount" />
       </columns>
     </TableView>
-    <PieChart fx:id="PieChartCount" labelsVisible="true" layoutX="545.0" layoutY="49.0" minHeight="129.0" minWidth="152.0" prefHeight="215.0" prefWidth="251.0" />
-    <BarChart fx:id="BarChartID" layoutX="144.0" layoutY="49.0" prefHeight="201.0" prefWidth="403.0">
+    <PieChart fx:id="PieChartCount" labelsVisible="true" layoutX="524.0" layoutY="14.0" minHeight="129.0" minWidth="152.0" prefHeight="250.0" prefWidth="272.0" />
+    <BarChart fx:id="BarChartID" layoutX="144.0" layoutY="49.0" prefHeight="201.0" prefWidth="373.0">
       <xAxis>
         <CategoryAxis side="BOTTOM" />
       </xAxis>

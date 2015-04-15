@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -120,7 +121,9 @@ public class ReportsViewController implements Initializable {
     private TableColumn<CountReport, String> ReportTableCountCount;
 
     //vehicle count table
-    private final ObservableList<CountReport> countList = FXCollections.observableArrayList();
+    List<CountReport> countList = new CopyOnWriteArrayList<CountReport>();
+
+    private final ObservableList<CountReport> countListBound = FXCollections.observableArrayList();
 
     @FXML
     private TableView<costReport> costTable;
@@ -196,7 +199,7 @@ public class ReportsViewController implements Initializable {
         vehicleName.setCellValueFactory(new PropertyValueFactory("Name"));
         //set items for table
         costTable.setItems(costList);
-        ReportTableCount.setItems(countList);
+        ReportTableCount.setItems(countListBound);
         RentTable.setItems(rentList);
         BarChartID.setVisible(false);
         CostLabel.setVisible(false);
@@ -277,7 +280,7 @@ public class ReportsViewController implements Initializable {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
-        
+
         if (rentreserveSelection.equals("Rent")) {
             FileName = date.toString().substring(0, 6) + "Rent.csv";
         } else {
@@ -289,8 +292,8 @@ public class ReportsViewController implements Initializable {
             File file = dc.showDialog(null);
             if (file != null) {
 
-                file = new File(file.getAbsolutePath() + "/"+FileName);
-            }           
+                file = new File(file.getAbsolutePath() + "/" + FileName);
+            }
             writer = new BufferedWriter(new FileWriter(file));
             writer.write(textgapdot);
             String textgap = " Report for vehicle\n";
@@ -339,11 +342,10 @@ public class ReportsViewController implements Initializable {
             columns = "Total Cost =" + "," + CostLabel.getText() + "," + "\n";
             writer.write(columns);
         } catch (Exception ex) {
-        }finally
-        {
-           
+        } finally {
+
             writer.flush();
-             writer.close();
+            writer.close();
         }
     }
 
@@ -450,7 +452,7 @@ public class ReportsViewController implements Initializable {
 
                             CountReport ObjCountReport = new CountReport();
                             ObjCountReport.setBranch(branchName);
-                            ObjCountReport.setCategory(countSet.getString("vehicle_type"));
+                            ObjCountReport.setCategory(countSet.getString("vehicle_category"));
                             ObjCountReport.setCount("1");
                             boolean notAvailable = false;
                             int setCount;
@@ -459,7 +461,7 @@ public class ReportsViewController implements Initializable {
                             //calculate vehicle count
                             while (it2.hasNext()) {
                                 CountReport ObjCountReport2 = it2.next();
-                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(countSet.getString("vehicle_type"))) {
+                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(countSet.getString("vehicle_category"))) {
                                     setCount = Integer.valueOf(ObjCountReport2.getCount());
                                     setCount++;
                                     notAvailable = true;
@@ -468,7 +470,7 @@ public class ReportsViewController implements Initializable {
                                     pieChartData.remove(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
 
                                     countList.add(ObjCountReport);
-                                    pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+                                    pieChartData.add(new PieChart.Data(ObjCountReport.getCategory() + " " + branchName, Integer.valueOf(ObjCountReport.getCount())));
 
                                 }
                             }
@@ -519,7 +521,7 @@ public class ReportsViewController implements Initializable {
                             Report rep1 = new Report();
                             rep1.setName(joinedSet.getString("vehicle_name"));
                             rep1.setVehicleID(joinedSet.getString("vehicle_id"));
-                            rep1.setCategory(joinedSet.getString("vehicle_type"));
+                            rep1.setCategory(joinedSet.getString("vehicle_category"));
                             rep1.setEstimatedCost(joinedSet.getString("estimate"));
                             rep1.setRentDate(joinedSet.getDate("start_date_time"));
                             rep1.setReturnDate(joinedSet.getDate("end_date_time"));
@@ -569,7 +571,7 @@ public class ReportsViewController implements Initializable {
 
                             CountReport ObjCountReport = new CountReport();
                             ObjCountReport.setBranch(branchName);
-                            ObjCountReport.setCategory(joinedSetForCalculation.getString("vehicle_type"));
+                            ObjCountReport.setCategory(joinedSetForCalculation.getString("vehicle_category"));
                             ObjCountReport.setCount("1");
                             boolean notAvailable = false;
                             int setCount;
@@ -577,17 +579,22 @@ public class ReportsViewController implements Initializable {
                             Iterator<CountReport> ite = countList.iterator();
                             while (ite.hasNext()) {
                                 CountReport ObjCountReport2 = ite.next();
-                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(joinedSetForCalculation.getString("vehicle_type"))) {
+                                if (ObjCountReport2.getBranch().equals(branchName) && ObjCountReport2.getCategory().equals(joinedSetForCalculation.getString("vehicle_category"))) {
                                     setCount = Integer.valueOf(ObjCountReport2.getCount());
                                     setCount++;
                                     notAvailable = true;
                                     ObjCountReport.setCount(String.valueOf(setCount));
                                     countList.remove(ObjCountReport2);
                                     countList.add(ObjCountReport);
+
+                                    pieChartData.add(new PieChart.Data(ObjCountReport.getCategory() + " " + branchName, Integer.valueOf(ObjCountReport.getCount())));
+
                                 }
                             }
                             if (!notAvailable) {
                                 countList.add(ObjCountReport);
+                                pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+
                             }
                         }
 
@@ -626,7 +633,7 @@ public class ReportsViewController implements Initializable {
                             Report objReport = new Report();
                             objReport.setName(joinedSetForTableUpdate.getString("vehicle_name"));
                             objReport.setVehicleID(joinedSetForTableUpdate.getString("vehicle_id"));
-                            objReport.setCategory(joinedSetForTableUpdate.getString("vehicle_type"));
+                            objReport.setCategory(joinedSetForTableUpdate.getString("vehicle_category"));
                             objReport.setEstimatedCost(joinedSetForTableUpdate.getString("amount"));
                             objReport.setReturnDate(joinedSetForTableUpdate.getDate("end_date_time"));
                             objReport.setBranch(branchName);
@@ -655,6 +662,12 @@ public class ReportsViewController implements Initializable {
             CostLabel.setVisible(false);
             CostLabelTC.setVisible(false);
             errorPaneID.setVisible(true);
+        }
+        countListBound.clear();
+        for (Iterator<CountReport> it = countList.iterator(); it.hasNext();) {
+            CountReport obj = it.next();
+            countListBound.add(obj);
+
         }
     }
 
