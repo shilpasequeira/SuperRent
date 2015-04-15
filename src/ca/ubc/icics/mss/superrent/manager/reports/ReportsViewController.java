@@ -443,7 +443,7 @@ public class ReportsViewController implements Initializable {
 
                     while (branchSet.next()) {
 
-                        String joinedTables = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+                        String joinedTables = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ";
                         ResultSet joinedSet = con.createStatement().executeQuery(joinedTables);
                         //for count
                         ResultSet countSet = con.createStatement().executeQuery(joinedTables);
@@ -482,7 +482,7 @@ public class ReportsViewController implements Initializable {
 
                         }
 
-                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
+                        PreparedStatement costStatement = con.prepareStatement("SELECT SUM(estimate) AS pp FROM  vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.start_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ");
 
                         //cost table
                         ResultSet costSet = costStatement.executeQuery();
@@ -563,7 +563,7 @@ public class ReportsViewController implements Initializable {
 
                     while (branchSet.next()) {
 
-                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ";
+                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ";
                         ResultSet joinedSetForTableUpdate = con.createStatement().executeQuery(joinedTable);
                         ResultSet joinedSetForCalculation = con.createStatement().executeQuery(joinedTable);
 
@@ -598,7 +598,7 @@ public class ReportsViewController implements Initializable {
                             }
                         }
 
-                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue() + "'  ");
+                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ");
 
                         //cost table                  
                         ResultSet result = statement.executeQuery();
