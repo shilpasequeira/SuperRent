@@ -50,11 +50,10 @@ public class Reserve {
         
         //using try-with-resources to avoid closing resources (boiler plate code)
         try (Connection con = SQLConnection.getConnection();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM reserve WHERE "
+                ResultSet rs = con.createStatement().executeQuery("SELECT * FROM reserve WHERE "
                         + "reserve_id=" + reserveID);
                 
-                ResultSet additionalRS = stmt.executeQuery("SELECT * FROM reserved_equipment WHERE "
+                ResultSet additionalRS = con.createStatement().executeQuery("SELECT * FROM reserved_equipment WHERE "
                         + "reserve_id=" + reserveID)) {
             
             // Add the reservation info to the reserve model

@@ -466,7 +466,7 @@ public class RentReserveFormController implements Initializable  {
                     reservation.getCustomer().getPoints());
         }
 
-        estimateLabel.setText("" + reservation.getEstimate());
+        estimateLabel.setText("CAD " + reservation.getEstimate());
     }
     
     private void initialiseAdditionalEquipment() {
