@@ -39,8 +39,8 @@ public class AdditionalEquipment {
                 this.type = rs.getString("equipment_type");
                 this.dailyRate = rs.getInt("equipment_daily_rate");
                 this.hourlyRate = rs.getInt("equipment_hourly_rate");
-                this.stock = rs.getInt("equipment_stock");
-                this.branchID = rs.getInt("branch_id");
+                //this.stock = rs.getInt("equipment_stock");
+                //this.branchID = rs.getInt("branch_id");
             }
         } catch (SQLException e) {
             Logger.getLogger(AdditionalEquipment.class.getName()).log(Level.SEVERE, null, e);
@@ -105,6 +105,7 @@ public class AdditionalEquipment {
     
     /**
      * 
+     * @param id
      */
     public void setID(int id) {
         this.id = id;
@@ -112,6 +113,7 @@ public class AdditionalEquipment {
     
     /**
      *  
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
@@ -119,6 +121,7 @@ public class AdditionalEquipment {
     
     /**
      * 
+     * @param type
      */
     public void setType(String type) {
         this.type = type;
@@ -126,6 +129,7 @@ public class AdditionalEquipment {
     
     /**
      *  
+     * @param rate
      */
     public void setDailyRate(int rate) {
         this.dailyRate = rate;
@@ -133,6 +137,7 @@ public class AdditionalEquipment {
     
     /**
      * 
+     * @param rate
      */
     public void setHourlyRate(int rate) {
         this.hourlyRate = rate;
@@ -140,6 +145,7 @@ public class AdditionalEquipment {
     
     /**
      * 
+     * @param stock
      */
     public void setStock(int stock) {
         this.stock = stock;
@@ -147,6 +153,7 @@ public class AdditionalEquipment {
     
     /**
      * 
+     * @param id
      */
     public void setBranchID(int id) {
         this.branchID = id;

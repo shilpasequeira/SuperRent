@@ -26,12 +26,23 @@ public class AdditionalEquipmentRepository {
     public static ArrayList getAvailableAdditionalEquipment(Vehicle vehicle) {
         ArrayList<AdditionalEquipment> additionalEquipmentList = new ArrayList();
         
-        try (Connection con = SQLConnection.getConnection();
+        /*try (Connection con = SQLConnection.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
                         "SELECT * FROM additional_equipment WHERE "
                                 + "equipment_type = '" + vehicle.getType() + "'"
                                 + " AND branch_id = " + vehicle.getBranchID()
-                                + " AND equipment_stock > 0")) {
+                                + " AND equipment_stock > 0")) {*/
+                
+        try (Connection con = SQLConnection.getConnection();
+                ResultSet rs = con.createStatement().executeQuery(
+                        "SELECT a.equipment_id, a.equipment_name, a.equipment_type,"
+                                + " a.equipment_daily_rate, a.equipment_hourly_rate"
+                                + " b.equipment_stock, b.branch_id "
+                                + "FROM additional_equipment a inner join branch_equipment "
+                                + "b on (a.equipment_id = b.equipment_id) WHERE "
+                                + "a.equipment_type = '" + vehicle.getType() + "'"
+                                + " AND b.branch_id = " + vehicle.getBranchID()
+                                + " AND b.equipment_stock > 0")) {
             
             while(rs.next()){
                 AdditionalEquipment additionalEquipment = new AdditionalEquipment();
