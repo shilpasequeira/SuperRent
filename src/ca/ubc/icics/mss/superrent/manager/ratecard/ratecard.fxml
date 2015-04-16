@@ -126,7 +126,6 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="atype" layoutX="428.0" layoutY="73.0" />
             <TextField fx:id="ahr" layoutX="428.0" layoutY="143.0" text="0" />
             <TextField fx:id="adr" layoutX="428.0" layoutY="180.0" text="0" />
             <TextField fx:id="awr" layoutX="428.0" layoutY="219.0" text="0" />
@@ -168,6 +167,7 @@
             <TextField fx:id="awp" layoutX="428.0" layoutY="337.0" text="0" />
             <TextField fx:id="aaehr" layoutX="428.0" layoutY="373.0" text="0" visible="false" />
             <TextField fx:id="aaedr" layoutX="428.0" layoutY="411.0" text="0" visible="false" />
+            <ChoiceBox fx:id="atypebox" layoutX="434.0" layoutY="74.0" prefWidth="150.0" />
          </children>
       </Pane>
    </children>

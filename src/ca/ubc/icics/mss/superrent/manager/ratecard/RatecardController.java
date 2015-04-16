@@ -77,6 +77,8 @@ public class RatecardController implements Initializable {
     @FXML
     private TextField atype;
     @FXML
+    private ChoiceBox atypebox;
+    @FXML
     private TextField ahr;
     @FXML
     private TextField adr;
@@ -152,6 +154,12 @@ public class RatecardController implements Initializable {
         branchOption.setVisible(false);
         //System.out.println("abc");
         
+        BName.add("CAR");
+        BName.add("TRUCK");
+        atypebox.setItems(BName);
+        atypebox.getSelectionModel().selectFirst();
+        selectedBranch = (String)BName.get(0);
+        
         String sql2 = "select * from vehicle_category;";
         
         try (Connection con = SQLConnection.getConnection();
@@ -208,18 +216,22 @@ public class RatecardController implements Initializable {
     
     public void edit(){
         RateCard rc = (RateCard)rcTable.getSelectionModel().getSelectedItem();
-        mainPage.setVisible(false);
-        editPage.setVisible(true);
-        etype.setText(rc.Type);
-        //etype.setEditable(false);
-        ecategory.setText(rc.Category);
-        ecategory.setEditable(false);
-        ehr.setText(Double.toString(rc.HourlyRate));
-        edr.setText(Double.toString(rc.DailyRate));
-        ewr.setText(Double.toString(rc.WeeklyRate));
-        ehp.setText(Double.toString(rc.HourlyPremium));
-        edp.setText(Double.toString(rc.DailyPremium));
-        ewp.setText(Double.toString(rc.WeeklyPremium));
+        if(rc == null) {
+            System.out.println("null object");
+        }else{
+            mainPage.setVisible(false);
+            editPage.setVisible(true);
+            etype.setText(rc.Type);
+            etype.setEditable(false);
+            ecategory.setText(rc.Category);
+            ecategory.setEditable(false);
+            ehr.setText(Double.toString(rc.HourlyRate));
+            edr.setText(Double.toString(rc.DailyRate));
+            ewr.setText(Double.toString(rc.WeeklyRate));
+            ehp.setText(Double.toString(rc.HourlyPremium));
+            edp.setText(Double.toString(rc.DailyPremium));
+            ewp.setText(Double.toString(rc.WeeklyPremium));
+        }
     }
     
     public void add() {
@@ -228,7 +240,9 @@ public class RatecardController implements Initializable {
     }
     
     public void addConfirm() {
-        String add_type = atype.getText().toUpperCase();
+        System.out.println(atypebox.getValue());
+//        String add_type = atype.getText().toUpperCase();
+        String add_type = atypebox.getValue().toString();
         String add_category = acategory.getText();
         double add_daily_rate = Double.valueOf(adr.getText());
         double add_weekly_rate = Double.valueOf(awr.getText());
