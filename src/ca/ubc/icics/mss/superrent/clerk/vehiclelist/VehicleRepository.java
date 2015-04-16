@@ -127,13 +127,13 @@ public class VehicleRepository {
         {
             
            if (b_name.equals("All Locations") && cat.equals("All Category"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"'" ;   
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"'" ;   
            else if (!b_name.equals("All Locations") && !cat.equals("All Category"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and v.vehicle_category ='" + cat + "' and b.city ='" + b_name + "'"  ;    
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and v.vehicle_category ='" + cat + "' and b.location ='" + b_name + "'"  ;    
            else if (!b_name.equals("All Locations"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and b.city ='" + b_name + "'"  ;       
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and b.location ='" + b_name + "'"  ;       
            else
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and v.vehicle_category ='" + cat + "'" ;    
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and v.vehicle_category ='" + cat + "'" ;    
             
             
            
@@ -236,7 +236,7 @@ public class VehicleRepository {
         try
         {
           /* if (b_name.equals("All Locations") && cat.equals("All Category"))
-            que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
+            que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.location from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
 "on (v.vehicle_id = fsv.vehicle_id) \n" +
 "where fsv.vehicle_id is null ) all_vehicles\n" +
 "left outer join \n" +
@@ -247,15 +247,15 @@ public class VehicleRepository {
 "on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
 "where res.vehicle_id is null and r.vehicle_id is null" ;   
            else if (!b_name.equals("All Locations") && !cat.equals("All Category"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and v.vehicle_category ='" + cat + "' and b.city ='" + b_name + "'"  ;    
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and v.vehicle_category ='" + cat + "' and b.location ='" + b_name + "'"  ;    
            else if (!b_name.equals("All Locations"))
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and b.city ='" + b_name + "'"  ;       
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and b.location ='" + b_name + "'"  ;       
            else
-            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and v.vehicle_category ='" + cat + "'" ;    
+            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = 'CAR' and v.vehicle_category ='" + cat + "'" ;    
            
             */
             
-            que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.city from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
+            que = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.vehicle_name,all_vehicles.vehicle_category,all_vehicles.location from (select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location from vehicle v inner join branch b on (b.branch_id = v.branch_id) left outer join for_sale_vehicle fsv\n" +
 "on (v.vehicle_id = fsv.vehicle_id) \n" +
 "where fsv.vehicle_id is null ) all_vehicles\n" +
 "left outer join \n" +
@@ -384,15 +384,15 @@ public class VehicleRepository {
         try
         {
             if (b_name.equals("All Locations") && cat.equals("All Category"))
-           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "'";  
+           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "'";  
            else if (!b_name.equals("All Locations") && !cat.equals("All Category"))
-           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and b.city = '" + b_name + "' and v.vehicle_category = '" + cat  +"'" ;  
+           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and b.location = '" + b_name + "' and v.vehicle_category = '" + cat  +"'" ;  
 
            else if (!b_name.equals("All Locations"))
-           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and b.city = '" + b_name + "'";  
+           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and b.location = '" + b_name + "'";  
 
            else
-           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.city,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and v.vehicle_category = '" +cat +"'";  
+           que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) where re.return_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and v.vehicle_category = '" +cat +"'";  
 
             
            
@@ -425,7 +425,7 @@ public class VehicleRepository {
          
         switch (type) {
             case "Branch":
-                que = "SELECT distinct city FROM team02.branch";
+                que = "SELECT distinct location FROM team02.branch";
                 al.add("All Locations");
                 break;
             case "Category":

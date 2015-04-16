@@ -85,7 +85,7 @@ public class ClerkDashboardController implements Initializable {
                     + "from vehicle, vehicle_category, branch "
                     + "where vehicle.vehicle_category = vehicle_category.vehicle_category "
                     + "and branch.branch_id = vehicle.branch_id "
-                    + "and branch.city like '"+selectedBranch+"' "
+                    + "and branch.location like '"+selectedBranch+"' "
                     + "group by vehicle_category.vehicle_category;")){
             while(rs.next()) {
                 RateCard rc = new RateCard();
@@ -184,7 +184,7 @@ public class ClerkDashboardController implements Initializable {
                 ResultSet rs = con.createStatement().executeQuery("select * from branch;");) {
         
             while(rs.next()) {
-                String bname = rs.getString("city");
+                String bname = rs.getString("location");
                 BName.add(bname);
             }
         }catch (SQLException e){
@@ -238,7 +238,7 @@ public class ClerkDashboardController implements Initializable {
                                             + "from vehicle, vehicle_category, branch "
                                             + "where vehicle.vehicle_category = vehicle_category.vehicle_category "
                                             + "and branch.branch_id = vehicle.branch_id "
-                                            + "and branch.city like '"+selectedBranch+"' "
+                                            + "and branch.location like '"+selectedBranch+"' "
                                             + "group by vehicle_category.vehicle_category;");) {
 
                         while(rs.next()) {

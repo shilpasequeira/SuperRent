@@ -142,7 +142,7 @@ public class InventoryManageController implements Initializable {
     private void sPlate(ActionEvent event) throws SQLException, ClassNotFoundException{
         String s;
         if(!sPlate.getText().equals("")){
-            s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, city FROM vehicle, branch where vehicle.branch_id=branch.branch_id and plate_number like '%"+sPlate.getText()+"%';";
+            s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id and plate_number like '%"+sPlate.getText()+"%';";
             query(s);
         }
         else
@@ -194,7 +194,7 @@ public class InventoryManageController implements Initializable {
     }
     private void SetLocation(ComboBox cb) throws SQLException, ClassNotFoundException{
         getcon();
-        String s="SELECT city FROM branch";
+        String s="SELECT location FROM branch";
         ResultSet rs = con.createStatement().executeQuery(s);
         ObservableList content=FXCollections.observableArrayList();
         content.add("ALL");
@@ -209,23 +209,23 @@ public class InventoryManageController implements Initializable {
     private String sqlstring(){
         
         String s;
-        s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, city FROM vehicle, branch where vehicle.branch_id=branch.branch_id";
+        s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id";
         if(Status.getValue().toString().equals("For Sale")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,city FROM vehicle, branch, for_sale_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=for_sale_vehicle.vehicle_id";
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,location FROM vehicle, branch, for_sale_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=for_sale_vehicle.vehicle_id";
             System.out.println(s);
         }
         if(Status.getValue().toString().equals("Sold")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,city FROM vehicle, branch, sold_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=sold_vehicle.vehicle_id";
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,location FROM vehicle, branch, sold_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=sold_vehicle.vehicle_id";
         }
         if(Status.getValue().toString().equals("Available")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,city "
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,location "
                     + "FROM vehicle, branch "
                     + "where vehicle.branch_id=branch.branch_id"
                     +" and vehicle.vehicle_id  not in (select vehicle_id from for_sale_vehicle)"
                     +" and vehicle.vehicle_id  not in (select vehicle_id from sold_vehicle)";
         }
         if(!Location.getValue().toString().equals("ALL")){
-            s=s+" and city='"+Location.getValue().toString()+"'";            
+            s=s+" and location='"+Location.getValue().toString()+"'";            
         }
         if(!Year.getValue().toString().equals("ALL")){
             s=s+" and vehicle_manufactured_year='"+Year.getValue().toString()+"'";
@@ -247,7 +247,7 @@ public class InventoryManageController implements Initializable {
                 Intb in =new Intb();
                 in.setVehicleID(rs.getString("vehicle_id"));
                 in.setPlateNumber(rs.getString("plate_number"));
-                in.setBranch(rs.getString("city"));
+                in.setBranch(rs.getString("location"));
                 in.setName(rs.getString("vehicle_name"));
                 in.setYear(rs.getString("vehicle_manufactured_year"));
                 in.setCategory(rs.getString("vehicle_category"));
@@ -394,7 +394,7 @@ public class InventoryManageController implements Initializable {
         try {
             getcon();
                         System.out.println("$$$$$$$$$$$$$$$$$$$$");
-            ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where city='"+el+"';");
+            ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
             rs.next();
 
             String eb=rs.getString(1);
@@ -477,7 +477,7 @@ public class InventoryManageController implements Initializable {
         String year=eyear.getValue().toString();
         try {
             getcon();
-            ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where city='"+el+"';");
+            ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
             rs.next();
             String eb=rs.getString(1);
             String sql="update vehicle set vehicle_manufactured_year='"+year+"', plate_number='"+Pl+"', vehicle_type='"+et+"', vehicle_category='"+eCate+"', vehicle_name='"+ec+"', branch_id='"+eb+"' where vehicle_id='"+vID+"';";

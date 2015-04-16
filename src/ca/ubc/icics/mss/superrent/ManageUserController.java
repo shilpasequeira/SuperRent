@@ -222,7 +222,7 @@ public class ManageUserController implements Initializable {
     @FXML
     public void branchAddAction(ActionEvent event) {
       
-        String SQL = "insert into branch(city,location) values('" + cityTB.getText() + "','" + LocationTB.getText()+ "')";
+        String SQL = "insert into branch(location) values('" + cityTB.getText() + "," + LocationTB.getText()+ "')";
         try {
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
