@@ -372,6 +372,20 @@ boolean valid = true;
                // System.out.println(file);   
     }
     @FXML
+        private void ebrowseaction(ActionEvent event) {
+        //Stage primaryStage;
+        Stage stage=new Stage();
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ALL files (*.*)", "*.*");
+        fileChooser.getExtensionFilters().add(extFilter);
+        System.out.println("aaaaaaaaaaa");
+        File file=fileChooser.showOpenDialog(stage);
+        System.out.println(file);
+        edirection.setText(file.toString()); 
+       // fileChooser.showOpenDialog(primaryStage);
+               // System.out.println(file);   
+    }
+    @FXML
     public void Cancelin(ActionEvent event){
         inpane.setVisible(false);
         company.setText("");
@@ -464,7 +478,7 @@ boolean valid = true;
         String eCate=aCategory.getValue().toString();
         String Pl=aPlateNo.getText();
         String y=year.getValue().toString();
-        String path="path";
+        String path=direction.getText();
                     try {
             getcon();
                         System.out.println("$$$$$$$$$$$$$$$$$$$$");
@@ -559,8 +573,8 @@ boolean valid = true;
         d=isEmptyComboBox(eCategory,uvacate)||validateAll(eCategory,uvacate);
         e=isEmptyComboBox(eyear,uvayear)||validateAll(eyear,uvayear);
         f=isEmptyTextField (ecompany, uvacom);
-        g=isEmptyTextField (edirection, uvadir);
-        if(!(a||b||c||d||e||f||g)){
+        //g=isEmptyTextField (edirection, uvadir);
+        if(!(a||b||c||d||e||f)){
         String et=etype.getValue().toString();
         String ec=ecompany.getText();
         String el=elocation.getValue().toString();
@@ -584,7 +598,17 @@ boolean valid = true;
             
             con.createStatement().executeUpdate("update for_sale_vehicle set for_sale_price='"+esaleprice.getText()+"'where vehicle_id='"+vID+"';");
             
-        }
+            }
+             if(!isEmptyTextField(edirection)){
+                 String path=edirection.getText();
+                 String sqld="update vehicle set vehicle_thumbnail=? where vehicle_id='"+vID+"';";
+                  PreparedStatement stmt=con.prepareStatement(sqld);
+                  File image=new File(path);
+                  FileInputStream fis=new FileInputStream(image);
+                  stmt.setBinaryStream(1, fis, (int)image.length());
+                  stmt.execute();
+                 
+             }
             esaleprice.setEditable(false);
             esaleprice.setText("");
             edpane.setVisible(false);
@@ -595,7 +619,9 @@ boolean valid = true;
             Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }    catch (FileNotFoundException ex) {
+                 Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
+             }
         }
         
         
