@@ -66,7 +66,7 @@ public class LoginViewController implements Initializable {
         label_error.setVisible(false);
         
          if (isEmptyTextField(tf_username) == false && tf_username.getText().length() > 2 && tf_username.getText().contains("@") && tf_username.getText().contains(".")) {
-
+                  con = SQLConnection.getConnection();
                 String SQL = "SELECT * from user where username = '" + tf_username.getText() + "'";
                 try {
                     ResultSet rs = con.createStatement().executeQuery(SQL);
@@ -78,7 +78,7 @@ public class LoginViewController implements Initializable {
                         userName = rs.getString("username");
                         userType = rs.getString("role");
                     }
-
+                     con.close();
                     if (!validUser) {
                         label_error.setVisible(true);
                     }
@@ -86,6 +86,7 @@ public class LoginViewController implements Initializable {
                 } catch (SQLException ex) {
                     Logger.getLogger(LoginViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+               
 
             } else if(tf_username.getText().length() > 2) {
                 label_error.setVisible(true);
@@ -107,7 +108,7 @@ public class LoginViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         label_error.setVisible(false);
-        con = SQLConnection.getConnection();
+      
     }
 
     public void setPrevStage(Main obj) {

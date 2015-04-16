@@ -129,9 +129,10 @@ public class ManageUserController implements Initializable {
         AddUserID.setToggleGroup(RentReturn);
         AddBranch.setToggleGroup(RentReturn);
         setVisibility();
-        con = SQLConnection.getConnection();
+        
         BranchPane.setVisible(false);
         UserNameAdd.setOnMouseMoved((event) -> {
+            con = SQLConnection.getConnection();
             String SQL = "SELECT * from user where username = '" + UserNameAdd.getText() + "'";
             try {
                 ResultSet rs = con.createStatement().executeQuery(SQL);
@@ -159,6 +160,7 @@ public class ManageUserController implements Initializable {
                     }
                 }
                 userNameAvailable = false;
+                con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -224,9 +226,12 @@ public class ManageUserController implements Initializable {
       
         String SQL = "insert into branch(location) values('" + cityTB.getText() + "," + LocationTB.getText()+ "')";
         try {
+            con = SQLConnection.getConnection();
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
             BranchError.setText("Branch Added");
+            con.commit();
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             BranchError.setText("Location already available");
@@ -258,10 +263,13 @@ public class ManageUserController implements Initializable {
         SubmitButtonAdd.setDisable(false);
         String SQL = "insert into user values('" + UserNameAdd.getText() + "','" + md5(PasswordAdd.getText()) + "','" + FirstNameAdd.getText() + "','" + LastNameAdd.getText() + "','" + RoleItemAdd.getText() + "')";
         try {
+            con = SQLConnection.getConnection();
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
             setVisibility();
             userAdded.setVisible(true);
+            con.commit();
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -294,6 +302,7 @@ public class ManageUserController implements Initializable {
         boolean userFound = false;
         String SQL = "SELECT * from user where username = '" + SearchUserTextBox.getText() + "'";
         try {
+            con = SQLConnection.getConnection();
             ResultSet rs = con.createStatement().executeQuery(SQL);
             while (rs.next()) {
                 userFound = true;
@@ -307,6 +316,7 @@ public class ManageUserController implements Initializable {
                 UserNameLabel.setVisible(true);
                 UserNameLabel.setText("User Not Found");
             }
+            con.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -331,6 +341,7 @@ public class ManageUserController implements Initializable {
         UserNameLabel.setVisible(false);
    
         try {
+            con = SQLConnection.getConnection();
             String SQLFN = "update user set first_name = '" + FirstNameAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
             String SQLLN = "update user set last_name = '" + LastNameAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
             String SQLPW = "update user set password = '" + PasswordAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
@@ -342,6 +353,8 @@ public class ManageUserController implements Initializable {
             con.createStatement().executeUpdate(SQLR);
             setVisibility();
             userAdded.setVisible(true);
+            con.commit();
+            con.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
@@ -356,6 +369,7 @@ public class ManageUserController implements Initializable {
         boolean userFound = false;
         String SQL = "SELECT * from user where username = '" + SearchUserTextBox.getText() + "'";
         try {
+            con = SQLConnection.getConnection();
             ResultSet rs = con.createStatement().executeQuery(SQL);
             while (rs.next()) {
                 userFound = true;
@@ -374,6 +388,7 @@ public class ManageUserController implements Initializable {
                 RoleItemAdd.setText(rs.getString("role"));
 
                 SearchUserTextBox.clear();
+                con.close();
             }
             if (!userFound) {
                 UserNameLabel.setVisible(true);

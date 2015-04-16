@@ -147,11 +147,7 @@ public class ReportsViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         //get sql connection
-        try {
-            con = DriverManager.getConnection("jdbc:mysql://dbserver.mss.icics.ubc.ca/team02", "team02", "s0ftw@re");
-        } catch (SQLException ex) {
-            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
         errorPaneID.setVisible(false);
         PieChartCount.setTitle("Branch Count");
         PieChartCount.setVisible(false);
@@ -237,6 +233,11 @@ public class ReportsViewController implements Initializable {
     @FXML
     public void SelectBranchAction(ActionEvent event) {
         try {
+               try {
+            con = DriverManager.getConnection("jdbc:mysql://dbserver.mss.icics.ubc.ca/team02", "team02", "s0ftw@re");
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
             st = (Statement) con.createStatement();
 
             //clear all lists
@@ -250,7 +251,7 @@ public class ReportsViewController implements Initializable {
                 updateTables();
             });
             menuItems.add(items);
-
+          
             //get branch names
             String SQL = "SELECT * from branch";
             ResultSet rs = con.createStatement().executeQuery(SQL);
@@ -264,6 +265,7 @@ public class ReportsViewController implements Initializable {
                 //add items for splitmenuitems
                 menuItems.add(items);
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -371,6 +373,11 @@ public class ReportsViewController implements Initializable {
 
     //update all tables data as per selection
     public void updateTables() {
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://dbserver.mss.icics.ubc.ca/team02", "team02", "s0ftw@re");
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         errorPaneID.setVisible(false);
         PieChartCount.setVisible(true);
         boolean ifallbranchesselected = false;
@@ -386,6 +393,7 @@ public class ReportsViewController implements Initializable {
             }
         }
         citiesSelected.clear();
+         
         ///clear cities selected list
         if (ifallbranchesselected == false) {
 
@@ -563,7 +571,7 @@ public class ReportsViewController implements Initializable {
 
                     while (branchSet.next()) {
 
-                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ";
+                        String joinedTable = "SELECT * FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND returns.transaction_timestamp between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ";
                         ResultSet joinedSetForTableUpdate = con.createStatement().executeQuery(joinedTable);
                         ResultSet joinedSetForCalculation = con.createStatement().executeQuery(joinedTable);
 
@@ -598,7 +606,7 @@ public class ReportsViewController implements Initializable {
                             }
                         }
 
-                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND rent.end_date_time between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ");
+                        PreparedStatement statement = con.prepareStatement("SELECT SUM(amount) AS pp FROM vehicle INNER JOIN rent ON vehicle.vehicle_id=rent.vehicle_id INNER JOIN returns ON returns.rent_id=rent.rent_id AND vehicle.branch_id = '" + branchSet.getString("branch_id") + "' AND vehicle.vehicle_type = '" + carTruckSelection + "'AND returns.transaction_timestamp between '" + datePickerFrom.getValue() + "' AND '" + datePickerTo.getValue().plusDays(1) + "'  ");
 
                         //cost table                  
                         ResultSet result = statement.executeQuery();
@@ -651,6 +659,11 @@ public class ReportsViewController implements Initializable {
                 BarChartID.getData().retainAll();
                 BarChartID.getData().add(series2);
             }
+        }
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (rentList.size() <= 0) {
             PieChartCount.setVisible(false);
