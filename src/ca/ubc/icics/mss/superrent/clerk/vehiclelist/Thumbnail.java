@@ -6,20 +6,21 @@
 package ca.ubc.icics.mss.superrent.clerk.vehiclelist;
 
 import java.io.InputStream;
+import javafx.scene.image.Image;
 
 /**
  *
  * @author Avinash
  */
 public class Thumbnail {
-   private InputStream is;
+   private Image is;
    private String filename;
    private String VehicleId;
     public Thumbnail(String filename, String vid,InputStream is) {
                 
                 this.filename = filename;
                 this.VehicleId = vid;
-                this.is = is;
+                this.is = new Image(is);
 	       	    }
     public String getFilename() {
 	        return filename;
@@ -35,11 +36,11 @@ public class Thumbnail {
 	        this.VehicleId = vid;
 	    }
             
-            public InputStream getImage() {
+            public Image getImage() {
 	        return is;
 	    }
 	    public void setImage(InputStream is ){
-	        this.is = is;
+	        this.is = new Image(is);
 	    }
             
 }

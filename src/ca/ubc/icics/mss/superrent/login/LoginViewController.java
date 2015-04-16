@@ -150,7 +150,7 @@ public class LoginViewController implements Initializable {
         Text textSong;
            textSong = TextBuilder.create()
                    .text(Santa_Claus_Is_Coming_To_Town)
-                   .layoutX(280)
+                   .layoutX(50)
                    .textOrigin(VPos.TOP)
                    .textAlignment(TextAlignment.JUSTIFY)
                   // .fill(Color.BLUE)
