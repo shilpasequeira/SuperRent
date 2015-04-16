@@ -5,6 +5,7 @@
  */
 package ca.ubc.icics.mss.superrent.manager.managerinventory;
 
+import java.io.InputStream;
 import java.util.Date;
 import javafx.scene.image.Image;
 
@@ -20,7 +21,7 @@ public class Intb {
     public String Category;
     public String Type;
     public String Name;
-    public String image;
+    public InputStream Im;
     public String Status;
     
     public Intb(){
@@ -38,11 +39,11 @@ public class Intb {
     public void setPlateNumber(String s){
         this.PlateNumber=s;
     }
-    public String getImage(){
-        return image;
+    public InputStream getIm(){
+        return Im;
     }
-    public void setImage(String s){
-        this.image=s;
+    public void setIm(InputStream s){
+        this.Im=s;
     }
     public String getBranch() {
         return Branch;

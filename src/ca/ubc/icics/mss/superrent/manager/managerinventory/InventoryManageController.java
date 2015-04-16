@@ -10,6 +10,12 @@ import java.io.File;
 import ca.ubc.icics.mss.superrent.validation.Validate;
 import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyComboBox;
 import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyTextField;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -48,6 +54,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import javax.imageio.ImageIO;
 
 
 /**
@@ -170,7 +177,7 @@ public class InventoryManageController implements Initializable {
     private TableColumn<Intb,String> tType;
     private TableColumn<Intb,String> tCate;
     private TableColumn<Intb,String> tStatus;
-    private TableColumn<Intb, String> aArt;
+    private TableColumn<Intb,InputStream> aArt;
     private TableColumn<Intb,String>tYear;
     private ObservableList data=FXCollections.observableArrayList();
     String status;
@@ -182,7 +189,7 @@ public class InventoryManageController implements Initializable {
     private void sPlate(ActionEvent event) throws SQLException, ClassNotFoundException{
         String s;
         if(!sPlate.getText().equals("")){
-            s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id and plate_number like '%"+sPlate.getText()+"%';";
+            s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, vehicle_thumbnail,location FROM vehicle, branch where vehicle.branch_id=branch.branch_id and plate_number like '%"+sPlate.getText()+"%';";
             query(s);
         }
         else
@@ -266,16 +273,16 @@ boolean valid = true;
     private String sqlstring(){
         
         String s;
-        s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id";
+        s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id";
         if(Status.getValue().toString().equals("For Sale")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,location FROM vehicle, branch, for_sale_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=for_sale_vehicle.vehicle_id";
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year,location FROM vehicle, branch, for_sale_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=for_sale_vehicle.vehicle_id";
             System.out.println(s);
         }
         if(Status.getValue().toString().equals("Sold")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,location FROM vehicle, branch, sold_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=sold_vehicle.vehicle_id";
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year,location FROM vehicle, branch, sold_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=sold_vehicle.vehicle_id";
         }
         if(Status.getValue().toString().equals("Available")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year,location "
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year,location "
                     + "FROM vehicle, branch "
                     + "where vehicle.branch_id=branch.branch_id"
                     +" and vehicle.vehicle_id  not in (select vehicle_id from for_sale_vehicle)"
@@ -309,7 +316,7 @@ boolean valid = true;
                 in.setYear(rs.getString("vehicle_manufactured_year"));
                 in.setCategory(rs.getString("vehicle_category"));
                 in.setType(rs.getString("vehicle_type"));
-                in.setImage(rs.getString("vehicle_category"));
+                in.setIm(rs.getBinaryStream("vehicle_thumbnail"));
                 in.setStatus(get_status(rs.getString("vehicle_id")));
                 data.add(in);
             }
@@ -400,7 +407,7 @@ boolean valid = true;
         elocation.getSelectionModel().select(in.Branch);
         etype.getSelectionModel().select(in.Type);
         eCategory.getSelectionModel().select(in.Category);
-        edirection.setText(in.image);
+        //edirection.setText(in.image);
         ecompany.setText(in.Name);
         PlateNo.setText(in.PlateNumber);
         eyear.getSelectionModel().select(in.Year);
@@ -443,7 +450,7 @@ boolean valid = true;
         
     }
     @FXML
-    public void add(ActionEvent event){
+    public void add(ActionEvent event) throws FileNotFoundException{
         Boolean a,b,c,d,e,f,g;
         a=isEmptyTextField (aPlateNo, avano);
         b=isEmptyComboBox(type,avatype)||validateAll(type,avatype);
@@ -462,19 +469,23 @@ boolean valid = true;
         String eCate=aCategory.getValue().toString();
         String Pl=aPlateNo.getText();
         String y=year.getValue().toString();
-        String path="path";
+        String path=direction.getText();
                     try {
             getcon();
-                        System.out.println("$$$$$$$$$$$$$$$$$$$$");
             ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
             rs.next();
 
             String eb=rs.getString(1);
             String sql="insert into vehicle"
                 + "(plate_number,vehicle_name,vehicle_type,vehicle_category,vehicle_thumbnail,vehicle_manufactured_year,branch_id)"
-                + " values('"+Pl+"','"+ec+"','"+et+"','"+eCate+"','"+path+"','"+y+"','"+eb+"');";
+                + " values('"+Pl+"','"+ec+"','"+et+"','"+eCate+"',?,'"+y+"','"+eb+"');";
             //System.out.println(sql);
-            con.createStatement().executeUpdate(sql);
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            File image = new File(path);
+            FileInputStream   fis = new FileInputStream(image);
+            stmt.setBinaryStream(1, fis, (int) image.length());
+            stmt.execute();
             con.close();
             query(sqlstring());
             seterror();
@@ -668,7 +679,7 @@ public void getTableView()
 	tb.setTableMenuButtonVisible(true);
         
         aArt = new TableColumn<>("Album");
-	aArt.setCellValueFactory(new PropertyValueFactory("image"));
+	aArt.setCellValueFactory(new PropertyValueFactory("Im"));
 	aArt.setPrefWidth(150);
 	
         tID=new TableColumn<>("Plate Number");
@@ -700,25 +711,27 @@ public void getTableView()
         tBranch.setPrefWidth(80);
         tBranch.setCellValueFactory(new PropertyValueFactory("Branch"));
         
-        aArt.setCellFactory(new Callback<TableColumn<Intb, String>, TableCell<Intb, String>>(){
+        aArt.setCellFactory(new Callback<TableColumn<Intb, InputStream>, TableCell<Intb, InputStream>>(){
 
             @Override
-            public TableCell<Intb, String> call(TableColumn<Intb, String> param) {
-                  TableCell<Intb, String> cell = new TableCell<Intb, String>(){
+            public TableCell<Intb, InputStream> call(TableColumn<Intb,InputStream> param) {
+                  TableCell<Intb, InputStream> cell = new TableCell<Intb, InputStream>(){
                        ImageView img=new ImageView();
                       @Override
-                      public void updateItem(String item, boolean empty){
+                      public void updateItem(InputStream item, boolean empty){
                           if(item!=null){
                             VBox vb=new VBox();
                             vb.setAlignment(Pos.CENTER);
-                           
-                            img.setImage(new Image(InventoryManage.class.getResource(item+".jpg").toString()));
+                            img=new ImageView();
+                            img.setImage(new Image(item));
                             img.setFitHeight(50);
                             img.setFitWidth(75);
+                            System.out.println(item);
                             
-                            vb.getChildren().addAll(img);
-                            setGraphic(vb);
+                             vb.getChildren().addAll(img);
+                             setGraphic(vb);
                       }else{
+                             // System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFF");
                              img.setImage(null);
                           }
                   }
