@@ -410,15 +410,14 @@ public class VehicleListViewController implements Initializable {
 	    @Override
 	    public TableCell<Vehicle, Thumbnail> call(TableColumn<Vehicle, Thumbnail> param) {               
 	        TableCell<Vehicle, Thumbnail> cell = new TableCell<Vehicle, Thumbnail>(){
-	            ImageView imageview = new ImageView();
+	            ImageView imageview;
                       @Override
 	            public void updateItem(Thumbnail item, boolean empty) {                       
 	                if(item!=null){                           
-	                                         
+	                    imageview = new ImageView(item.getImage());                     
 	                    imageview.setFitHeight(75);
 	                    imageview.setFitWidth(75);
-	                    imageview.setImage(new Image(VehicleRepository.class.getResource("img").toString()+"/"+item.getFilename()));
-                            Button button = new Button("", imageview);
+	                    Button button = new Button("", imageview);
                             button.setId(item.getVehicleId());
                             button.setContentDisplay(ContentDisplay.TOP);
                             button.setOnAction(new EventHandler<ActionEvent>() {
@@ -517,7 +516,7 @@ public class VehicleListViewController implements Initializable {
                     @Override
                     public void updateItem(Thumbnail item, boolean empty) {
                         if(item!=null){
-                            imageview = new ImageView(new Image(item.getImage()));
+                            imageview = new ImageView(item.getImage());
                             imageview.setFitHeight(75);
                             imageview.setFitWidth(75);
                             //imageview.setImage(new Image(VehicleRepository.class.getResource("img").toString()+"/"+item.getFilename()));
@@ -690,14 +689,13 @@ que    = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.
 	    @Override
 	    public TableCell<Vehicle, Thumbnail> call(TableColumn<Vehicle, Thumbnail> param) {               
 	        TableCell<Vehicle, Thumbnail> cell = new TableCell<Vehicle, Thumbnail>(){
-	            ImageView imageview = new ImageView();
+	            ImageView imageview ;
                       @Override
 	            public void updateItem(Thumbnail item, boolean empty) {                       
 	                if(item!=null){                           
-	                                         
+	                    imageview = new ImageView(item.getImage());                     
 	                    imageview.setFitHeight(75);
 	                    imageview.setFitWidth(75);
-	                    imageview.setImage(new Image(VehicleRepository.class.getResource("img").toString()+"/"+item.getFilename()));
 	                    Button button = new Button("", imageview);
                             button.setId(item.getVehicleId());
                             button.setContentDisplay(ContentDisplay.TOP);
