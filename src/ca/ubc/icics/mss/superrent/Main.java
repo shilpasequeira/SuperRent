@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -28,7 +29,7 @@ public class Main extends Application {
         AnchorPane myPane = (AnchorPane) myLoader.load();
         LoginViewController controller = (LoginViewController) myLoader.getController();
         controller.setPrevStage(this);
-        Scene myScene = new Scene(myPane);
+        Scene myScene = new Scene(myPane,800,800,Color.BLACK);
         primaryStage.setScene(myScene);
         primaryStage.show();
     }

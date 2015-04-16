@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="407.9609375" prefWidth="512.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ca.ubc.icics.mss.superrent.login.LoginViewController">
+<AnchorPane id="AnchorPane" prefHeight="407.9609375" prefWidth="512.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.ubc.icics.mss.superrent.login.LoginViewController">
   <children>
    <!-- <Label fx:id="welcome_text" layoutX="70.0" layoutY="164.0" text="LOGIN" wrapText="false" /> 
       <Rectangle arcHeight="5.0" arcWidth="46.0" fill="DODGERBLUE" height="200.0" layoutX="266.0" layoutY="91.0" stroke="#990000" strokeType="INSIDE" visible="false" width="200.0" />
@@ -23,7 +23,8 @@
     <Label fx:id="label_pass" layoutX="150.0" layoutY="265.0" text="Password:" />
     <PasswordField fx:id="tf_password" layoutX="150.0" layoutY="280.0" prefWidth="184.0" />
     <Button fx:id="loginButton" layoutX="260.0" layoutY="315.0" onAction="#handleButtonAction" text="Login" />
-    <Label fx:id="label_error" layoutX="80.0" layoutY="370.0"  text="Invalid username/password combination!" />
+    <Label fx:id="label_error" layoutX="80.0" layoutY="370.0" text="Invalid username/password combination!" />
+      <Pane fx:id="p" layoutX="142.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
     
   </children>
   <stylesheets>
