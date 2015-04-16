@@ -52,7 +52,7 @@
       <ComboBox fx:id="eyear" blendMode="MULTIPLY" layoutX="221.0" layoutY="174.0" prefWidth="150.0" />
       <Button layoutX="270.0" layoutY="428.0" mnemonicParsing="false" onAction="#Update" text="Update" />
       <Button fx:id="ecancel" layoutX="470.0" layoutY="428.0" mnemonicParsing="false" onAction="#eCancelin" text="Cancel" />
-      <Button layoutX="396.0" layoutY="349.0" mnemonicParsing="false" onAction="#browseaction" text="Browse" />
+      <Button layoutX="396.0" layoutY="349.0" mnemonicParsing="false" onAction="#ebrowseaction" text="Browse" />
       <TextField fx:id="ecompany" layoutX="502.0" layoutY="97.0" prefHeight="25.0" prefWidth="150.0" />
       <ComboBox fx:id="eCategory" layoutX="222.0" layoutY="233.0" prefWidth="150.0" />
             <ComboBox fx:id="etype" layoutX="221.0" layoutY="94.0" prefWidth="150.0" />
