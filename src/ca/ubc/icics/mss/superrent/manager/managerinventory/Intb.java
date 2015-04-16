@@ -21,7 +21,8 @@ public class Intb {
     public String Category;
     public String Type;
     public String Name;
-    public InputStream Im;
+    //public InputStream Im;
+    public Image Pic;
     public String Status;
     
     public Intb(){
@@ -39,11 +40,11 @@ public class Intb {
     public void setPlateNumber(String s){
         this.PlateNumber=s;
     }
-    public InputStream getIm(){
-        return Im;
+    public Image getPic(){
+        return Pic;
     }
-    public void setIm(InputStream s){
-        this.Im=s;
+    public void setPic(InputStream s){
+        this.Pic=new Image(s);
     }
     public String getBranch() {
         return Branch;

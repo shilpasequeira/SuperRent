@@ -10,11 +10,8 @@ import java.io.File;
 import ca.ubc.icics.mss.superrent.validation.Validate;
 import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyComboBox;
 import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyTextField;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,9 +49,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import javax.imageio.ImageIO;
 
 
 /**
@@ -177,7 +172,7 @@ public class InventoryManageController implements Initializable {
     private TableColumn<Intb,String> tType;
     private TableColumn<Intb,String> tCate;
     private TableColumn<Intb,String> tStatus;
-    private TableColumn<Intb,InputStream> aArt;
+    private TableColumn<Intb,Image> aArt;
     private TableColumn<Intb,String>tYear;
     private ObservableList data=FXCollections.observableArrayList();
     String status;
@@ -189,7 +184,7 @@ public class InventoryManageController implements Initializable {
     private void sPlate(ActionEvent event) throws SQLException, ClassNotFoundException{
         String s;
         if(!sPlate.getText().equals("")){
-            s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_manufactured_year, vehicle_thumbnail,location FROM vehicle, branch where vehicle.branch_id=branch.branch_id and plate_number like '%"+sPlate.getText()+"%';";
+            s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id and plate_number like '%"+sPlate.getText()+"%';";
             query(s);
         }
         else
@@ -316,7 +311,7 @@ boolean valid = true;
                 in.setYear(rs.getString("vehicle_manufactured_year"));
                 in.setCategory(rs.getString("vehicle_category"));
                 in.setType(rs.getString("vehicle_type"));
-                in.setIm(rs.getBinaryStream("vehicle_thumbnail"));
+                in.setPic(rs.getBinaryStream("vehicle_thumbnail"));
                 in.setStatus(get_status(rs.getString("vehicle_id")));
                 data.add(in);
             }
@@ -407,7 +402,7 @@ boolean valid = true;
         elocation.getSelectionModel().select(in.Branch);
         etype.getSelectionModel().select(in.Type);
         eCategory.getSelectionModel().select(in.Category);
-        //edirection.setText(in.image);
+        //edirection.setText(in.Pic);
         ecompany.setText(in.Name);
         PlateNo.setText(in.PlateNumber);
         eyear.getSelectionModel().select(in.Year);
@@ -469,9 +464,10 @@ boolean valid = true;
         String eCate=aCategory.getValue().toString();
         String Pl=aPlateNo.getText();
         String y=year.getValue().toString();
-        String path=direction.getText();
+        String path="path";
                     try {
             getcon();
+                        System.out.println("$$$$$$$$$$$$$$$$$$$$");
             ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
             rs.next();
 
@@ -480,11 +476,10 @@ boolean valid = true;
                 + "(plate_number,vehicle_name,vehicle_type,vehicle_category,vehicle_thumbnail,vehicle_manufactured_year,branch_id)"
                 + " values('"+Pl+"','"+ec+"','"+et+"','"+eCate+"',?,'"+y+"','"+eb+"');";
             //System.out.println(sql);
-            PreparedStatement stmt = con.prepareStatement(sql);
-
-            File image = new File(path);
-            FileInputStream   fis = new FileInputStream(image);
-            stmt.setBinaryStream(1, fis, (int) image.length());
+            PreparedStatement stmt=con.prepareStatement(sql);
+            File image=new File(path);
+            FileInputStream fis=new FileInputStream(image);
+            stmt.setBinaryStream(1, fis, (int)image.length());
             stmt.execute();
             con.close();
             query(sqlstring());
@@ -580,6 +575,7 @@ boolean valid = true;
             String eb=rs.getString(1);
             String sql="update vehicle set vehicle_manufactured_year='"+year+"', plate_number='"+Pl+"', vehicle_type='"+et+"', vehicle_category='"+eCate+"', vehicle_name='"+ec+"', branch_id='"+eb+"' where vehicle_id='"+vID+"';";
             System.out.println(sql);
+      
             con.createStatement().executeUpdate(sql);
             
 
@@ -655,21 +651,6 @@ boolean valid = true;
            uvalo.setVisible(false);
            uvadir.setVisible(false);
            uvano.setVisible(false);
-           
-           avatype.setTextFill(Color.RED);
-           avacate.setTextFill(Color.RED);
-           avacom.setTextFill(Color.RED);
-           avayear.setTextFill(Color.RED);
-           avalo.setTextFill(Color.RED);
-           avadir.setTextFill(Color.RED);
-           avano.setTextFill(Color.RED);
-           uvatype.setTextFill(Color.RED);
-           uvacate.setTextFill(Color.RED);
-           uvacom.setTextFill(Color.RED);
-           uvayear.setTextFill(Color.RED);
-           uvalo.setTextFill(Color.RED);
-           uvadir.setTextFill(Color.RED);
-           uvano.setTextFill(Color.RED);
     }
     
     
@@ -679,7 +660,7 @@ public void getTableView()
 	tb.setTableMenuButtonVisible(true);
         
         aArt = new TableColumn<>("Album");
-	aArt.setCellValueFactory(new PropertyValueFactory("Im"));
+	aArt.setCellValueFactory(new PropertyValueFactory("Pic"));
 	aArt.setPrefWidth(150);
 	
         tID=new TableColumn<>("Plate Number");
@@ -711,27 +692,26 @@ public void getTableView()
         tBranch.setPrefWidth(80);
         tBranch.setCellValueFactory(new PropertyValueFactory("Branch"));
         
-        aArt.setCellFactory(new Callback<TableColumn<Intb, InputStream>, TableCell<Intb, InputStream>>(){
+        aArt.setCellFactory(new Callback<TableColumn<Intb, Image>, TableCell<Intb, Image>>(){
 
             @Override
-            public TableCell<Intb, InputStream> call(TableColumn<Intb,InputStream> param) {
-                  TableCell<Intb, InputStream> cell = new TableCell<Intb, InputStream>(){
+            public TableCell<Intb, Image> call(TableColumn<Intb, Image> param) {
+                  TableCell<Intb, Image> cell = new TableCell<Intb, Image>(){
                        ImageView img=new ImageView();
                       @Override
-                      public void updateItem(InputStream item, boolean empty){
+                      public void updateItem(Image item, boolean empty){
                           if(item!=null){
                             VBox vb=new VBox();
                             vb.setAlignment(Pos.CENTER);
-                            img=new ImageView();
-                            img.setImage(new Image(item));
+                            System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFff");
+                            img.setImage(item);
                             img.setFitHeight(50);
                             img.setFitWidth(75);
-                            System.out.println(item);
                             
-                             vb.getChildren().addAll(img);
-                             setGraphic(vb);
+                            vb.getChildren().addAll(img);
+                            setGraphic(vb);
                       }else{
-                             // System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFF");
+                             System.out.println("SSSSSSSSSSSSSSSSSSSS");
                              img.setImage(null);
                           }
                   }
@@ -746,7 +726,6 @@ public void getTableView()
     public void initialize(URL url, ResourceBundle rb) {
         SetYear(Year);
         getTableView();
-        seterror();
         try {
             SetLocation(Location);
             SetCategory(Type);

@@ -27,7 +27,7 @@
       <ComboBox fx:id="Year" blendMode="MULTIPLY" layoutX="390.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
       <ComboBox fx:id="Type" layoutX="590.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
       <Group />
-      <TableView fx:id="tb" layoutX="33.0" layoutY="103.0" onMouseClicked="#tbact" prefHeight="400.0" prefWidth="733.0">
+      <TableView fx:id="tb" layoutX="33.0" layoutY="103.0" onMouseClicked="#tbact" prefHeight="403.0" prefWidth="733.0">
 
       </TableView>
       <Button layoutX="312.0" layoutY="515.0" mnemonicParsing="false" onAction="#AddVehicle" text="Add Vehicle" />
