@@ -256,7 +256,7 @@ public class ManageUserController implements Initializable {
     public void submitButton(ActionEvent event) {
         RoleItemAdd.setText(ManagerItem.getText());
         SubmitButtonAdd.setDisable(false);
-        String SQL = "insert into user values('" + UserNameAdd.getText() + "','" + md5(PasswordAdd.getText()).toString() + "','" + FirstNameAdd.getText() + "','" + LastNameAdd.getText() + "','" + RoleItemAdd.getText() + "')";
+        String SQL = "insert into user values('" + UserNameAdd.getText() + "','" + md5(PasswordAdd.getText()) + "','" + FirstNameAdd.getText() + "','" + LastNameAdd.getText() + "','" + RoleItemAdd.getText() + "')";
         try {
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
