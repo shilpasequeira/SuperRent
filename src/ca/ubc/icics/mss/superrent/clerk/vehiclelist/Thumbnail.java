@@ -5,17 +5,21 @@
  */
 package ca.ubc.icics.mss.superrent.clerk.vehiclelist;
 
+import java.io.InputStream;
+
 /**
  *
  * @author Avinash
  */
 public class Thumbnail {
+   private InputStream is;
    private String filename;
    private String VehicleId;
-    public Thumbnail(String filename, String vid) {
+    public Thumbnail(String filename, String vid,InputStream is) {
                 
                 this.filename = filename;
                 this.VehicleId = vid;
+                this.is = is;
 	       	    }
     public String getFilename() {
 	        return filename;
@@ -30,4 +34,12 @@ public class Thumbnail {
 	    public void setVehicleId(String vid ){
 	        this.VehicleId = vid;
 	    }
+            
+            public InputStream getImage() {
+	        return is;
+	    }
+	    public void setImage(InputStream is ){
+	        this.is = is;
+	    }
+            
 }
