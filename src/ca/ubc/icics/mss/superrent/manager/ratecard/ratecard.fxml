@@ -15,17 +15,12 @@
    <children>
       <Pane fx:id="mainPage" prefHeight="600.0" prefWidth="800.0" styleClass="background">
          <children>
-            <Label layoutX="32.0" layoutY="24.0" text="RateCard">
-               <font>
-                  <Font size="35.0" />
-               </font>
-            </Label>
-            <TextField fx:id="search_field" layoutX="32.0" layoutY="85.0" onAction="#filter" />
-            <TableView fx:id="rcTable" layoutX="32.0" layoutY="132.0" prefHeight="417.0" prefWidth="710.0" />
-            <ChoiceBox fx:id="branchOption" layoutX="592.0" layoutY="85.0" prefWidth="150.0" />
-            <Button fx:id="addRates" layoutX="542.0" layoutY="560.0" mnemonicParsing="false" onMouseClicked="#add" text="Add" />
-            <Button fx:id="editRates" layoutX="611.0" layoutY="560.0" mnemonicParsing="false" onMouseClicked="#edit" text="Edit" />
-            <Button fx:id="removeRates" layoutX="675.0" layoutY="560.0" mnemonicParsing="false" onMouseClicked="#remove" text="Remove" />
+            <TextField fx:id="search_field" layoutX="32.0" layoutY="29.0" onAction="#filter" />
+            <TableView fx:id="rcTable" layoutX="32.0" layoutY="76.0" prefHeight="417.0" prefWidth="710.0" />
+            <ChoiceBox fx:id="branchOption" layoutX="592.0" layoutY="29.0" prefWidth="150.0" />
+            <Button fx:id="addRates" layoutX="542.0" layoutY="504.0" mnemonicParsing="false" onMouseClicked="#add" text="Add" />
+            <Button fx:id="editRates" layoutX="611.0" layoutY="504.0" mnemonicParsing="false" onMouseClicked="#edit" text="Edit" />
+            <Button fx:id="removeRates" layoutX="675.0" layoutY="504.0" mnemonicParsing="false" onMouseClicked="#remove" text="Remove" />
          </children>
       </Pane>
       <Pane fx:id="editPage" prefHeight="600.0" prefWidth="800.0" visible="false">
