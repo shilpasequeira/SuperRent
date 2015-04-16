@@ -59,8 +59,15 @@
             <Text layoutX="175.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
             <TextField fx:id="PlateNo" layoutX="501.0" layoutY="234.0" prefHeight="25.0" prefWidth="150.0" />
             <Text layoutX="422.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
-            <Text layoutX="113.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For Sale Price" />
-            <TextField fx:id="esaleprice" editable="false" layoutX="223.0" layoutY="284.0" prefHeight="25.0" prefWidth="150.0" />
+            <Text layoutX="113.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For Sale Price" />
+            <TextField fx:id="esaleprice" editable="false" layoutX="223.0" layoutY="302.0" prefHeight="25.0" prefWidth="150.0" />
+            <Label fx:id="uvatype" layoutX="234.0" layoutY="122.0" />
+            <Label fx:id="uvacom" layoutX="515.0" layoutY="130.0" />
+            <Label fx:id="uvayear" layoutX="233.0" layoutY="202.0" />
+            <Label fx:id="uvalo" layoutX="516.0" layoutY="201.0" />
+            <Label fx:id="uvacate" layoutX="234.0" layoutY="266.0" />
+            <Label fx:id="uvano" layoutX="513.0" layoutY="267.0" />
+            <Label fx:id="uvadir" layoutX="227.0" layoutY="381.0" />
    </children>
       </Pane>
       
@@ -86,6 +93,13 @@
             <Text layoutX="157.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
             <TextField fx:id="aPlateNo" layoutX="484.0" layoutY="242.0" prefHeight="25.0" prefWidth="150.0" />
             <Text layoutX="405.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
+            <Label fx:id="avatype" layoutX="220.0" layoutY="123.0" />
+            <Label fx:id="avacom" layoutX="500.0" layoutY="122.0" />
+            <Label fx:id="avayear" layoutX="220.0" layoutY="199.0" />
+            <Label fx:id="avalo" layoutX="500.0" layoutY="205.0" />
+            <Label fx:id="avano" layoutX="500.0" layoutY="276.0" />
+            <Label fx:id="avacate" layoutX="220.0" layoutY="278.0" />
+            <Label fx:id="avadir" layoutX="350.0" layoutY="369.0" />
             
    </children>
       </Pane>

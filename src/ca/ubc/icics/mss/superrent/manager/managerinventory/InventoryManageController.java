@@ -7,6 +7,9 @@ package ca.ubc.icics.mss.superrent.manager.managerinventory;
 
 
 import java.io.File;
+import ca.ubc.icics.mss.superrent.validation.Validate;
+import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyComboBox;
+import static ca.ubc.icics.mss.superrent.validation.Validate.isEmptyTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -23,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +46,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 
@@ -56,6 +61,41 @@ public class InventoryManageController implements Initializable {
      * Initializes the controller class.
      */
     Connection con=null;
+    @FXML
+    private Label avatype;
+    @FXML
+    private Label avacate;
+    @FXML
+    private Label avacom;
+    @FXML
+    private Label avayear;
+    @FXML
+    private Label avalo;
+    @FXML
+    private Label avadir;
+    @FXML
+    private Label avano;
+    
+    @FXML
+    private Label uvatype;
+    @FXML
+    private Label uvacate;
+    @FXML
+    private Label uvacom;
+    @FXML
+    private Label uvayear;
+    @FXML
+    private Label uvalo;
+    @FXML
+    private Label uvadir;
+    @FXML
+    private Label uvano;
+    
+    
+            
+            
+            
+            
     @FXML
     private TextField direction;
     @FXML
@@ -206,6 +246,23 @@ public class InventoryManageController implements Initializable {
         cb.getSelectionModel().selectFirst();
         
     }
+    private boolean validateAll(ComboBox comboBox,Label error){
+boolean valid = true;
+        ObservableList<String> styleClass = comboBox.getStyleClass();
+        if (comboBox.getValue().toString() == "ALL") {
+            if (! styleClass.contains("error")) {
+                styleClass.add("error");
+            }
+            error.setVisible(true);
+            error.setText("This field is required");
+        } else {
+            // remove all occurrences:
+            styleClass.removeAll(Collections.singleton("error"));
+            valid = false;
+            error.setVisible(false);
+        }
+        return valid;
+    }
     private String sqlstring(){
         
         String s;
@@ -320,6 +377,7 @@ public class InventoryManageController implements Initializable {
         type.getSelectionModel().select("ALL");
         location.getSelectionModel().select("ALL");
         year.getSelectionModel().select("ALL");
+        seterror();
         
         
     }
@@ -330,10 +388,12 @@ public class InventoryManageController implements Initializable {
         forsaleprice.setText("");
         esaleprice.setText("");
         esaleprice.setEditable(false);
+        seterror();
         con.close();
     }
     @FXML
     public void EditVehicle(ActionEvent event) throws SQLException, ClassNotFoundException{
+        
         edpane.setVisible(true);
         Intb in=tb.getSelectionModel().getSelectedItem();
         vID=in.getVehicleID();
@@ -384,14 +444,26 @@ public class InventoryManageController implements Initializable {
     }
     @FXML
     public void add(ActionEvent event){
-        String et=type.getValue().toString();
+        Boolean a,b,c,d,e,f,g;
+        a=isEmptyTextField (aPlateNo, avano);
+        b=isEmptyComboBox(type,avatype)||validateAll(type,avatype);
+        c=isEmptyComboBox(location,avalo)||validateAll(location,avalo);
+        d=isEmptyComboBox(aCategory,avacate)||validateAll(aCategory,avacate);
+        e=isEmptyComboBox(year,avayear)||validateAll(year,avayear);
+        f=isEmptyTextField (company, avacom);
+        g=isEmptyTextField (direction, avadir);
+       
+        
+
+        if(!(a||b||c||d||e||f||g)){
+             String et=type.getValue().toString();
         String ec=company.getText();
         String el=location.getValue().toString();
         String eCate=aCategory.getValue().toString();
         String Pl=aPlateNo.getText();
         String y=year.getValue().toString();
         String path="path";
-        try {
+                    try {
             getcon();
                         System.out.println("$$$$$$$$$$$$$$$$$$$$");
             ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
@@ -405,6 +477,7 @@ public class InventoryManageController implements Initializable {
             con.createStatement().executeUpdate(sql);
             con.close();
             query(sqlstring());
+            seterror();
             refresh();
             
         } catch (SQLException ex) {
@@ -412,6 +485,10 @@ public class InventoryManageController implements Initializable {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
+        
+        
+
         
     }
     
@@ -469,12 +546,22 @@ public class InventoryManageController implements Initializable {
     }
     @FXML
     public void Update(ActionEvent event){
+         Boolean a,b,c,d,e,f,g;
+        a=isEmptyTextField (PlateNo, uvano);
+        b=isEmptyComboBox(etype,uvatype)||validateAll(etype,uvatype);
+        c=isEmptyComboBox(elocation,uvalo)||validateAll(elocation,uvalo);
+        d=isEmptyComboBox(eCategory,uvacate)||validateAll(eCategory,uvacate);
+        e=isEmptyComboBox(eyear,uvayear)||validateAll(eyear,uvayear);
+        f=isEmptyTextField (ecompany, uvacom);
+        g=isEmptyTextField (edirection, uvadir);
+        if(!(a||b||c||d||e||f||g)){
         String et=etype.getValue().toString();
         String ec=ecompany.getText();
         String el=elocation.getValue().toString();
         String eCate=eCategory.getValue().toString();
         String Pl=PlateNo.getText();
         String year=eyear.getValue().toString();
+        
         try {
             getcon();
             ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
@@ -495,11 +582,13 @@ public class InventoryManageController implements Initializable {
             esaleprice.setText("");
             edpane.setVisible(false);
             con.close();
+            seterror();
             refresh();
         } catch (SQLException ex) {
             Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         }
         
         
@@ -538,8 +627,38 @@ public class InventoryManageController implements Initializable {
         location.getSelectionModel().selectFirst();
         aCategory.getSelectionModel().selectFirst();
         aPlateNo.setText("");
-        year.getSelectionModel().selectFirst();
-        
+        year.getSelectionModel().selectFirst(); 
+    }
+    public void seterror(){
+           avatype.setVisible(false);
+           avacate.setVisible(false);
+           avacom.setVisible(false);
+           avayear.setVisible(false);
+           avalo.setVisible(false);
+           avadir.setVisible(false);
+           avano.setVisible(false);
+           uvatype.setVisible(false);
+           uvacate.setVisible(false);
+           uvacom.setVisible(false);
+           uvayear.setVisible(false);
+           uvalo.setVisible(false);
+           uvadir.setVisible(false);
+           uvano.setVisible(false);
+           
+           avatype.setTextFill(Color.RED);
+           avacate.setTextFill(Color.RED);
+           avacom.setTextFill(Color.RED);
+           avayear.setTextFill(Color.RED);
+           avalo.setTextFill(Color.RED);
+           avadir.setTextFill(Color.RED);
+           avano.setTextFill(Color.RED);
+           uvatype.setTextFill(Color.RED);
+           uvacate.setTextFill(Color.RED);
+           uvacom.setTextFill(Color.RED);
+           uvayear.setTextFill(Color.RED);
+           uvalo.setTextFill(Color.RED);
+           uvadir.setTextFill(Color.RED);
+           uvano.setTextFill(Color.RED);
     }
     
     
@@ -614,6 +733,7 @@ public void getTableView()
     public void initialize(URL url, ResourceBundle rb) {
         SetYear(Year);
         getTableView();
+        seterror();
         try {
             SetLocation(Location);
             SetCategory(Type);
