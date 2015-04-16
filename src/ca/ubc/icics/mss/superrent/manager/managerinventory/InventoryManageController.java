@@ -77,6 +77,8 @@ public class InventoryManageController implements Initializable {
     private Label avadir;
     @FXML
     private Label avano;
+    @FXML
+    private Label avplate;
     
     @FXML
     private Label uvatype;
@@ -92,7 +94,9 @@ public class InventoryManageController implements Initializable {
     private Label uvadir;
     @FXML
     private Label uvano;
-    
+    @FXML
+    private Label evplate;
+    public String vPN;
     
             
             
@@ -413,6 +417,7 @@ boolean valid = true;
         edpane.setVisible(true);
         Intb in=tb.getSelectionModel().getSelectedItem();
         vID=in.getVehicleID();
+        vPN=in.getPlateNumber();
         elocation.getSelectionModel().select(in.Branch);
         etype.getSelectionModel().select(in.Type);
         eCategory.getSelectionModel().select(in.Category);
@@ -458,6 +463,29 @@ boolean valid = true;
         }
         
     }
+    public boolean validplate(String a){
+        int i=0;
+        try {
+            String sql="select * from vehicle where plate_number='"+a+"';";
+            getcon();
+            ResultSet  rs=con.createStatement().executeQuery(sql);
+            
+            while(rs.next()){
+                i++;
+            }
+            con.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(i==0)
+            return true;
+        else
+            return false;
+        
+    }
     @FXML
     public void add(ActionEvent event) throws FileNotFoundException{
         Boolean a,b,c,d,e,f,g;
@@ -468,7 +496,6 @@ boolean valid = true;
         e=isEmptyComboBox(year,avayear)||validateAll(year,avayear);
         f=isEmptyTextField (company, avacom);
         g=isEmptyTextField (direction, avadir);
-       
         
 
         if(!(a||b||c||d||e||f||g)){
@@ -479,9 +506,15 @@ boolean valid = true;
         String Pl=aPlateNo.getText();
         String y=year.getValue().toString();
         String path=direction.getText();
+        if(!validplate(Pl)){
+            avplate.setVisible(true);
+            return;
+        }
+        else
+            avplate.setVisible(false);
                     try {
             getcon();
-                        System.out.println("$$$$$$$$$$$$$$$$$$$$");
+                       // System.out.println("$$$$$$$$$$$$$$$$$$$$");
             ResultSet rs=con.createStatement().executeQuery("select branch_id from branch where location='"+el+"';");
             rs.next();
 
@@ -581,6 +614,14 @@ boolean valid = true;
         String eCate=eCategory.getValue().toString();
         String Pl=PlateNo.getText();
         String year=eyear.getValue().toString();
+        if(!Pl.equals(vPN)){
+            if(!validplate(Pl)){
+            evplate.setVisible(true);
+            return;
+           }
+        else
+            evplate.setVisible(false);
+        }
         
         try {
             getcon();
@@ -588,7 +629,7 @@ boolean valid = true;
             rs.next();
             String eb=rs.getString(1);
             String sql="update vehicle set vehicle_manufactured_year='"+year+"', plate_number='"+Pl+"', vehicle_type='"+et+"', vehicle_category='"+eCate+"', vehicle_name='"+ec+"', branch_id='"+eb+"' where vehicle_id='"+vID+"';";
-            System.out.println(sql);
+           // System.out.println(sql);
       
             con.createStatement().executeUpdate(sql);
             
@@ -677,6 +718,8 @@ boolean valid = true;
            uvalo.setVisible(false);
            uvadir.setVisible(false);
            uvano.setVisible(false);
+           avplate.setVisible(false);
+           evplate.setVisible(false);
     }
     
     
@@ -729,7 +772,7 @@ public void getTableView()
                           if(item!=null){
                             VBox vb=new VBox();
                             vb.setAlignment(Pos.CENTER);
-                            System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFff");
+                            //System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFff");
                             img.setImage(item);
                             img.setFitHeight(50);
                             img.setFitWidth(75);
@@ -737,7 +780,7 @@ public void getTableView()
                             vb.getChildren().addAll(img);
                             setGraphic(vb);
                       }else{
-                             System.out.println("SSSSSSSSSSSSSSSSSSSS");
+                             //System.out.println("SSSSSSSSSSSSSSSSSSSS");
                              img.setImage(null);
                           }
                   }

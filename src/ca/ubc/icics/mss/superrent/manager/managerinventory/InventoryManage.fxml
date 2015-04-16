@@ -68,6 +68,7 @@
             <Label fx:id="uvacate" layoutX="234.0" layoutY="266.0" />
             <Label fx:id="uvano" layoutX="513.0" layoutY="267.0" />
             <Label fx:id="uvadir" layoutX="227.0" layoutY="381.0" />
+            <Label fx:id="evplate" layoutX="520.0" layoutY="267.0" text="Plate No. Existed!" textFill="#f80a0a" visible="false" />
    </children>
       </Pane>
       
@@ -100,6 +101,7 @@
             <Label fx:id="avano" layoutX="500.0" layoutY="276.0" />
             <Label fx:id="avacate" layoutX="220.0" layoutY="278.0" />
             <Label fx:id="avadir" layoutX="350.0" layoutY="369.0" />
+            <Label fx:id="avplate" layoutX="505.0" layoutY="271.0" text="Plate No. Existed!" textFill="#eb0404" visible="false" />
             
    </children>
       </Pane>
