@@ -49,6 +49,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 
@@ -342,7 +343,7 @@ boolean valid = true;
         String s;
         s="SELECT vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year, location FROM vehicle, branch where vehicle.branch_id=branch.branch_id";
         if(Status.getValue().toString().equals("For Sale")){
-            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year,location FROM vehicle, branch, for_sale_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=for_sale_vehicle.vehicle_id";
+            s="SELECT vehicle.vehicle_id,vehicle_name,vehicle_category,vehicle_type,plate_number,vehicle_thumbnail,vehicle_manufactured_year,location FROM vehicle, branch, for_sale_vehicle where vehicle.branch_id=branch.branch_id and vehicle.vehicle_id=for_sale_vehicle.vehicle_id and vehicle.vehicle_id  not in (select vehicle_id from sold_vehicle)";
             System.out.println(s);
         }
         if(Status.getValue().toString().equals("Sold")){
@@ -793,6 +794,24 @@ boolean valid = true;
            uvano.setVisible(false);
            avplate.setVisible(false);
            evplate.setVisible(false);
+           
+           
+           
+           avacate.setTextFill(Color.RED);
+           avacom.setTextFill(Color.RED);
+           avayear.setTextFill(Color.RED);
+           avalo.setTextFill(Color.RED);
+           avadir.setTextFill(Color.RED);
+           avano.setTextFill(Color.RED);
+           uvatype.setTextFill(Color.RED);
+           uvacate.setTextFill(Color.RED);
+           uvacom.setTextFill(Color.RED);
+           uvayear.setTextFill(Color.RED);
+           uvalo.setTextFill(Color.RED);
+           uvadir.setTextFill(Color.RED);
+           uvano.setTextFill(Color.RED);
+           avplate.setTextFill(Color.RED);
+           evplate.setTextFill(Color.RED);
     }
     
     
@@ -803,7 +822,7 @@ public void getTableView()
         
         aArt = new TableColumn<>("Album");
 	aArt.setCellValueFactory(new PropertyValueFactory("Pic"));
-	aArt.setPrefWidth(150);
+	aArt.setPrefWidth(120);
 	
         tID=new TableColumn<>("Plate Number");
         tID.setPrefWidth(80);
@@ -869,6 +888,7 @@ public void getTableView()
         SetYear(Year);
         getTableView();
         Setcontent();
+        seterror();
         try {
             SetLocation(Location);
             SetCategory(Type);
