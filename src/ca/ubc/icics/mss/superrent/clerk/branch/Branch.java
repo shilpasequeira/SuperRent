@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  * @author shilpa
  */
 public class Branch {
+    private SQLConnection scon = new SQLConnection();
     private int id;
     private String city;
     private String location;
@@ -27,7 +28,7 @@ public class Branch {
      */
     public Branch(int branchID) {
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("SELECT * FROM vehicle WHERE "
                         + "vehicle_id=" + branchID)) {
             

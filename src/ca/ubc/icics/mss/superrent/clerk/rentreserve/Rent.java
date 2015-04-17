@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  * @author warrior
  */
 public class Rent {
+    private SQLConnection scon = new SQLConnection();
     final int H=3600000, D=86400000, W=604800000;
     private int customerID;
     private int vehicleID;
@@ -54,7 +55,7 @@ public class Rent {
         this.additionalEquipment = new ArrayList<>();
         
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("SELECT * FROM rent WHERE "
                         + "rent_id=" + rentID);
                 
@@ -134,7 +135,7 @@ public class Rent {
      */
     public void confirmRental () {
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection()) {
+        try (Connection con = scon.getConnection()) {
             try (PreparedStatement pstatement = con.prepareStatement(""
                     + "INSERT INTO rent (customer_id, vehicle_id, "
                     + "start_date_time, end_date_time, drivers_license, "

@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  * @author warrior
  */
 public class Customer {
+    private SQLConnection scon = new SQLConnection();
     private int id;
     private String firstName;
     private String lastName;
@@ -134,7 +135,7 @@ public class Customer {
      */
     public Customer(int customerID) {
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("SELECT * FROM customer WHERE customer_id=" + customerID);
                 ResultSet clubRS = con.createStatement().executeQuery("SELECT * FROM club_member WHERE customer_id=" + customerID)) {
              
@@ -176,8 +177,7 @@ public class Customer {
             String city, String pincode, boolean isRoadStar, boolean isClubMember) {
         
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (ResultSet existingCustomer = 
-                SQLConnection.getConnection().createStatement().executeQuery(
+        try (ResultSet existingCustomer = scon.getConnection().createStatement().executeQuery(
                     "SELECT * FROM customer WHERE phone_no=" + phone)) {
             
             int count = 0;
@@ -191,8 +191,7 @@ public class Customer {
 
             // If there are no records that match that phone number.
             if (count == 0) {
-                try (PreparedStatement pstatement = 
-                        SQLConnection.getConnection().prepareStatement(""
+                try (PreparedStatement pstatement = scon.getConnection().prepareStatement(""
                         + "INSERT INTO customer (phone_no, first_name, "
                         + "last_name, address, city, pincode, is_roadStar) "
                         + "values (?, ?, ?, ?, ?, ?, ?)",
@@ -216,8 +215,7 @@ public class Customer {
             }
             // If customer already exists and is a roadstar, update his field
             else {
-                try (PreparedStatement updateCustomer = 
-                        SQLConnection.getConnection().prepareStatement(""
+                try (PreparedStatement updateCustomer = scon.getConnection().prepareStatement(""
                         + "UPDATE customer SET is_roadStar=1 where customer_id = ?")) {
                     updateCustomer.setInt(1, customerID);
                     updateCustomer.executeUpdate();
@@ -238,7 +236,7 @@ public class Customer {
             // If the customer wants to be a club member, then add him.
             if (isClubMember) {
                 try (PreparedStatement clubMemberStatement = 
-                        SQLConnection.getConnection().prepareStatement(""
+                        scon.getConnection().prepareStatement(""
                         + "INSERT INTO club_member (customer_id, points, "
                                 + "joining_date, expiry_date) "
                         + "values (?, ?, ?, ?)",
@@ -267,7 +265,7 @@ public class Customer {
     public void updateCustomer(String firstName, String lastName, String address, String phone, 
             String city, String pincode, boolean isRoadStar, boolean isClubMember) {
         try (PreparedStatement pstatement = 
-                SQLConnection.getConnection().prepareStatement(""
+                scon.getConnection().prepareStatement(""
                 + "UPDATE customer SET phone_no=?, first_name=?, "
                 + "last_name=?, address=?, city=?, pincode=?, is_roadStar=? WHERE customer_id=?")) {
             pstatement.setString(1, phone);
@@ -284,7 +282,7 @@ public class Customer {
             // If the customer wants to be a club member, then add him.
             if (isClubMember && !getIsClubMember()) {
                 try (PreparedStatement clubMemberStatement = 
-                        SQLConnection.getConnection().prepareStatement(""
+                        scon.getConnection().prepareStatement(""
                         + "INSERT INTO club_member (customer_id, points, "
                                 + "joining_date, expiry_date) "
                         + "values (?, ?, ?, ?)",

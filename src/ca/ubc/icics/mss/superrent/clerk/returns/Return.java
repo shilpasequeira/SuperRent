@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  * @author warrior
  */
 public class Return {
+    private SQLConnection scon = new SQLConnection();
     final int H=3600000, D=86400000, W=604800000;
     private int id;
     private int rentID;
@@ -46,7 +47,7 @@ public class Return {
     public Return (int returnID) {
         
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM returns WHERE "
                         + "return_id=" + returnID);) {
@@ -95,7 +96,7 @@ public class Return {
         grandTotal = getGrandTotal();
         
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection()) {
+        try (Connection con = scon.getConnection()) {
             try (PreparedStatement pstatement = con.prepareStatement(""
                     + "INSERT INTO returns (rent_id, odometer_reading, "
                     + "tank_full, amount, points_used, is_paid, payment_method) "

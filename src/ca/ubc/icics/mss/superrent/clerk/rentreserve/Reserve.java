@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  * @author warrior
  */
 public class Reserve {
+    private SQLConnection scon = new SQLConnection();
     final int H=3600000, D=86400000, W=604800000;
     private int customerID;
     private int vehicleID;
@@ -49,7 +50,7 @@ public class Reserve {
         this.additionalEquipment = new ArrayList<>();
         
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("SELECT * FROM reserve WHERE "
                         + "reserve_id=" + reserveID);
                 
@@ -108,7 +109,7 @@ public class Reserve {
      */
     public void confirmReservation () {
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection()) {
+        try (Connection con = scon.getConnection()) {
             try (PreparedStatement pstatement = con.prepareStatement(""
                     + "INSERT INTO reserve (customer_id, vehicle_id, "
                     + "start_date_time, end_date_time, estimate) "
@@ -332,7 +333,7 @@ public class Reserve {
 
     
     public void cancelReservation (int resId) {
-        try(Connection con = SQLConnection.getConnection();
+        try(Connection con = scon.getConnection();
                 Statement stmt = con.createStatement();){
             stmt.executeUpdate(
                     "delete from reserve where reserve_id = "

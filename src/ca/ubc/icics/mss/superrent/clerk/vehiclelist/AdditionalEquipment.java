@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  * @author shilpa
  */
 public class AdditionalEquipment {
+    private SQLConnection scon = new SQLConnection();
     private int id;
     private String name;
     private String type;
@@ -29,7 +30,7 @@ public class AdditionalEquipment {
     }
     
     public AdditionalEquipment(int id) {
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
                         "SELECT * FROM additional_equipment WHERE equipment_id=" + id)) {
             

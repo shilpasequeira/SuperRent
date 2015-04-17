@@ -15,10 +15,8 @@ import ca.ubc.icics.mss.superrent.validation.Validate;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -164,7 +162,8 @@ public class CustomerViewController implements Initializable {
     
     public void iniReserveData() throws ClassNotFoundException {
         rsInfolist.clear();
-        try(Connection con = SQLConnection.getConnection();
+        SQLConnection scon = new SQLConnection();
+        try(Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("select reserve_id,"
                         + " reserve.customer_id, vehicle_id, start_date_time,"
                         + " end_date_time, estimate from customer, reserve where"
@@ -187,7 +186,8 @@ public class CustomerViewController implements Initializable {
     
     public void iniReturnData() throws ClassNotFoundException {
         rtnInfolist.clear();
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection scon = new SQLConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
                         "select return_id, returns.rent_id, returns.odometer_reading, "
                                 + "returns.tank_full, amount, points_used, is_paid, "
@@ -209,7 +209,8 @@ public class CustomerViewController implements Initializable {
     public void iniRentData() throws ClassNotFoundException {
         rtInfolist.clear();
         
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection scon = new SQLConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
                         "select rent_id, rent.customer_id, vehicle_id, "
                                 + "reserve_id, start_date_time, end_date_time, "
