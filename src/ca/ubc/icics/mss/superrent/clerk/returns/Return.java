@@ -48,8 +48,7 @@ public class Return {
         
         //using try-with-resources to avoid closing resources (boiler plate code)
         try (Connection con = scon.getConnection();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM returns WHERE "
+                ResultSet rs = con.createStatement().executeQuery("SELECT * FROM returns WHERE "
                         + "return_id=" + returnID);) {
             
             // Add the return info to the return model
@@ -120,7 +119,16 @@ public class Return {
                 // If return was successful
                 try (ResultSet result = pstatement.getGeneratedKeys()) {
                     while (result.next()) {
-                        this.id = result.getInt(1);
+                        id = result.getInt(1);
+                        
+                        if (pointsUsed > 0) {
+                            try (PreparedStatement updatePointsStatement = con.prepareStatement(""
+                        + "UPDATE club_member SET points = points - ?"
+                        + " WHERE customer_id = ?")) {
+                                updatePointsStatement.setInt(1, pointsUsed);
+                                updatePointsStatement.setInt(2, rentModel.getCustomerID());
+                            }
+                        }
                     }
                 }
             }
@@ -261,10 +269,12 @@ public class Return {
         
         ArrayList<AdditionalEquipment> additionalEquipment = rentModel.getAdditionalEquipment();
         // If any additional equipment have been added get their rates.
-        while (additionalEquipment.iterator().hasNext()) {
-            AdditionalEquipment equipment = additionalEquipment.iterator().next();
+        int count = 0;
+        while(count < additionalEquipment.size()) {
+            AdditionalEquipment equipment = additionalEquipment.get(count);
             equipDailyRate += equipment.getDailyRate();
             equipHourlyRate += equipment.getHourlyRate();
+            count++;
         }
         
         long difference = Timestamp.valueOf(LocalDateTime.now()).getTime() - 

@@ -74,7 +74,7 @@ public class ReturnFormController implements Initializable {
         rentalTimePeriod.setText(returnModel.getRentalTimePeriod());
         
         Vehicle vehicleModel = rentModel.getVehicle();
-        vehicleType.setText(vehicleModel.getType());
+        vehicleType.setText(vehicleModel.getVehicleType());
         vehiclePlateNo.setText(vehicleModel.getPlateNumber());
         vehicleName.setText(vehicleModel.getName());
         
@@ -109,7 +109,7 @@ public class ReturnFormController implements Initializable {
         int grandTotalCost = returnModel.calculateGrandTotal();
         
         grandTotal.setText(grandTotalCost + " CAD");
-        pointsUsed.setText(" - " + returnModel.getPointsUsed() + " points");
+        pointsUsed.setText("Used " + returnModel.getPointsUsed() + " points");
         
         if (grandTotalCost == 0) {
             paymentMethod.setDisable(true);
