@@ -468,8 +468,8 @@ public class VehicleListViewController implements Initializable {
            else
             que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,s.for_sale_price,v.vehicle_thumbnail  from team02.vehicle v left outer join team02.branch b on (v.branch_id = b.branch_id) inner join team02.for_sale_vehicle s on (s.vehicle_id = v.vehicle_id)  where v.vehicle_type = '" + typ +"' and v.vehicle_category ='" + cat + "'" ;    
             
-           
-        try(Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();   
+        try(Connection con = s.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(que);)
         {
             
@@ -621,8 +621,8 @@ que    = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.
 "on (r.vehicle_id = all_vehicles.vehicle_id)\n" +
 "where res.vehicle_id is null and r.vehicle_id is null and  all_vehicles.vehicle_type = '" +typ +"' and all_vehicles.vehicle_category='" +cat+ "'" ; 
 
-            
-        try(Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();    
+        try(Connection con = s.getConnection();
           ResultSet rs = con.createStatement().executeQuery(que);)
         {
             
@@ -749,8 +749,8 @@ que    = "select all_vehicles.plate_number,all_vehicles.vehicle_id,all_vehicles.
            else
            que = "select v.plate_number,v.vehicle_id,v.vehicle_name,v.vehicle_category,b.location,r.start_date_time,r.end_date_time,(current_date - date(end_date_time)) no_days,timediff(current_time,time(end_date_time)) time_due,v.vehicle_thumbnail  from rent r inner join vehicle v on ( v.vehicle_id = r.vehicle_id) inner join branch b on(v.branch_id = b.branch_id) left outer join returns re on (r.rent_id = re.rent_id) left outer join for_sale_vehicle fsv on (fsv.vehicle_id = v.vehicle_id) where re.return_id is null and fsv.vehicle_id is null and date(end_date_time) <= current_date and time(end_date_time) < current_time and v.vehicle_type = '" + typ + "' and v.vehicle_category = '" +cat +"'";  
 
-            
-        try(Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();    
+        try(Connection con = s.getConnection();
             ResultSet rs = con.createStatement().executeQuery(que))
         {
                 

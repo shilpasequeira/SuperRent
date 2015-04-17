@@ -60,10 +60,11 @@ public class VehicleRepository {
         }
         prstatement = null;
         
-         
-        try {
-             Connection con = SQLConnection.getConnection();
-             ResultSet rs = con.createStatement().executeQuery(que);
+        SQLConnection s = new SQLConnection();
+        try (
+             Connection con = s.getConnection();
+             ResultSet rs = con.createStatement().executeQuery(que);)
+          {   
             while(rs.next()) {
                 al.add(rs.getString(1));
             }
