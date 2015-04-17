@@ -194,7 +194,7 @@ public class RentReserveFormController implements Initializable  {
 
                 // Display the club member details
                 if (customerModel.getIsClubMember()) {
-                    applyMembershipCheckBox.selectedProperty().set(true);
+                    applyMembershipCheckBox.setSelected(true);
                     applyMembershipCheckBox.setDisable(true);
                     clubMemberPts.setText("Points : " + 
                             Integer.toString(customerModel.getPoints()));
@@ -203,20 +203,20 @@ public class RentReserveFormController implements Initializable  {
                 // Display the apply for membership checkbox.
                 else {
                     applyMembershipCheckBox.setDisable(false);
-                    applyMembershipCheckBox.selectedProperty().set(false);
+                    applyMembershipCheckBox.setSelected(false);
                     clubMemberPts.setVisible(false);
                 }
 
                 // Display roadstar badge is customer is a roadstar
                 if (customerModel.getIsRoadStar()) {
                     isRoadStarCheckBox.setDisable(true);
-                    isRoadStarCheckBox.selectedProperty().set(true);
+                    isRoadStarCheckBox.setSelected(true);
                 } 
                 // Else display the checkbox to set the customer as a roadstar
-                else {
+                /*else {
                     isRoadStarCheckBox.setDisable(false);
-                    isRoadStarCheckBox.selectedProperty().set(false);
-                }
+                    isRoadStarCheckBox.setSelected(true);
+                }*/
             } 
             // If no customer exists, enable the fields to enter information.
             else {
@@ -255,18 +255,18 @@ public class RentReserveFormController implements Initializable  {
                         lastNameField.getText(), addressField.getText(), 
                         phoneField.getText().trim(), 
                         cityField.getText(), pincodeField.getText(), 
-                        isRoadStarCheckBox.selectedProperty().getValue(), 
-                        applyMembershipCheckBox.selectedProperty().getValue());
+                        isRoadStarCheckBox.isSelected(), 
+                        applyMembershipCheckBox.isSelected());
             }
 
             if (customerModel != null && vehicleModel != null) {
 
                 // Populate the additional equipment array.
                 ArrayList<Integer> additionalEquipmentIDs = new ArrayList();
-                if (equipmentCheckBox1.selectedProperty().getValue()) {
+                if (equipmentCheckBox1.isSelected()) {
                     additionalEquipmentIDs.add((Integer) equipmentCheckBox1.getUserData());
                 }
-                if (equipmentCheckBox2.selectedProperty().getValue()) {
+                if (equipmentCheckBox2.isSelected()) {
                     additionalEquipmentIDs.add((Integer) equipmentCheckBox2.getUserData());
                 }
 
@@ -448,20 +448,20 @@ public class RentReserveFormController implements Initializable  {
             if (count == 0) {
                 this.equipmentCheckBox1.setUserData(additionalEquipment.getID());
                 this.equipmentCheckBox1.setText(additionalEquipment.getName());
-                equipmentCheckBox1.selectedProperty().set(true);
+                equipmentCheckBox1.setSelected(true);
             } else if (count == 1) {
                 this.equipmentCheckBox2.setUserData(additionalEquipment.getID());
                 this.equipmentCheckBox2.setText(additionalEquipment.getName());
-                equipmentCheckBox2.selectedProperty().set(true);
+                equipmentCheckBox2.setSelected(true);
             }
             count++;
         }
 
         if (reservation.getCustomer().getIsRoadStar()) {
-            isRoadStarCheckBox.selectedProperty().set(true);
+            isRoadStarCheckBox.setSelected(true);
         }
         if (reservation.getCustomer().getIsClubMember()) {
-            applyMembershipCheckBox.selectedProperty().set(true);
+            applyMembershipCheckBox.setSelected(true);
             clubMemberPts.setText("Points : " + 
                     reservation.getCustomer().getPoints());
         }

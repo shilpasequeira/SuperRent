@@ -35,16 +35,23 @@ public class AdditionalEquipmentRepository {
                 
         try (Connection con = SQLConnection.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
-                        "SELECT a.equipment_id, a.equipment_name, a.equipment_type,"
-                                + " a.equipment_daily_rate, a.equipment_hourly_rate"
+                         "SELECT a.equipment_id, a.equipment_name, a.equipment_type,"
+                                + " a.equipment_daily_rate, a.equipment_hourly_rate,"
                                 + " b.equipment_stock, b.branch_id "
                                 + "FROM additional_equipment a inner join branch_equipment "
                                 + "b on (a.equipment_id = b.equipment_id) WHERE "
-                                + "a.equipment_type = '" + vehicle.getType() + "'"
+                                + "a.equipment_type = '" + vehicle.getVehicleType() + "'"
                                 + " AND b.branch_id = " + vehicle.getBranchID()
                                 + " AND b.equipment_stock > 0")) {
-            
-            while(rs.next()){
+            System.out.println("SELECT a.equipment_id, a.equipment_name, a.equipment_type,"
+                                + " a.equipment_daily_rate, a.equipment_hourly_rate,"
+                                + " b.equipment_stock, b.branch_id "
+                                + "FROM additional_equipment a inner join branch_equipment "
+                                + "b on (a.equipment_id = b.equipment_id) WHERE "
+                                + "a.equipment_type = '" + vehicle.getVehicleType() + "'"
+                                + " AND b.branch_id = " + vehicle.getBranchID()
+                                + " AND b.equipment_stock > 0");
+            while(rs.next()) {
                 AdditionalEquipment additionalEquipment = new AdditionalEquipment();
                 additionalEquipment.setID(rs.getInt("equipment_id"));
                 additionalEquipment.setName(rs.getString("equipment_name"));

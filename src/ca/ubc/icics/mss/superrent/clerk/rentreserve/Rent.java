@@ -180,6 +180,20 @@ public class Rent {
                                     + "values (?, ?)")) {
                                     additionalStatement.setInt(1, this.id);
                                     additionalStatement.setInt(2, equipment.getID());
+                                    
+                                    additionalStatement.executeUpdate();
+                                }
+                                
+                                Vehicle vehicle = new Vehicle(vehicleID);
+                                try (PreparedStatement updateEquipmentStockStatement = 
+                                        con.prepareStatement("UPDATE branch_equipment "
+                                                + "SET equipment_stock = equipment_stock - 1" 
+                                                + " WHERE equipment_id = ?" 
+                                                + " AND branch_id = ?")) {
+                                    updateEquipmentStockStatement.setInt(1, equipment.getID());
+                                    updateEquipmentStockStatement.setInt(2, vehicle.getBranchID());
+                                    
+                                    updateEquipmentStockStatement.executeUpdate();
                                 }
                                 count++;
                             }
