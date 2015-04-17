@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class SQLConnection {
     
-    public static Connection getConnection() {
+    public Connection getConnection() {
         Properties props = new Properties();
         FileInputStream fis = null;
         Connection con = null;
