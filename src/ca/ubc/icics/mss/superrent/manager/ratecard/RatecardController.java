@@ -161,8 +161,8 @@ public class RatecardController implements Initializable {
         selectedBranch = (String)BName.get(0);
         
         String sql2 = "select * from vehicle_category;";
-        
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();
+        try (Connection con = s.getConnection();
                 Statement stmnt = con.createStatement();) {
             ResultSet rs = stmnt.executeQuery(sql2);
             
@@ -191,8 +191,8 @@ public class RatecardController implements Initializable {
         String searchContent = search_field.getText();
         System.out.println(search_field.getText());
         ratelist.clear();
-
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();
+        try (Connection con = s.getConnection();
                 ResultSet rs2 = con.createStatement().executeQuery("select * "
                         + "from vehicle_category where vehicle_category like '%"
                         +searchContent+"%';");) {
@@ -250,8 +250,8 @@ public class RatecardController implements Initializable {
         double add_daily_premium = Double.valueOf(adp.getText());
         double add_weekly_premium = Double.valueOf(awp.getText());
         double add_hourly_premium = Double.valueOf(ahp.getText());
-        
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();
+        try (Connection con = s.getConnection();
                 Statement stmnt = con.createStatement();) {
 
             stmnt.executeUpdate(" insert into vehicle_category(vehicle_type, "
@@ -284,8 +284,8 @@ public class RatecardController implements Initializable {
         double edit_hp = Double.valueOf(ehp.getText());
         double edit_dp = Double.valueOf(edp.getText());
         double edit_wp = Double.valueOf(ewp.getText());
-        
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();
+        try (Connection con = s.getConnection();
                 Statement stmnt = con.createStatement();) {
             stmnt.executeUpdate("update vehicle_category set vehicle_type = '" + 
                             edit_type + "', daily_rate = "+edit_dr+
@@ -307,7 +307,8 @@ public class RatecardController implements Initializable {
     
     public void remove() {
         RateCard rc = (RateCard)rcTable.getSelectionModel().getSelectedItem();
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();
+        try (Connection con = s.getConnection();
                 Statement stmnt = con.createStatement();) {
             stmnt.executeUpdate(
                     "delete from vehicle_category where vehicle_category = '"
@@ -321,7 +322,8 @@ public class RatecardController implements Initializable {
     
     public void refresh() {
         ratelist.clear();
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection s = new SQLConnection();
+        try (Connection con = s.getConnection();
             ResultSet rs = con.createStatement().executeQuery(
                     "select * from vehicle_category;");) {
             while(rs.next()) {
