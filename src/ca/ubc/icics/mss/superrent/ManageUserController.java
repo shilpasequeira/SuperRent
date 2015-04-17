@@ -82,7 +82,7 @@ public class ManageUserController implements Initializable {
 
     @FXML
     private RadioButton EditUser;
-    
+
     @FXML
     private RadioButton AddBranch;
 
@@ -97,10 +97,10 @@ public class ManageUserController implements Initializable {
 
     @FXML
     private Label userAdded;
-    
+
     @FXML
     private Label BranchError;
-     ;
+    ;
 
     @FXML
     private TextField SearchUserTextBox;
@@ -115,8 +115,6 @@ public class ManageUserController implements Initializable {
     @FXML
     private Pane BranchPane;
 
-    
-    
     /**
      * Initializes the controller class.
      */
@@ -129,10 +127,11 @@ public class ManageUserController implements Initializable {
         AddUserID.setToggleGroup(RentReturn);
         AddBranch.setToggleGroup(RentReturn);
         setVisibility();
-        
+
         BranchPane.setVisible(false);
         UserNameAdd.setOnMouseMoved((event) -> {
-            con = SQLConnection.getConnection();
+            SQLConnection obj = new SQLConnection();
+            con = obj.getConnection();
             String SQL = "SELECT * from user where username = '" + UserNameAdd.getText() + "'";
             try {
                 ResultSet rs = con.createStatement().executeQuery(SQL);
@@ -223,10 +222,11 @@ public class ManageUserController implements Initializable {
 
     @FXML
     public void branchAddAction(ActionEvent event) {
-      
-        String SQL = "insert into branch(location) values('" + cityTB.getText() + "," + LocationTB.getText()+ "')";
+
+        String SQL = "insert into branch(location) values('" + cityTB.getText() + "," + LocationTB.getText() + "')";
         try {
-            con = SQLConnection.getConnection();
+            SQLConnection obj = new SQLConnection();
+            con = obj.getConnection();
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
             BranchError.setText("Branch Added");
@@ -236,13 +236,13 @@ public class ManageUserController implements Initializable {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
             BranchError.setText("Location already available");
         }
-        
+
     }
-    
+
     @FXML
     public void branchRadioAddAction(ActionEvent event) {
         setVisibility();
-        BranchPane.setVisible(true);   
+        BranchPane.setVisible(true);
     }
 
     @FXML
@@ -263,7 +263,8 @@ public class ManageUserController implements Initializable {
         SubmitButtonAdd.setDisable(false);
         String SQL = "insert into user values('" + UserNameAdd.getText() + "','" + md5(PasswordAdd.getText()) + "','" + FirstNameAdd.getText() + "','" + LastNameAdd.getText() + "','" + RoleItemAdd.getText() + "')";
         try {
-            con = SQLConnection.getConnection();
+            SQLConnection obj = new SQLConnection();
+            con = obj.getConnection();
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
             setVisibility();
@@ -302,7 +303,8 @@ public class ManageUserController implements Initializable {
         boolean userFound = false;
         String SQL = "SELECT * from user where username = '" + SearchUserTextBox.getText() + "'";
         try {
-            con = SQLConnection.getConnection();
+            SQLConnection obj = new SQLConnection();
+            con = obj.getConnection();
             ResultSet rs = con.createStatement().executeQuery(SQL);
             while (rs.next()) {
                 userFound = true;
@@ -339,14 +341,15 @@ public class ManageUserController implements Initializable {
     public void modifyButtonAction(ActionEvent event) {
 
         UserNameLabel.setVisible(false);
-   
+
         try {
-            con = SQLConnection.getConnection();
+            SQLConnection obj = new SQLConnection();
+            con = obj.getConnection();
             String SQLFN = "update user set first_name = '" + FirstNameAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
             String SQLLN = "update user set last_name = '" + LastNameAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
             String SQLPW = "update user set password = '" + PasswordAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
             String SQLR = "update user set role = '" + RoleItemAdd.getText() + "' where username = '" + UserNameAdd.getText() + "' ";
-            
+
             con.createStatement().executeUpdate(SQLFN);
             con.createStatement().executeUpdate(SQLLN);
             con.createStatement().executeUpdate(SQLPW);
@@ -369,7 +372,8 @@ public class ManageUserController implements Initializable {
         boolean userFound = false;
         String SQL = "SELECT * from user where username = '" + SearchUserTextBox.getText() + "'";
         try {
-            con = SQLConnection.getConnection();
+            SQLConnection obj = new SQLConnection();
+            con = obj.getConnection();
             ResultSet rs = con.createStatement().executeQuery(SQL);
             while (rs.next()) {
                 userFound = true;
