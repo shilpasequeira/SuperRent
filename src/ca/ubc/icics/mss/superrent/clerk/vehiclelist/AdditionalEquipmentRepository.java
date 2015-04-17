@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  * @author shilpa
  */
 public class AdditionalEquipmentRepository {
+    
     /**
      * Get the available additional equipment for a vehicle.
      * @param vehicle
@@ -32,8 +33,8 @@ public class AdditionalEquipmentRepository {
                                 + "equipment_type = '" + vehicle.getType() + "'"
                                 + " AND branch_id = " + vehicle.getBranchID()
                                 + " AND equipment_stock > 0")) {*/
-                
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection scon = new SQLConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
                          "SELECT a.equipment_id, a.equipment_name, a.equipment_type,"
                                 + " a.equipment_daily_rate, a.equipment_hourly_rate,"

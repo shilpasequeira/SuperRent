@@ -79,7 +79,9 @@ public class ClerkDashboardController implements Initializable {
     public void oPenRC () throws SQLException, ClassNotFoundException {
         System.out.println(selectedBranch);
         RCList.clear();
-        try (Connection con = SQLConnection.getConnection();
+        
+        SQLConnection scon = new SQLConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("select vehicle_category.vehicle_category, "
                         + "hourly_rate, daily_rate, weekly_rate, count(vehicle_id) "
                     + "from vehicle, vehicle_category, branch "
@@ -113,8 +115,9 @@ public class ClerkDashboardController implements Initializable {
         if(isValidPhoneNumber (phoneNum)) {
             String phone_number = phoneNum.getText();
             CustomerViewController.setPhoneNum(phone_number);
-
-            try (Connection con = SQLConnection.getConnection();
+            
+            SQLConnection scon = new SQLConnection();
+            try (Connection con = scon.getConnection();
                     ResultSet rs = con.createStatement().executeQuery("select * from "
                             + "customer where phone_no = "+phone_number+";")) {
 
@@ -179,8 +182,9 @@ public class ClerkDashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        try (Connection con = SQLConnection.getConnection();
+        
+        SQLConnection scon = new SQLConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("select * from branch;");) {
         
             while(rs.next()) {
@@ -233,7 +237,8 @@ public class ClerkDashboardController implements Initializable {
                     selectedBranch = (String) BName.get(new_value.intValue());
                     System.out.println(selectedBranch);
                     RCList.clear();
-                    try (Connection con = SQLConnection.getConnection();
+                    SQLConnection scon = new SQLConnection();
+                    try (Connection con = scon.getConnection();
                             ResultSet rs = con.createStatement().executeQuery("select vehicle_category.vehicle_category, hourly_rate, daily_rate, weekly_rate, count(vehicle_id) "
                                             + "from vehicle, vehicle_category, branch "
                                             + "where vehicle.vehicle_category = vehicle_category.vehicle_category "

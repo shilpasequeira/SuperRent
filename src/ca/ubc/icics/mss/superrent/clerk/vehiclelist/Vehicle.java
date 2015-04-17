@@ -22,8 +22,7 @@ import javafx.beans.property.StringProperty;
  * @author warrior
  */
 public class Vehicle {
-    
-    
+    private SQLConnection scon = new SQLConnection();
     private int id;
     private String name;
     private String plateNumber;
@@ -220,7 +219,7 @@ public class Vehicle {
     
     public Vehicle (int vehicleID) {
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery("SELECT * FROM vehicle WHERE vehicle_id=" + vehicleID)) {
              
             while(rs.next()) {
@@ -291,7 +290,7 @@ public class Vehicle {
      */
     public boolean getIsAvailable() {
         
-        try (Connection con = SQLConnection.getConnection()) {
+        try (Connection con = scon.getConnection()) {
             try (ResultSet rs1 = con.createStatement().executeQuery(
                 "SELECT vehicle_id FROM sold_vehicle WHERE vehicle_id = " + this.id)) {
                 while(rs1.next()) {

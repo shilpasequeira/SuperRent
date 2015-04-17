@@ -26,8 +26,9 @@ public class CustomerRepository {
      * @return Customer object is customer exists else null
      */
     public static Customer searchForCustomerByID (int id) {
+        SQLConnection scon = new SQLConnection();
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        try (Connection con = scon.getConnection();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT customer_id FROM customer WHERE "
                         + "customer_id=" + id)) {
@@ -51,7 +52,8 @@ public class CustomerRepository {
      */
     public static Customer searchForCustomerByPhone (String phone) {
         //using try-with-resources to avoid closing resources (boiler plate code)
-        try (Connection con = SQLConnection.getConnection();
+        SQLConnection scon = new SQLConnection();
+        try (Connection con = scon.getConnection();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT customer_id FROM customer WHERE "
                         + "phone_no=" + phone)) {
