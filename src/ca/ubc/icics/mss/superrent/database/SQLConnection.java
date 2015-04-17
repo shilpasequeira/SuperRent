@@ -4,13 +4,7 @@
  * and open the template in the editor.
  */
 package ca.ubc.icics.mss.superrent.database;
-import ca.ubc.icics.mss.superrent.manager.reports.ReportsViewController;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*; 
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
 
 /**
  *
@@ -19,8 +13,6 @@ import java.util.logging.Logger;
 public class SQLConnection {
     
     public Connection getConnection() {
-        Properties props = new Properties();
-        FileInputStream fis = null;
         Connection con = null;
         try {
             // create the connection now
