@@ -183,6 +183,9 @@ public class InventoryManageController implements Initializable {
     private TableColumn<Intb,String> tStatus;
     private TableColumn<Intb,Image> aArt;
     private TableColumn<Intb,String>tYear;
+    ObservableList content1=FXCollections.observableArrayList();
+    ObservableList content2=FXCollections.observableArrayList();
+    ObservableList content3=FXCollections.observableArrayList();
     private ObservableList data=FXCollections.observableArrayList();
     String status;
     @FXML
@@ -191,25 +194,21 @@ public class InventoryManageController implements Initializable {
     }
     @FXML
     private void stypeact(ActionEvent event) throws SQLException, ClassNotFoundException{
-        query(sqlstring());
+       // query(sqlstring());
         tri=1;
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA");
-        if(!sType.getValue().toString().equals("ALL")){
             SetCategoryT(Type,sType.getValue().toString());
-        }
         tri=0;
     }
     @FXML
     private void atypeact(ActionEvent event) throws SQLException, ClassNotFoundException{
-         if(!type.getValue().toString().equals("ALL")){
             SetCategoryT(aCategory,type.getValue().toString());
-        }
+        
     }
     @FXML
     private void etypeact(ActionEvent event) throws SQLException, ClassNotFoundException{
-         if(!etype.getValue().toString().equals("ALL")){
             SetCategoryT(eCategory,etype.getValue().toString());
-        }
+       
     }
     @FXML
     private void sPlate(ActionEvent event) throws SQLException, ClassNotFoundException{
@@ -267,17 +266,44 @@ public class InventoryManageController implements Initializable {
         con.close();
         cb.getSelectionModel().selectFirst();
     }
-        private void SetCategoryT(ComboBox cb,String t) throws SQLException, ClassNotFoundException{
-        getcon();
-        String s="SELECT  vehicle_category FROM vehicle_category where vehicle_type='"+t+"';";
-        ResultSet rs = con.createStatement().executeQuery(s);
-        ObservableList content=FXCollections.observableArrayList();
-        content.add("ALL");
-        while(rs.next()){
-            content.add(rs.getString(1));
+    private void Setcontent(){
+        try {
+            getcon();
+            String s="SELECT  vehicle_category FROM vehicle_category";
+            ResultSet rs = con.createStatement().executeQuery(s);
+            content1=FXCollections.observableArrayList();
+            content1.add("ALL");
+            while(rs.next()){
+                content1.add(rs.getString(1));
+            }
+            s="SELECT  vehicle_category FROM vehicle_category where vehicle_type='CAR'";
+            ResultSet rs1 = con.createStatement().executeQuery(s);
+            content2=FXCollections.observableArrayList();
+            content2.add("ALL");
+            while(rs1.next()){
+                content2.add(rs1.getString(1));
+            }
+            s="SELECT  vehicle_category FROM vehicle_category where vehicle_type='TRUCK'";
+            ResultSet rs2 = con.createStatement().executeQuery(s);
+            content3=FXCollections.observableArrayList();
+            content3.add("ALL");
+            while(rs2.next()){
+                content3.add(rs2.getString(1));
+            }
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(InventoryManageController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        cb.setItems(content);
-        con.close();
+    }
+        private void SetCategoryT(ComboBox cb,String t) throws SQLException, ClassNotFoundException{
+            if(t.equals("ALL"))
+                cb.setItems(content1);
+            if(t.equals("CAR"))
+                cb.setItems(content2);
+            if(t.equals("TRUCK"))
+                cb.setItems(content3);
         cb.getSelectionModel().selectFirst();
     }
     private void SetLocation(ComboBox cb) throws SQLException, ClassNotFoundException{
@@ -842,6 +868,7 @@ public void getTableView()
     public void initialize(URL url, ResourceBundle rb) {
         SetYear(Year);
         getTableView();
+        Setcontent();
         try {
             SetLocation(Location);
             SetCategory(Type);
