@@ -360,7 +360,7 @@ boolean valid = true;
             s=s+" and location='"+Location.getValue().toString()+"'";            
         }
         if(!Year.getValue().toString().equals("ALL")){
-            s=s+" and vehicle_manufactured_year='"+Year.getValue().toString()+"'";
+            s=s+" and vehicle_manufactured_year>='"+Year.getValue().toString()+"'";
         }
         if(tri==0)
         if(!Type.getValue().toString().equals("ALL")){
@@ -508,6 +508,15 @@ boolean valid = true;
             esaleprice.setText(rs.getString(1));  
             con.close();
         }
+        if(in.Status.equals("Sold")){
+            esaleprice.setEditable(true);
+            getcon();
+            ResultSet rs=con.createStatement().executeQuery("select sale_price from sold_vehicle where vehicle_id='"+in.VehicleID+"';");
+            rs.next();
+            esaleprice.setText(rs.getString(1));  
+            con.close();
+        }
+        
     }
     @FXML
     public void ShowEdButton(ActionEvent event){
@@ -822,7 +831,7 @@ public void getTableView()
         
         aArt = new TableColumn<>("Album");
 	aArt.setCellValueFactory(new PropertyValueFactory("Pic"));
-	aArt.setPrefWidth(120);
+	aArt.setPrefWidth(70);
 	
         tID=new TableColumn<>("Plate Number");
         tID.setPrefWidth(80);
