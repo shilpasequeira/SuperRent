@@ -169,6 +169,11 @@ public class InventoryManageController implements Initializable {
     @FXML
     private DatePicker saledate;
     String vID;
+    
+    @FXML
+    private ComboBox sType;
+    
+    int tri=0;
     @FXML
     private TableColumn<Intb,String>tID;
     private TableColumn<Intb,String>  tName;
@@ -183,6 +188,28 @@ public class InventoryManageController implements Initializable {
     @FXML
     private void search(ActionEvent event) throws SQLException, ClassNotFoundException{
         query(sqlstring());   
+    }
+    @FXML
+    private void stypeact(ActionEvent event) throws SQLException, ClassNotFoundException{
+        query(sqlstring());
+        tri=1;
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA");
+        if(!sType.getValue().toString().equals("ALL")){
+            SetCategoryT(Type,sType.getValue().toString());
+        }
+        tri=0;
+    }
+    @FXML
+    private void atypeact(ActionEvent event) throws SQLException, ClassNotFoundException{
+         if(!type.getValue().toString().equals("ALL")){
+            SetCategoryT(aCategory,type.getValue().toString());
+        }
+    }
+    @FXML
+    private void etypeact(ActionEvent event) throws SQLException, ClassNotFoundException{
+         if(!etype.getValue().toString().equals("ALL")){
+            SetCategoryT(eCategory,etype.getValue().toString());
+        }
     }
     @FXML
     private void sPlate(ActionEvent event) throws SQLException, ClassNotFoundException{
@@ -224,10 +251,25 @@ public class InventoryManageController implements Initializable {
         content.add("CAR");
         content.add("TRUCK");
         cb.setItems(content);
+        cb.getSelectionModel().selectFirst();
     }
     private void SetCategory(ComboBox cb) throws SQLException, ClassNotFoundException{
         getcon();
+        
         String s="SELECT  vehicle_category FROM vehicle_category";
+        ResultSet rs = con.createStatement().executeQuery(s);
+        ObservableList content=FXCollections.observableArrayList();
+        content.add("ALL");
+        while(rs.next()){
+            content.add(rs.getString(1));
+        }
+        cb.setItems(content);
+        con.close();
+        cb.getSelectionModel().selectFirst();
+    }
+        private void SetCategoryT(ComboBox cb,String t) throws SQLException, ClassNotFoundException{
+        getcon();
+        String s="SELECT  vehicle_category FROM vehicle_category where vehicle_type='"+t+"';";
         ResultSet rs = con.createStatement().executeQuery(s);
         ObservableList content=FXCollections.observableArrayList();
         content.add("ALL");
@@ -293,8 +335,13 @@ boolean valid = true;
         if(!Year.getValue().toString().equals("ALL")){
             s=s+" and vehicle_manufactured_year='"+Year.getValue().toString()+"'";
         }
+        if(tri==0)
         if(!Type.getValue().toString().equals("ALL")){
+            tri=0;
             s=s+" and vehicle_category='"+Type.getValue().toString()+"'";
+        }
+        if(!sType.getValue().toString().equals("ALL")){
+            s=s+" and vehicle_type='"+sType.getValue().toString()+"'";
         }
         return s;
     }
@@ -801,6 +848,7 @@ public void getTableView()
             SetStatus(Status);
             SetType(etype);
             SetType(type);
+            SetType(sType);
             SetLocation(location);
             SetCategory(aCategory);
             SetYear(year);

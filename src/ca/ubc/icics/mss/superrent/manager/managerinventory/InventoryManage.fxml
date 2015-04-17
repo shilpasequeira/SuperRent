@@ -13,19 +13,21 @@
         <URL value="@addvehicle.css" />
     </stylesheets>
     <children>
+      <Label layoutX="74.0" layoutY="51.0" text="Type" />
+      <ComboBox fx:id="sType" layoutX="54.0" layoutY="67.0" onAction="#stypeact" prefHeight="25.0" prefWidth="115.0" />
       
       
       
       <Button fx:id="cancelsale" layoutX="630.0" layoutY="515.0" mnemonicParsing="false" onAction="#cancelsale" text="Cancel For Sale" />
-      <TextField fx:id="sPlate" layoutX="51.0" layoutY="66.0" />
-      <Button layoutX="278.0" layoutY="66.0" mnemonicParsing="false" onAction="#sPlate" text="Search By Plate No." />
-      <Text layoutX="450.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
+      <TextField fx:id="sPlate" layoutX="265.0" layoutY="70.0" />
+      <Button layoutX="492.0" layoutY="70.0" mnemonicParsing="false" onAction="#sPlate" text="Search By Plate No." />
+      <Text layoutX="453.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
       <Group layoutX="35.0" layoutY="-5.0" />
-      <ComboBox fx:id="Location" layoutX="190.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
-      <Text layoutX="260.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" />
-      <Text layoutX="635.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
-      <ComboBox fx:id="Year" blendMode="MULTIPLY" layoutX="390.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
-      <ComboBox fx:id="Type" layoutX="590.0" layoutY="35.0" onAction="#search" prefWidth="150.0" />
+      <ComboBox fx:id="Location" layoutX="193.0" layoutY="24.0" onAction="#search" prefWidth="150.0" />
+      <Text layoutX="263.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Branch" />
+      <Text layoutX="638.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />
+      <ComboBox fx:id="Year" blendMode="MULTIPLY" layoutX="393.0" layoutY="24.0" onAction="#search" prefWidth="150.0" />
+      <ComboBox fx:id="Type" layoutX="593.0" layoutY="24.0" onAction="#search" prefWidth="150.0" />
       <Group />
       <TableView fx:id="tb" layoutX="33.0" layoutY="103.0" onMouseClicked="#tbact" prefHeight="403.0" prefWidth="733.0">
 
@@ -34,8 +36,8 @@
       <Button fx:id="Edit" layoutX="418.0" layoutY="515.0" mnemonicParsing="false" onAction="#EditVehicle" text="Edit Vehicle" />
       <Button fx:id="movetosale" layoutX="523.0" layoutY="515.0" mnemonicParsing="false" onAction="#Movetosale" text="Move to sale" />
       <Button fx:id="sale" layoutX="545.0" layoutY="515.0" mnemonicParsing="false" onAction="#opensale" text="Sale" />
-      <Text layoutX="72.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
-      <ComboBox fx:id="Status" layoutX="51.0" layoutY="35.0" onAction="#search" prefHeight="25.0" prefWidth="88.0" />
+      <Text layoutX="75.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
+      <ComboBox fx:id="Status" layoutX="54.0" layoutY="24.0" onAction="#search" prefHeight="25.0" prefWidth="88.0" />
       
             
       
@@ -55,7 +57,7 @@
       <Button layoutX="396.0" layoutY="349.0" mnemonicParsing="false" onAction="#ebrowseaction" text="Browse" />
       <TextField fx:id="ecompany" layoutX="502.0" layoutY="97.0" prefHeight="25.0" prefWidth="150.0" />
       <ComboBox fx:id="eCategory" layoutX="222.0" layoutY="233.0" prefWidth="150.0" />
-            <ComboBox fx:id="etype" layoutX="221.0" layoutY="94.0" prefWidth="150.0" />
+            <ComboBox fx:id="etype" layoutX="221.0" layoutY="94.0" onAction="#etypeact" prefWidth="150.0" />
             <Text layoutX="175.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
             <TextField fx:id="PlateNo" layoutX="501.0" layoutY="234.0" prefHeight="25.0" prefWidth="150.0" />
             <Text layoutX="422.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
@@ -90,7 +92,7 @@
       <Button layoutX="505.0" layoutY="336.0" mnemonicParsing="false" onAction="#browseaction" text="Browse" />
       <TextField fx:id="company" layoutX="484.0" layoutY="89.0" prefHeight="25.0" prefWidth="150.0" />
       <ComboBox fx:id="aCategory" layoutX="201.0" layoutY="245.0" prefWidth="150.0" />
-            <ComboBox fx:id="type" layoutX="203.0" layoutY="88.0" prefWidth="150.0" />
+            <ComboBox fx:id="type" layoutX="203.0" layoutY="88.0" onAction="#atypeact" prefWidth="150.0" />
             <Text layoutX="157.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
             <TextField fx:id="aPlateNo" layoutX="484.0" layoutY="242.0" prefHeight="25.0" prefWidth="150.0" />
             <Text layoutX="405.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Plate No." />
