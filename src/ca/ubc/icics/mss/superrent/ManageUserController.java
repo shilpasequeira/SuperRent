@@ -230,7 +230,7 @@ public class ManageUserController implements Initializable {
             preparedStatement = (PreparedStatement) con.prepareStatement(SQL);
             preparedStatement.executeUpdate();
             BranchError.setText("Branch Added");
-            con.commit();
+           
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(ReportsViewController.class.getName()).log(Level.SEVERE, null, ex);
