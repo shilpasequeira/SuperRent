@@ -141,6 +141,11 @@ public class VehicleListViewController implements Initializable {
             Overdue.setVisible(false);
             Sale.setVisible(false);
             Title.setVisible(true);
+            
+            if (mode == RENT )
+                Title.setText("Rent a Vehicle");
+            else
+                Title.setText("Reserve a Vehicle"); 
         }
         else
         {
