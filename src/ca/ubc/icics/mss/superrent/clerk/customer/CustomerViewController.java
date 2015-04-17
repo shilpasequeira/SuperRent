@@ -219,7 +219,7 @@ public class CustomerViewController implements Initializable {
                                 + "drivers_license, credit_card_no, credit_card_expiry_month, "
                                 + "credit_card_expiry_year, rent.odometer_reading, "
                                 + "estimate, rent.transaction_timestamp, rent.vehicle_id from rent, "
-                                + "customer, vehicle where rent.customer_id = customer.customer_id "
+                                + "customer, vehicle where rent.customer_id = customer.customer_id and vehicle.vehicle_id = rent.vehicle_id "
                                 + "and phone_no = "+PhoneNumber+";");) {
             while(rs.next()){
                 Rent rt = new Rent(rs.getInt("rent_id"));
