@@ -478,13 +478,13 @@ public class ReportsViewController implements Initializable {
                                     pieChartData.remove(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
 
                                     countList.add(ObjCountReport);
-                                    pieChartData.add(new PieChart.Data(ObjCountReport.getCategory() + " " + branchName, Integer.valueOf(ObjCountReport.getCount())));
+                                   // pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
 
                                 }
                             }
                             if (!notAvailable) {
                                 countList.add(ObjCountReport);
-                                pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+                                //pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
 
                             }
 
@@ -556,6 +556,8 @@ public class ReportsViewController implements Initializable {
                 rentList.clear();
                 costList.clear();
                 countList.clear();
+                pieChartData.clear();
+                
                 if (citiesSelected.size() > 1) {
                     if (!RentTable.getColumns().contains(branch)) {
                         branch.setVisible(true);
@@ -594,14 +596,14 @@ public class ReportsViewController implements Initializable {
                                     ObjCountReport.setCount(String.valueOf(setCount));
                                     countList.remove(ObjCountReport2);
                                     countList.add(ObjCountReport);
-
-                                    pieChartData.add(new PieChart.Data(ObjCountReport.getCategory() + " " + branchName, Integer.valueOf(ObjCountReport.getCount())));
+                                    
+                                    //pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
 
                                 }
                             }
                             if (!notAvailable) {
                                 countList.add(ObjCountReport);
-                                pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
+                                //pieChartData.add(new PieChart.Data(ObjCountReport.getCategory(), Integer.valueOf(ObjCountReport.getCount())));
 
                             }
                         }
@@ -680,6 +682,8 @@ public class ReportsViewController implements Initializable {
         for (Iterator<CountReport> it = countList.iterator(); it.hasNext();) {
             CountReport obj = it.next();
             countListBound.add(obj);
+            pieChartData.add(new PieChart.Data(obj.getCategory(), Integer.valueOf(obj.getCount())));
+
 
         }
     }
