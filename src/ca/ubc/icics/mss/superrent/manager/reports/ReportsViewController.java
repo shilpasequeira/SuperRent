@@ -284,9 +284,9 @@ public class ReportsViewController implements Initializable {
         Calendar cal = Calendar.getInstance();
 
         if (rentreserveSelection.equals("Rent")) {
-            FileName = date.toString().substring(0, 6) + "Rent.csv";
+            FileName = date.toString().substring(0, 6) + carTruckSelection+"Rent.csv";
         } else {
-            FileName = date.toString().substring(0, 6) + "Return.csv";
+            FileName = date.toString().substring(0, 6) + carTruckSelection+"Return.csv";
 
         }
         try {
@@ -643,7 +643,7 @@ public class ReportsViewController implements Initializable {
                             objReport.setVehicleID(joinedSetForTableUpdate.getString("vehicle_id"));
                             objReport.setCategory(joinedSetForTableUpdate.getString("vehicle_category"));
                             objReport.setEstimatedCost(joinedSetForTableUpdate.getString("amount"));
-                            objReport.setReturnDate(joinedSetForTableUpdate.getDate("end_date_time"));
+                            objReport.setReturnDate(joinedSetForTableUpdate.getDate("transaction_timestamp"));
                             objReport.setBranch(branchName);
                             rentList.add(objReport);
                         }
