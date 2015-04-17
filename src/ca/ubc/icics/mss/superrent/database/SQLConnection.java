@@ -4,10 +4,13 @@
  * and open the template in the editor.
  */
 package ca.ubc.icics.mss.superrent.database;
+import ca.ubc.icics.mss.superrent.manager.reports.ReportsViewController;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*; 
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,17 +23,10 @@ public class SQLConnection {
         FileInputStream fis = null;
         Connection con = null;
         try {
-            fis = new FileInputStream(System.getProperty("user.dir") + "/src/ca/ubc/icics/mss/superrent/database/config.properties");
-            props.load(fis);
- 
-            // load the Driver Class
-            Class.forName(props.getProperty("DB_DRIVER_CLASS"));
- 
             // create the connection now
-            con = DriverManager.getConnection(props.getProperty("DB_URL"),
-                    props.getProperty("DB_USERNAME"),
-                    props.getProperty("DB_PASSWORD"));
-        } catch (IOException | ClassNotFoundException | SQLException e) {
+               con = DriverManager.getConnection("jdbc:mysql://dbserver.mss.icics.ubc.ca/team02", "team02", "s0ftw@re");
+       
+        } catch ( SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
