@@ -40,6 +40,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 /**
  * FXML Controller class
  *
@@ -130,6 +131,7 @@ public class ClerkDashboardController implements Initializable {
                 }
                 else{
                     System.out.println("no such phone#...");
+                    validPhoneNum.setTextFill(Color.RED);
                     validPhoneNum.setText("Nonexistent Phone NO");
                 }
             } catch (SQLException e) {
@@ -137,6 +139,7 @@ public class ClerkDashboardController implements Initializable {
             }
         }
         else {
+            validPhoneNum.setTextFill(Color.RED);
             validPhoneNum.setText("Invalid Phone Number");
         }
     }
