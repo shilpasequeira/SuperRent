@@ -10,6 +10,7 @@ import ca.ubc.icics.mss.superrent.clerk.rentreserve.RentReserveFormController;
 import ca.ubc.icics.mss.superrent.clerk.rentreserve.Reserve;
 import ca.ubc.icics.mss.superrent.clerk.returns.Return;
 import ca.ubc.icics.mss.superrent.clerk.returns.ReturnFormController;
+import ca.ubc.icics.mss.superrent.clerk.vehiclelist.Vehicle;
 import ca.ubc.icics.mss.superrent.database.SQLConnection;
 import ca.ubc.icics.mss.superrent.validation.Validate;
 import java.io.IOException;
@@ -93,6 +94,7 @@ public class CustomerViewController implements Initializable {
     private TableColumn<Rent, Integer> rtcreditCEY;
     private TableColumn<Rent, String> rtdriverL;
     private TableColumn<Rent, Long> rtodometerR;
+    private TableColumn<Vehicle, String> plateNumber;
     private ObservableList rtInfolist = FXCollections.observableArrayList();
     //reserve table columns
     private TableColumn<Reserve, Integer> rsID;
@@ -212,12 +214,12 @@ public class CustomerViewController implements Initializable {
         SQLConnection scon = new SQLConnection();
         try (Connection con = scon.getConnection();
                 ResultSet rs = con.createStatement().executeQuery(
-                        "select rent_id, rent.customer_id, vehicle_id, "
+                        "select rent_id, rent.customer_id, vehicle.plate_number "
                                 + "reserve_id, start_date_time, end_date_time, "
                                 + "drivers_license, credit_card_no, credit_card_expiry_month, "
                                 + "credit_card_expiry_year, rent.odometer_reading, "
-                                + "estimate, rent.transaction_timestamp from rent, "
-                                + "customer where rent.customer_id = customer.customer_id "
+                                + "estimate, rent.transaction_timestamp, rent.vehicle_id from rent, "
+                                + "customer, vehicle where rent.customer_id = customer.customer_id "
                                 + "and phone_no = "+PhoneNumber+";");) {
             while(rs.next()){
                 Rent rt = new Rent(rs.getInt("rent_id"));
@@ -299,8 +301,8 @@ public class CustomerViewController implements Initializable {
         rtID.setCellValueFactory(new PropertyValueFactory("ID"));
         rtcusID = new TableColumn("customerID");
         rtcusID.setCellValueFactory(new PropertyValueFactory("CustomerID"));
-        rtvehicleID = new TableColumn("vehicleID");
-        rtvehicleID.setCellValueFactory(new PropertyValueFactory("VehicleID"));
+        plateNumber = new TableColumn("Plate Number");
+        plateNumber.setCellValueFactory(new PropertyValueFactory("PlateNumber"));
         rtrsID = new TableColumn("Reserve ID");
         rtrsID.setCellValueFactory(new PropertyValueFactory("ReserveID"));
         rtSDT = new TableColumn("Start Date & Time");
@@ -317,13 +319,15 @@ public class CustomerViewController implements Initializable {
         rtcreditCEY.setCellValueFactory(new PropertyValueFactory("CardExpiryYear"));
         rtdriverL = new TableColumn("DriversLicense");
         rtdriverL.setCellValueFactory(new PropertyValueFactory("DriversLicense"));
-        rtodometerR = new TableColumn("OdometerReading");
+        rtodometerR = new TableColumn("Odometer Reading");
         rtodometerR.setCellValueFactory(new PropertyValueFactory("OdometerReading"));
+        rtvehicleID = new TableColumn("vehicle ID");
+        rtvehicleID.setCellValueFactory(new PropertyValueFactory("VehicleID"));
         
         rentTable.setItems(rtInfolist);
-        rentTable.getColumns().addAll(rtID, rtcusID, rtvehicleID, rtrsID, rtSDT,
+        rentTable.getColumns().addAll(rtID, rtcusID, plateNumber, rtrsID, rtSDT,
                 rtEDT, rtEstimate, rtcreditCN, rtcreditCEM, rtcreditCEY, rtdriverL, 
-                rtodometerR);
+                rtodometerR, rtvehicleID);
         //=============================================================================
         
         //==========================reserve Table======================================

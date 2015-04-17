@@ -28,6 +28,7 @@ public class Rent {
     final int H=3600000, D=86400000, W=604800000;
     private int customerID;
     private int vehicleID;
+    private String plateNumber;
     private int reserveID;
     private int id;
     private Timestamp startDateTime;
@@ -76,6 +77,8 @@ public class Rent {
                 this.creditCardNumber = rs.getString("credit_card_no");
                 this.creditCardExpiryMonth = rs.getInt("credit_card_expiry_month");
                 this.creditCardExpiryYear = rs.getInt("credit_card_expiry_year");
+                Vehicle vehicle = new Vehicle(this.vehicleID);
+                plateNumber = vehicle.getPlateNumber();
             }
             
             // Add the additional equipment if any to the rent model
@@ -125,6 +128,9 @@ public class Rent {
             this.additionalEquipment.add(new AdditionalEquipment(equipment_id));
             count++;
         }
+        
+        Vehicle vehicle = new Vehicle(this.vehicleID);
+        plateNumber = vehicle.getPlateNumber();
         
         // Calculate the estimated price.
         this.estimate = estimatePrice();
@@ -462,5 +468,9 @@ public class Rent {
      */
     public long getOdometerReading() {
         return odometerReading;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
     }
 }
