@@ -37,7 +37,7 @@
       <Button fx:id="movetosale" layoutX="523.0" layoutY="515.0" mnemonicParsing="false" onAction="#Movetosale" text="Move to sale" />
       <Button fx:id="sale" layoutX="545.0" layoutY="515.0" mnemonicParsing="false" onAction="#opensale" text="Sale" />
       <Text layoutX="75.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
-      <ComboBox fx:id="Status" layoutX="54.0" layoutY="24.0" onAction="#search" prefHeight="25.0" prefWidth="88.0" />
+      <ComboBox fx:id="Status" layoutX="54.0" layoutY="24.0" onAction="#search" prefHeight="25.0" prefWidth="115.0" />
       
             
       
