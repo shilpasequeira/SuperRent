@@ -103,8 +103,9 @@ public class VehicleListViewController implements Initializable {
     private static final String RESERVE = "RESERVE";
     private static final String REPORT = "REPORT";
     private static String mode = REPORT;
-    private String[] TIMINGS;
-    
+    private String[] TIMINGS = {"9:00","9:30","10:00","10:30","11:00","11:30",
+        "12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00",
+        "16:30","17:00"};
     
     public Statement statement = null;
     public PreparedStatement prstatement = null;
@@ -258,22 +259,10 @@ public class VehicleListViewController implements Initializable {
     
      private void initialiseTimePickers() {
         // Initialise time combo box.
-        try {
-            Properties props = new Properties();
-            FileInputStream fis = new FileInputStream(System.getProperty("user.dir")
-                    + "/src/ca/ubc/icics/mss/superrent/database/config.properties");
-            props.load(fis);
-            TIMINGS = props.getProperty("TIMINGS").split(",");
-            start_time.getItems().addAll((Object[]) TIMINGS);
-            start_time.setValue(TIMINGS[0]);
-            end_time.getItems().addAll((Object[]) TIMINGS);
-            end_time.setValue(TIMINGS[0]);
-        } catch (IOException e) {
-            start_time.setVisible(false);
-            end_time.setVisible(false);
-            Logger.getLogger(VehicleListViewController.class.getName()).
-                    log(Level.SEVERE, null, e);
-        }
+        start_time.getItems().addAll((Object[]) TIMINGS);
+        start_time.setValue(TIMINGS[0]);
+        end_time.getItems().addAll((Object[]) TIMINGS);
+        end_time.setValue(TIMINGS[0]);
     }
     
     
